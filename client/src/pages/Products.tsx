@@ -116,7 +116,7 @@ export default function Products() {
     <div className="min-h-screen flex flex-col">
       <Header cartItemCount={cartItemCount} onCartClick={() => setCartOpen(true)} />
       
-      <main className="flex-1">
+      <main className="flex-1 pt-16 md:pt-20">
         <div className="bg-white py-8 border-b">
           <div className="max-w-7xl mx-auto px-4 md:px-6">
             <h1 className="text-3xl font-bold text-slate-900">All Products</h1>

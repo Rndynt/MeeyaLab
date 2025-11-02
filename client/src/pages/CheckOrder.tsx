@@ -30,7 +30,7 @@ export default function CheckOrder() {
     <div className="min-h-screen flex flex-col">
       <Header cartItemCount={0} onCartClick={() => setCartOpen(true)} />
       
-      <main className="flex-1 bg-slate-50 py-8">
+      <main className="flex-1 bg-slate-50 pt-16 md:pt-20 pb-8">
         <OrderTracking onSearch={handleSearch} order={order} />
       </main>
 
