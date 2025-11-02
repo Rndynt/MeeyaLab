@@ -64,6 +64,7 @@ export default function HeroHeader({
   const [location] = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   const [emblaRef, emblaApi] = useEmblaCarousel(
     { loop: true, duration: 20 },
@@ -109,14 +110,30 @@ export default function HeroHeader({
     emblaApi.on("reInit", onSelect);
   }, [emblaApi, onSelect]);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const currentSlide = slides[selectedIndex];
 
   return (
     <div className="relative w-full" data-testid="hero-header-section">
       {/* Header */}
-      <div className="relative z-50 max-w-7xl mx-auto px-4 md:px-6">
-        <header className="relative w-full" data-testid="header-main">
-          <div className="flex items-center justify-between h-16 md:h-20">
+      <div 
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          isScrolled 
+            ? 'bg-white/95 backdrop-blur-sm shadow-md' 
+            : 'bg-transparent'
+        }`}
+      >
+        <div className="max-w-7xl mx-auto px-4 md:px-6">
+          <header className="relative w-full" data-testid="header-main">
+            <div className="flex items-center justify-between h-16 md:h-20">
             <Link href="/" data-testid="link-home">
               <span className="text-xl md:text-2xl font-bold text-slate-900 hover:text-slate-700 transition-colors cursor-pointer">
                 MeeyaLab.
@@ -184,13 +201,14 @@ export default function HeroHeader({
                 </SheetContent>
               </Sheet>
             </div>
-          </div>
-        </header>
+            </div>
+          </header>
+        </div>
       </div>
 
       {/* Full-width Hero Section with background */}
       <section className={`relative w-full transition-colors duration-700 ${currentSlide.bgColor}`} data-testid="section-hero">
-        <div className="relative py-4 pb-8 md:py-12 lg:py-16 overflow-hidden">
+        <div className="relative pt-20 md:pt-24 pb-8 md:pb-12 lg:pb-16 overflow-hidden">
           <div className="w-full">
             <div className="overflow-hidden" ref={emblaRef}>
               <div className="flex transition-opacity">
