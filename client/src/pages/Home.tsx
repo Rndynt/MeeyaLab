@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useLocation } from "wouter";
-import Header from "@/components/Header";
-import Hero from "@/components/Hero";
+import HeroHeader from "@/components/HeroHeader";
 import CategoryPills from "@/components/CategoryPills";
 import ProductGrid from "@/components/ProductGrid";
 import CartDrawer, { type CartItem } from "@/components/CartDrawer";
@@ -73,17 +72,16 @@ export default function Home() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Header cartItemCount={cartItemCount} onCartClick={() => setCartOpen(true)} />
+      <HeroHeader
+        cartItemCount={cartItemCount}
+        onCartClick={() => setCartOpen(true)}
+        onShopClick={() => {
+          const productsSection = document.getElementById("products");
+          productsSection?.scrollIntoView({ behavior: "smooth" });
+        }}
+      />
       
-      <main className="flex-1">
-        <Hero
-          onShopClick={() => {
-            const productsSection = document.getElementById("products");
-            productsSection?.scrollIntoView({ behavior: "smooth" });
-          }}
-          onCheckOrderClick={() => setLocation("/check-order")}
-        />
-
+      <main className="flex-1 bg-white">
         <div id="products">
           <CategoryPills
             categories={categories}
