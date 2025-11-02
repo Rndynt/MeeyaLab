@@ -4,13 +4,30 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
+import Home from "@/pages/Home";
+import Products from "@/pages/Products";
+import Checkout from "@/pages/Checkout";
+import CheckOrder from "@/pages/CheckOrder";
+import Contact from "@/pages/Contact";
+import AdminLoginPage from "@/pages/admin/Login";
+import AdminDashboard from "@/pages/admin/Dashboard";
+import AdminProductsPage from "@/pages/admin/ProductsPage";
+import AdminOrdersPage from "@/pages/admin/OrdersPage";
 
 function Router() {
   return (
     <Switch>
-      {/* Add pages below */}
-      {/* <Route path="/" component={Home}/> */}
-      {/* Fallback to 404 */}
+      <Route path="/" component={Home} />
+      <Route path="/products" component={Products} />
+      <Route path="/checkout" component={Checkout} />
+      <Route path="/check-order" component={CheckOrder} />
+      <Route path="/contact" component={Contact} />
+      
+      <Route path="/admin/login" component={AdminLoginPage} />
+      <Route path="/admin/dashboard" component={AdminDashboard} />
+      <Route path="/admin/products" component={AdminProductsPage} />
+      <Route path="/admin/orders" component={AdminOrdersPage} />
+      
       <Route component={NotFound} />
     </Switch>
   );
