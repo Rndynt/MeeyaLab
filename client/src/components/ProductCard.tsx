@@ -7,6 +7,8 @@ export interface Product {
   price: number;
   imageUrl: string;
   category?: string;
+  brand?: string;
+  inStock?: boolean;
 }
 
 interface ProductCardProps {
@@ -30,6 +32,11 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
         />
       </div>
       <CardContent className="p-4">
+        {product.brand && (
+          <p className="text-xs font-medium text-slate-500 uppercase tracking-wider mb-1" data-testid={`text-brand-${product.id}`}>
+            {product.brand}
+          </p>
+        )}
         <h3 className="text-base font-medium text-slate-900 line-clamp-2 mb-2" data-testid={`text-product-name-${product.id}`}>
           {product.name}
         </h3>
@@ -37,7 +44,8 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
           {formatPrice(product.price)}
         </p>
         <Button
-          className="w-full bg-cyan-500 hover:bg-cyan-600 text-white"
+          variant="outline"
+          className="w-full border-cyan-500 text-cyan-500 hover:bg-cyan-500 hover:text-white transition-colors"
           onClick={() => onAddToCart?.(product)}
           data-testid={`button-add-to-cart-${product.id}`}
         >
