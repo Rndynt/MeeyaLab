@@ -1,0 +1,496 @@
+# Replit Agent Prompt — “Minimalist Skincare Online Shop”
+You are an expert fullstack scaffolding agent. Generate a complete, production-lean MVP online shop for skincare with:
+- Public storefront (no login) using Next.js + React + Tailwind + shadcn/ui
+- Minimalist black/white UI, CTA in green-cyan
+- Cart in header
+- Pages: Home, Products, Check Order, Contact
+- Checkout form (guest)
+- Payment via Midtrans (follow pattern from https://github.com/Rndynt/WealthWiseApp but adapt to Orders domain)
+- Notification to WhatsApp after order and after Midtrans settlement
+- Admin/backoffice with login to manage products and orders
+- Deployable to Netlify (use netlify.toml and Next.js Netlify plugin, and create Netlify Functions for webhook/secure endpoints)
+- Code in English only
+
+Do NOT switch to Indonesian. Do NOT leave text outside this project scope.
+
+====================================================================
+1. GOALS
+====================================================================
+1. Build a simple but elegant skincare e-commerce MVP.
+2. Public users can browse, filter by category, add to cart, checkout WITHOUT creating an account.
+3. Checkout flow: user fills order data → backend creates order → payment via Midtrans → Midtrans webhook updates status → WhatsApp notification is sent.
+4. Admin (backoffice) can log in to manage products, categories, and orders.
+5. UI must use shadcn/ui components and be styled in black/white with green-cyan CTA.
+6. Must be deployable to Netlify, including Midtrans webhook as a Netlify serverless function.
+7. Keep structure modular so it can be extended into multi-tenant later.
+
+====================================================================
+2. TECH STACK
+====================================================================
+- Framework: Next.js (App Router preferred, but Pages Router acceptable if simpler for Netlify)
+- Language: TypeScript
+- UI: Tailwind CSS + shadcn/ui
+- Styling constraints:
+  - background: white
+  - text: black / very dark
+  - cards: white, thin border
+  - CTA: green-cyan tone (example tailwind: bg-cyan-500 / bg-teal-500)
+- DB/ORM: use Drizzle ORM with Postgres (assume Neon or any Postgres, connection via DATABASE_URL). If Drizzle is too heavy for first scaffold, prepare schema and repository abstraction so we can swap later.
+- Deployment: Netlify
+  - add netlify.toml
+  - use @netlify/plugin-nextjs
+  - create functions under netlify/functions for:
+    - create-order
+    - midtrans-webhook
+    - admin-login
+    - admin-products
+    - admin-orders
+- Payment: Midtrans Snap (server side)
+  - use server key and client key from env
+  - follow STRUCTURE / FUNCTION NAMES / SIGNATURES similar to user repo: https://github.com/Rndynt/WealthWiseApp
+  - but rename entities to match e-commerce (Order, OrderItem, Customer)
+- Notification: HTTP-based WhatsApp gateway (generic). Implement a simple helper to POST to a WA endpoint.
+
+====================================================================
+3. ENVIRONMENT VARIABLES
+====================================================================
+Create an .env.example file with at least:
+- DATABASE_URL=postgres://...
+- MIDTRANS_IS_PRODUCTION=false
+- MIDTRANS_SERVER_KEY=your-server-key
+- MIDTRANS_CLIENT_KEY=your-client-key
+- MIDTRANS_MERCHANT_ID=your-merchant-id
+- WA_WEBHOOK_URL=https://your-wa-gateway.example.com/send
+- WA_ADMIN_NUMBER=62812xxxxxxxx
+- ADMIN_DEFAULT_EMAIL=admin@skincare.local
+- ADMIN_DEFAULT_PASSWORD=ChangeMe123!
+- NEXT_PUBLIC_MIDTRANS_CLIENT_KEY=${MIDTRANS_CLIENT_KEY}
+Also ensure Netlify build can read them (document in README).
+
+====================================================================
+4. PROJECT STRUCTURE
+====================================================================
+Create a Next.js project with a clear separation of app (public) and admin (backoffice) sections.
+
+Suggested structure:
+
+/app
+  /(public)
+    /page.tsx                      → Home (Hero + categories + product grid)
+    /products/page.tsx             → All products, filters
+    /check-order/page.tsx          → Check order status by order code or phone
+    /contact/page.tsx              → Contact info + WA button
+    /checkout/page.tsx             → Checkout form, reads cart from client
+  /(admin)
+    /login/page.tsx                → Admin login form
+    /dashboard/page.tsx            → Admin dashboard
+    /products/page.tsx             → Product list/manage
+    /orders/page.tsx               → Orders list/manage
+  /layout.tsx
+  /components                      → shared UI components (Navbar, Footer, ProductCard, CategoryBadge, CartDrawer, AdminSidebar, etc.)
+/lib
+  /db.ts                           → Drizzle/DB connection
+  /midtrans.ts                     → Midtrans client helper (copy pattern from WealthWiseApp but renamed)
+  /wa.ts                           → WhatsApp notif helper
+  /auth.ts                         → admin JWT/session helper
+  /utils.ts
+/netlify/functions
+  create-order.ts                  → create order from checkout
+  midtrans-webhook.ts              → receive Midtrans callback and update order
+  admin-login.ts                   → login, return JWT
+  admin-products.ts                → CRUD products (protect with JWT)
+  admin-orders.ts                  → list/update orders (protect with JWT)
+/drizzle
+  schema.ts                        → products, categories, orders, order_items, admin_users, settings
+  migrations                       → (optional, at least prepare)
+/styles
+  globals.css
+  shadcn.css                       → after init
+netlify.toml
+README.md
+
+If Replit Agent cannot generate all directories automatically, at least generate the files with proper paths in code blocks so user can create them.
+
+====================================================================
+5. PUBLIC UI REQUIREMENTS
+====================================================================
+Header:
+- top, sticky
+- left: brand text “SkinLite.” (or configurable)
+- center: menu links: Home, Products, Check Order, Contact
+- right: Cart icon with item count
+- on mobile: hamburger → sheet/drawer, cart stays at right/top
+- background: white, border-bottom: 1px solid #e2e8f0
+
+Hero (on /):
+- full width section, white background
+- title: “Daily skincare, delivered.”
+- subtitle: short text
+- CTA primary (green-cyan): “Shop products”
+- CTA secondary (outline): “Check your order”
+- hero can show 1 product image placeholder (but keep minimal, not too colorful)
+
+Categories:
+- directly under hero
+- horizontal scroll on mobile
+- badges/pills with border black, text black, radius full
+- active category: bg-cyan-100, text black, border transparent
+- clicking category filters product list below (client side, but prepare API param too)
+
+Product grid:
+- mobile: 2 columns
+- md and up: 4 columns
+- card:
+  - product image (square or 4:5)
+  - product name
+  - price (IDR format)
+  - button “Add to cart” (green-cyan)
+- price display: “Rp120.000” (Indonesian style, but code in English)
+- add to cart should update cart badge in header (keep cart in localStorage `skincare-cart`)
+
+Cart UI:
+- slide-over/drawer from right
+- list of items, qty, subtotal
+- button: “Go to checkout” → /checkout
+
+Checkout page:
+- form fields:
+  - full_name (required)
+  - phone (required, WA)
+  - address (required)
+  - notes (optional)
+- order summary on right (or top on mobile)
+- button: “Pay with Midtrans”
+- on submit: call Netlify function /netlify/functions/create-order
+  - send cart items + form
+  - receive { orderCode, snapToken, redirectUrl }
+  - open Midtrans Snap
+- after payment success → show success page, tell user to check order at /check-order
+
+Check Order page:
+- form with “Order Code or Phone Number”
+- submit → call backend to fetch latest order(s)
+- show status timeline: Pending payment / Paid / Processing / Shipped / Completed / Cancelled
+
+Contact page:
+- show WA button that links to WA_ADMIN_NUMBER
+- show address text / social placeholders
+
+====================================================================
+6. SHADCN/UI SETUP
+====================================================================
+1. Install shadcn/ui in the Next.js project.
+2. Configure tailwind.config.ts, postcss.config.js, and tsconfig.json accordingly.
+3. Generate components needed:
+   - button
+   - input
+   - form
+   - sheet/drawer (for cart)
+   - badge
+   - card
+   - navbar (can be custom)
+   - table (for admin)
+   - dialog (for admin edit product)
+4. Override classes to match theme:
+   - use white background
+   - text-slate-900
+   - primary button: bg-cyan-500 hover:bg-cyan-600 text-white
+   - secondary button: border border-slate-200 bg-white
+5. Do NOT introduce extra colors besides black/white/gray and green-cyan.
+
+====================================================================
+7. API / SERVERLESS LAYER (NETLIFY FUNCTIONS)
+====================================================================
+Create these serverless functions under /netlify/functions:
+
+a. create-order.ts
+- Method: POST
+- Input: {
+    customer: { name, phone, address, notes },
+    items: [{ productId, name, price, qty }],
+    total
+  }
+- Steps:
+  1. Validate payload
+  2. Store order in DB (status = PENDING_PAYMENT)
+  3. Generate order_code (e.g. SK-2025-0001)
+  4. Call Midtrans to create transaction (use helper from /lib/midtrans.ts)
+  5. Save midtrans_order_id / transaction token
+  6. Send WhatsApp to admin: “New order received: {order_code} from {name} total {total}”
+  7. Return { orderCode, snapToken, redirectUrl }
+
+b. midtrans-webhook.ts
+- Method: POST
+- Verify Midtrans signature
+- Read transaction_status, order_id, fraud_status
+- Find order in DB by midtrans_order_id or order_code
+- Update:
+  - if settlement → status = PAID, payment_status = SETTLEMENT
+  - if expire → status = CANCELLED, payment_status = EXPIRE
+- After success, send WA to admin: “Order {order_code} has been paid.”
+- Return 200
+
+c. admin-login.ts
+- Method: POST
+- Input: { email, password }
+- Verify against admin_users table (hash compare, use bcrypt)
+- If ok, return JWT (HS256) with role=ADMIN
+- Instruct frontend admin to store token in localStorage and attach as Authorization: Bearer <token> on admin requests
+
+d. admin-products.ts
+- Methods:
+  - GET: list all products
+  - POST: create new product
+  - PUT/PATCH: update product
+  - DELETE: delete/deactivate product
+- All methods must check Authorization header and validate JWT
+- Product fields: name, slug, description, price, category_id, image_url, stock, is_active
+
+e. admin-orders.ts
+- Methods:
+  - GET: list orders, filter by status, search by order_code or phone
+  - PATCH: update order status (e.g. PROCESSING, SHIPPED, COMPLETED)
+- Must check Authorization and validate JWT
+
+f. get-order.ts (optional, or merge into check-order)
+- Method: GET
+- Query: order_code or phone
+- Return latest orders for public “Check Order” page
+
+====================================================================
+8. MIDTRANS INTEGRATION DETAILS
+====================================================================
+1. Create /lib/midtrans.ts
+   - export a function initMidtransClient() using MIDTRANS_SERVER_KEY, MIDTRANS_IS_PRODUCTION
+   - export createMidtransTransaction(orderCode, amount, customer) → returns { token, redirectUrl }
+   - follow approach from: https://github.com/Rndynt/WealthWiseApp (user said: “use this as reference”) but rename entities (e.g. from Wealth or Investment to Order, OrderItem, Customer)
+   - if WealthWiseApp repo uses Axios/fetch to Midtrans, copy the pattern
+   - make sure to set callbacks/notification URLs to the Netlify function endpoint (e.g. https://your-site.netlify.app/.netlify/functions/midtrans-webhook)
+2. In create-order.ts, call the helper and persist the snap token.
+3. In frontend checkout, load Midtrans Snap by adding script tag:
+   - https://app.sandbox.midtrans.com/snap/snap.js
+   - data-client-key from NEXT_PUBLIC_MIDTRANS_CLIENT_KEY
+4. After snap success/callback, show thank you page and tell user to check order status.
+
+====================================================================
+9. WHATSAPP NOTIFICATION HELPER
+====================================================================
+Create /lib/wa.ts:
+- export async function sendWhatsApp(to: string, message: string)
+- Read WA_WEBHOOK_URL from env
+- POST { to, message } to that URL
+- Use this helper in:
+  - create-order.ts (new order)
+  - midtrans-webhook.ts (paid)
+- If WA is not configured, just log and continue (MVP should not crash)
+
+Example message for new order:
+“New skincare order SK-2025-0001
+Name: {customer_name}
+Phone: {phone}
+Total: Rp{total}
+Items: {itemName} x {qty} ...”
+
+====================================================================
+10. ADMIN / BACKOFFICE UI
+====================================================================
+Admin Login (/admin/login):
+- card centered
+- shadcn input for email, password
+- submit to /.netlify/functions/admin-login
+- on success, save token in localStorage and redirect to /admin/dashboard
+
+Admin Layout:
+- sidebar left (white, border-r)
+- menu:
+  - Dashboard
+  - Products
+  - Orders
+  - Settings (optional)
+- main area: white background
+
+Admin Dashboard:
+- show stats:
+  - total orders today
+  - pending payments
+  - paid orders
+  - total revenue (sum of paid)
+- show last 5 orders
+
+Admin Products:
+- table with columns: name, price, category, stock, active, actions
+- modal/form to create/edit product
+- connect to /admin-products function
+
+Admin Orders:
+- table: order_code, customer_name, total, status, payment_status, created_at
+- click row → detail (show items)
+- button to update status (Processing, Shipped, Completed)
+- connect to /admin-orders function
+
+Protect admin routes on client:
+- if no token → redirect to /admin/login
+- when calling functions, add Authorization: Bearer <token>
+- but keep in mind serverless must also validate
+
+====================================================================
+11. DATABASE / DRIZZLE SCHEMA
+====================================================================
+Create /drizzle/schema.ts with tables:
+
+Table: categories
+- id (serial)
+- name (text)
+- slug (text, unique)
+- sort_order (int, default 0)
+
+Table: products
+- id (serial)
+- name (text)
+- slug (text, unique)
+- description (text)
+- price (int)
+- image_url (text)
+- category_id (int, fk to categories)
+- stock (int, default 0)
+- is_active (boolean, default true)
+- created_at (timestamp)
+- updated_at (timestamp)
+
+Table: orders
+- id (serial)
+- order_code (text, unique)
+- customer_name (text)
+- customer_phone (text)
+- customer_address (text)
+- notes (text)
+- total_amount (int)
+- status (text) -- enum: PENDING_PAYMENT, PAID, PROCESSING, SHIPPED, COMPLETED, CANCELLED
+- payment_status (text) -- enum: PENDING, SETTLEMENT, EXPIRE, CANCEL, DENY
+- payment_provider (text) -- Midtrans
+- midtrans_order_id (text)
+- created_at (timestamp)
+- updated_at (timestamp)
+
+Table: order_items
+- id (serial)
+- order_id (int, fk)
+- product_id (int, fk)
+- product_name (text)
+- price (int)
+- qty (int)
+- subtotal (int)
+
+Table: admin_users
+- id (serial)
+- name (text)
+- email (text, unique)
+- password_hash (text)
+- role (text) -- ADMIN
+
+Table: settings (optional)
+- id (serial)
+- key (text, unique)
+- value (text)
+- description (text)
+
+Also create a small seed script to:
+- insert 3-5 categories (Cleanser, Toner, Serum, Moisturizer, Sunscreen)
+- insert 6-8 sample skincare products
+- create 1 admin user with ADMIN_DEFAULT_EMAIL and ADMIN_DEFAULT_PASSWORD (hash password with bcrypt)
+
+====================================================================
+12. STYLING RULES (IMPORTANT)
+====================================================================
+Global theme:
+- body: bg-white, text-slate-900
+- header: bg-white, border-b
+- links: text-black
+- primary button: bg-cyan-500 hover:bg-cyan-600 text-white
+- secondary button: bg-white border border-slate-200
+- badges: border border-black rounded-full px-4 py-1, selected: bg-cyan-100
+- product card: bg-white, border border-slate-200, rounded-xl, shadow-sm, padding 1rem
+- grid:
+  - mobile: grid-cols-2 gap-4
+  - md: grid-cols-4 gap-6
+- DO NOT use gradients, DO NOT use other bright colors
+- Keep hero with lots of white space
+
+====================================================================
+13. NETLIFY DEPLOYMENT
+====================================================================
+Add netlify.toml at project root:
+
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+[functions]
+  directory = "netlify/functions"
+
+Document in README:
+- how to deploy
+- how to set env in Netlify
+- what URL to set in Midtrans (Notification URL → https://<your-site>/.netlify/functions/midtrans-webhook)
+- how to test webhook locally (Netlify CLI)
+
+====================================================================
+14. WHAT TO GENERATE NOW
+====================================================================
+1. package.json with Next.js, Tailwind, shadcn/ui, Drizzle, bcrypt, jsonwebtoken, and Netlify Next plugin in devDeps.
+2. tailwind.config.ts and postcss.config.js
+3. next.config.js ready for Netlify
+4. netlify.toml
+5. /app layout with Navbar + cart drawer
+6. /app/page.tsx with hero + category badges + product grid
+7. /app/products/page.tsx
+8. /app/check-order/page.tsx
+9. /app/contact/page.tsx
+10. /app/checkout/page.tsx
+11. /app/(admin)/login/page.tsx
+12. /app/(admin)/dashboard/page.tsx
+13. /app/(admin)/products/page.tsx
+14. /app/(admin)/orders/page.tsx
+15. /components folder with:
+    - site-header.tsx
+    - site-footer.tsx
+    - product-card.tsx
+    - category-badge.tsx
+    - cart-drawer.tsx
+    - admin-sidebar.tsx
+16. /lib folder with:
+    - db.ts
+    - midtrans.ts (copy style from WealthWiseApp, but renamed)
+    - wa.ts
+    - auth.ts
+    - order-code.ts
+17. /netlify/functions with:
+    - create-order.ts
+    - midtrans-webhook.ts
+    - admin-login.ts
+    - admin-products.ts
+    - admin-orders.ts
+    - get-order.ts (optional but better)
+18. /drizzle/schema.ts
+19. README.md (English) with setup and deploy steps.
+
+====================================================================
+15. VALIDATION / SELF-CHECK
+====================================================================
+After generating, do these checks:
+- Run npm run lint and ensure imports are correct
+- Ensure all admin serverless endpoints check JWT
+- Ensure cart in header reads from client and updates when adding product
+- Ensure product list page can filter by category
+- Ensure Check Order page can call get-order function and render result
+- Ensure Midtrans helper uses env vars
+- Ensure netlify.toml exists
+- Ensure all text is in English
+- Ensure color palette is black/white + green-cyan only
+
+====================================================================
+END OF PROMPT
+====================================================================
