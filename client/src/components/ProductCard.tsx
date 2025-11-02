@@ -21,37 +21,62 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
     return `Rp${price.toLocaleString("id-ID")}`;
   };
 
+  const isOutOfStock = product.inStock === false;
+
   return (
-    <Card className="border border-slate-200 rounded-lg overflow-hidden hover-elevate" data-testid={`card-product-${product.id}`}>
-      <div className="aspect-square overflow-hidden bg-white">
+    <div
+      className={`border border-slate-200 rounded-lg overflow-hidden bg-white transition-all duration-300 flex flex-col ${
+        isOutOfStock ? 'opacity-90' : 'hover:shadow-lg hover:-translate-y-1'
+      }`} 
+      data-testid={`card-product-${product.id}`}
+    >
+      <div className="relative aspect-square overflow-hidden bg-white">
         <img
           src={product.imageUrl}
           alt={product.name}
-          className="w-full h-full object-cover transition-opacity hover:opacity-90"
+          className={`w-full h-full object-cover transition-opacity ${
+            isOutOfStock ? 'opacity-40' : 'hover:opacity-90'
+          }`}
           data-testid={`img-product-${product.id}`}
         />
-      </div>
-      <CardContent className="p-4">
-        {product.brand && (
-          <p className="text-xs font-medium text-slate-500 uppercase tracking-wider mb-1" data-testid={`text-brand-${product.id}`}>
-            {product.brand}
-          </p>
+        {isOutOfStock && (
+          <div className="absolute inset-0 bg-slate-900/50 flex items-center justify-center">
+            <span className="bg-white/95 text-slate-900 px-4 py-2 rounded-full text-xs md:text-sm font-semibold uppercase tracking-wide">
+              Out of Stock
+            </span>
+          </div>
         )}
-        <h3 className="text-base font-medium text-slate-900 line-clamp-2 mb-2" data-testid={`text-product-name-${product.id}`}>
-          {product.name}
-        </h3>
-        <p className="text-lg font-semibold text-slate-900 mb-4" data-testid={`text-price-${product.id}`}>
-          {formatPrice(product.price)}
-        </p>
+      </div>
+      <div className="p-3 md:p-4 flex flex-col flex-grow">
+        <div className="flex-grow space-y-1 md:space-y-2 mb-3 md:mb-4">
+          {product.brand && (
+            <p className="text-[10px] md:text-xs font-medium text-slate-500 uppercase tracking-wider" data-testid={`text-brand-${product.id}`}>
+              {product.brand}
+            </p>
+          )}
+          <h3 className="text-sm md:text-base font-medium text-slate-900 line-clamp-2" data-testid={`text-product-name-${product.id}`}>
+            {product.name}
+          </h3>
+          <p className={`text-base md:text-lg font-semibold ${
+            isOutOfStock ? 'text-slate-400' : 'text-slate-900'
+          }`} data-testid={`text-price-${product.id}`}>
+            {formatPrice(product.price)}
+          </p>
+        </div>
         <Button
           variant="outline"
-          className="w-full border-cyan-500 text-cyan-500 hover:bg-cyan-500 hover:text-white transition-colors"
-          onClick={() => onAddToCart?.(product)}
+          className={`w-full transition-all duration-300 ${
+            isOutOfStock 
+              ? 'border-slate-300 text-slate-400 bg-slate-50 cursor-not-allowed hover:bg-slate-50 hover:text-slate-400' 
+              : 'border-slate-900 text-slate-900 hover:bg-slate-900 hover:text-white'
+          }`}
+          onClick={() => !isOutOfStock && onAddToCart?.(product)}
+          disabled={isOutOfStock}
           data-testid={`button-add-to-cart-${product.id}`}
         >
-          Add to cart
+          {isOutOfStock ? 'Out of Stock' : 'Add to cart'}
         </Button>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }

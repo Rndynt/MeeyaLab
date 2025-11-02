@@ -82,7 +82,7 @@ export default function Home() {
       />
       
       <main className="flex-1 bg-white">
-        <div id="products">
+        <div id="products" className="mt-8 md:mt-12">
           <CategoryPills
             categories={categories}
             activeCategory={activeCategory}

@@ -13,7 +13,7 @@ interface HeaderProps {
 export default function Header({ cartItemCount = 0, onCartClick }: HeaderProps) {
   const [location] = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(true);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   const navLinks = [
     { href: "/", label: "Home" },
@@ -42,7 +42,7 @@ export default function Header({ cartItemCount = 0, onCartClick }: HeaderProps) 
       className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 ${
         isScrolled 
           ? 'bg-white/95 backdrop-blur-sm shadow-md' 
-          : 'bg-white/95 backdrop-blur-sm shadow-md'
+          : 'bg-white/80'
       }`} 
       data-testid="header-main"
     >

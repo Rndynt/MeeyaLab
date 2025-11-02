@@ -13,7 +13,7 @@ export default function CategoryPills({
 }: CategoryPillsProps) {
   return (
     <div className="w-full overflow-x-auto scrollbar-hide" data-testid="container-categories">
-      <div className="flex gap-2 min-w-max px-4 md:px-6 py-4">
+      <div className="flex gap-2 min-w-max px-4 md:px-6 py-4 md:max-w-7xl md:mx-auto md:justify-center">
         {categories.map((category) => {
           const isActive = activeCategory === category;
           return (
