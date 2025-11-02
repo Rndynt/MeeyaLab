@@ -49,7 +49,7 @@ export default function Header({ cartItemCount = 0, onCartClick }: HeaderProps) 
       <div className="max-w-7xl mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between h-16 md:h-20">
           <Link href="/" data-testid="link-home">
-            <span className="text-xl font-bold text-slate-900 hover:text-slate-700 transition-colors cursor-pointer">
+            <span className="text-xl md:text-2xl font-bold text-slate-900 hover:text-slate-700 transition-colors cursor-pointer">
               MeeyaLab.
             </span>
           </Link>
@@ -70,7 +70,7 @@ export default function Header({ cartItemCount = 0, onCartClick }: HeaderProps) 
             ))}
           </nav>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 md:gap-4">
             <Button
               variant="ghost"
               size="icon"
