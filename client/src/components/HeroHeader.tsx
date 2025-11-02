@@ -112,10 +112,10 @@ export default function HeroHeader({
   const currentSlide = slides[selectedIndex];
 
   return (
-    <div className={`relative w-full transition-colors duration-700 ${currentSlide.bgColor}`} data-testid="hero-header-section">
-      {/* Header with max-width container */}
-      <div className="max-w-7xl mx-auto px-4 md:px-6">
-        <header className="relative z-50 w-full" data-testid="header-main">
+    <div className="relative w-full" data-testid="hero-header-section">
+      {/* Header */}
+      <div className="relative z-50 max-w-7xl mx-auto px-4 md:px-6">
+        <header className="relative w-full" data-testid="header-main">
           <div className="flex items-center justify-between h-16 md:h-20">
             <Link href="/" data-testid="link-home">
               <span className="text-xl md:text-2xl font-bold text-slate-900 hover:text-slate-700 transition-colors cursor-pointer">
@@ -188,100 +188,102 @@ export default function HeroHeader({
         </header>
       </div>
 
-      {/* Full-width Hero Section */}
-      <section className="relative py-8 md:py-12 lg:py-16 overflow-hidden" data-testid="section-hero">
-        <div className="w-full px-0">
-          <div className="overflow-hidden" ref={emblaRef}>
-            <div className="flex transition-opacity">
-              {slides.map((slide) => (
-                <div key={slide.id} className="flex-[0_0_100%] min-w-0">
-                  <div className="max-w-7xl mx-auto px-4 md:px-6">
-                    <div className="grid md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center">
-                      <div className="space-y-6 md:space-y-8">
-                        <div className="space-y-3 md:space-y-4">
-                          <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-slate-900 tracking-tight leading-[1.1]">
-                            {slide.title}
-                          </h1>
-                          <h2 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-slate-900 tracking-tight leading-[1.1]">
-                            {slide.subtitle}
-                          </h2>
-                        </div>
-                        <p className="text-base md:text-lg text-slate-600 max-w-xl leading-relaxed">
-                          {slide.description}
-                        </p>
-                        <div className="flex flex-wrap gap-4 items-center">
-                          <Button
-                            size="lg"
-                            className="bg-slate-900 hover:bg-slate-800 text-white px-8 py-6 text-base rounded-full group transition-all duration-300"
-                            onClick={onShopClick}
-                            data-testid="button-shop-now"
-                          >
-                            {slide.cta}
-                            <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                          </Button>
-                          
-                          <div className="flex items-center gap-2 mt-4 md:mt-0">
-                            <button
-                              onClick={scrollPrev}
-                              className="p-2 rounded-full border-2 border-slate-900/10 hover:border-slate-900/30 hover:bg-slate-900/5 transition-all"
-                              aria-label="Previous slide"
-                              data-testid="button-prev-slide"
+      {/* Full-width Hero Section with background */}
+      <section className={`relative w-full transition-colors duration-700 ${currentSlide.bgColor}`} data-testid="section-hero">
+        <div className="relative py-4 pb-8 md:py-12 lg:py-16 overflow-hidden">
+          <div className="w-full">
+            <div className="overflow-hidden" ref={emblaRef}>
+              <div className="flex transition-opacity">
+                {slides.map((slide) => (
+                  <div key={slide.id} className="flex-[0_0_100%] min-w-0">
+                    <div className="max-w-7xl mx-auto px-4 md:px-6">
+                      <div className="grid md:grid-cols-2 gap-6 md:gap-12 lg:gap-16 items-center">
+                        <div className="space-y-4 md:space-y-8">
+                          <div className="space-y-2 md:space-y-4">
+                            <h1 className="text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-slate-900 tracking-tight leading-[1.1]">
+                              {slide.title}
+                            </h1>
+                            <h2 className="text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-slate-900 tracking-tight leading-[1.1]">
+                              {slide.subtitle}
+                            </h2>
+                          </div>
+                          <p className="text-sm md:text-lg text-slate-600 max-w-xl leading-relaxed">
+                            {slide.description}
+                          </p>
+                          <div className="flex flex-wrap gap-3 md:gap-4 items-center">
+                            <Button
+                              size="lg"
+                              className="bg-slate-900 hover:bg-slate-800 text-white px-6 py-5 md:px-8 md:py-6 text-sm md:text-base rounded-full group transition-all duration-300"
+                              onClick={onShopClick}
+                              data-testid="button-shop-now"
                             >
-                              <ChevronLeft className="h-5 w-5 text-slate-900" />
-                            </button>
-                            <button
-                              onClick={scrollNext}
-                              className="p-2 rounded-full border-2 border-slate-900/10 hover:border-slate-900/30 hover:bg-slate-900/5 transition-all"
-                              aria-label="Next slide"
-                              data-testid="button-next-slide"
-                            >
-                              <ChevronRight className="h-5 w-5 text-slate-900" />
-                            </button>
+                              {slide.cta}
+                              <ArrowRight className="ml-2 h-4 w-4 md:h-5 md:w-5 group-hover:translate-x-1 transition-transform" />
+                            </Button>
+                            
+                            <div className="flex items-center gap-2">
+                              <button
+                                onClick={scrollPrev}
+                                className="p-2 rounded-full border-2 border-slate-900/10 hover:border-slate-900/30 hover:bg-slate-900/5 transition-all"
+                                aria-label="Previous slide"
+                                data-testid="button-prev-slide"
+                              >
+                                <ChevronLeft className="h-4 w-4 md:h-5 md:w-5 text-slate-900" />
+                              </button>
+                              <button
+                                onClick={scrollNext}
+                                className="p-2 rounded-full border-2 border-slate-900/10 hover:border-slate-900/30 hover:bg-slate-900/5 transition-all"
+                                aria-label="Next slide"
+                                data-testid="button-next-slide"
+                              >
+                                <ChevronRight className="h-4 w-4 md:h-5 md:w-5 text-slate-900" />
+                              </button>
+                            </div>
+                          </div>
+
+                          <div className="flex items-center gap-3 pt-2 md:pt-4">
+                            <span className="text-xl md:text-2xl font-bold text-slate-900">
+                              {String(selectedIndex + 1).padStart(2, "0")}
+                            </span>
+                            <div className="h-px flex-1 max-w-[60px] md:max-w-[80px] bg-slate-900/20"></div>
+                            <span className="text-xs md:text-sm text-slate-500">
+                              {String(slides.length).padStart(2, "0")}
+                            </span>
                           </div>
                         </div>
 
-                        <div className="flex items-center gap-3 pt-4">
-                          <span className="text-2xl font-bold text-slate-900">
-                            {String(selectedIndex + 1).padStart(2, "0")}
-                          </span>
-                          <div className="h-px flex-1 max-w-[80px] bg-slate-900/20"></div>
-                          <span className="text-sm text-slate-500">
-                            {String(slides.length).padStart(2, "0")}
-                          </span>
-                        </div>
-                      </div>
-
-                      <div className="relative order-first md:order-last">
-                        <div className="relative w-full aspect-[4/3] overflow-hidden rounded-2xl">
-                          <img
-                            src={slide.image}
-                            alt={`${slide.title} - Skincare`}
-                            className="w-full h-full object-cover transition-transform duration-700"
-                            data-testid={`img-hero-slide-${slide.id}`}
-                          />
+                        <div className="relative order-first md:order-last">
+                          <div className="relative w-full aspect-[16/11] md:aspect-[4/3] overflow-hidden rounded-2xl">
+                            <img
+                              src={slide.image}
+                              alt={`${slide.title} - Skincare`}
+                              className="w-full h-full object-cover transition-transform duration-700"
+                              data-testid={`img-hero-slide-${slide.id}`}
+                            />
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex justify-center gap-2 mt-6 md:mt-12">
+              {slides.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => scrollTo(index)}
+                  className={`h-2 rounded-full transition-all duration-300 ${
+                    index === selectedIndex
+                      ? "w-8 bg-slate-900"
+                      : "w-2 bg-slate-900/20 hover:bg-slate-900/40"
+                  }`}
+                  aria-label={`Go to slide ${index + 1}`}
+                  data-testid={`button-slide-indicator-${index}`}
+                />
               ))}
             </div>
-          </div>
-
-          <div className="flex justify-center gap-2 mt-8 md:mt-12">
-            {slides.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => scrollTo(index)}
-                className={`h-2 rounded-full transition-all duration-300 ${
-                  index === selectedIndex
-                    ? "w-8 bg-slate-900"
-                    : "w-2 bg-slate-900/20 hover:bg-slate-900/40"
-                }`}
-                aria-label={`Go to slide ${index + 1}`}
-                data-testid={`button-slide-indicator-${index}`}
-              />
-            ))}
           </div>
         </div>
       </section>
