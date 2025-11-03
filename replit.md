@@ -186,3 +186,41 @@ Preferred communication style: Simple, everyday language.
 - Visual feedback for applied vouchers
 - Safe calculation prevents negative totals
 - Discount display in order summary
+
+### Second Wave of UI/UX Improvements (November 2025)
+
+**Toast Notification Redesign**
+- Redesigned toast component with minimalist, elegant aesthetic
+- Updated to softer slate color palette (white bg, slate-200 border for default)
+- Added new "success" variant with emerald colors for positive feedback
+- Improved destructive variant with softer red colors
+- Reduced shadow from shadow-lg to shadow-sm for cleaner appearance
+- Better padding and spacing (p-4 instead of p-6)
+- Enhanced typography with font-medium and tracking-tight
+- Improved close button styling with better hover states
+
+**Product Schema Enhancements**
+- Created complete product schema in `shared/schema.ts`
+- Added required fields: id, name, price, category, brand, imageUrl, stock, isActive
+- Added optional fields: bpom (BPOM certification number), certificates (array of certifications)
+- Generated insert schema and TypeScript types for type safety
+- All products now include brand information for consistency
+
+**Admin Product Management**
+- Extended admin product form with new fields
+- Added Brand input (required) for all products
+- Added BPOM input (optional) with example placeholder
+- Added Certificates input (optional, comma-separated values)
+- Form automatically parses certificates from comma-separated string to array
+- Proper validation and serialization for all new fields
+- Updated mock products to include brand "SkinLite"
+
+**Order Summary & Item Display**
+- Replaced text-based layout with clean borderless tables
+- Checkout page order summary now uses table structure
+- Check order page items list now uses table structure
+- Three-column layout: Product name (left), Quantity (center), Price (right)
+- Subtle borders between rows (border-slate-100)
+- Consistent spacing with py-3 padding
+- Minimalist design with proper alignment and typography
+- No border on last row for cleaner appearance
