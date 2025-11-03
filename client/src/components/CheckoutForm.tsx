@@ -366,7 +366,7 @@ export default function CheckoutForm({ cartItems, onSubmit }: CheckoutFormProps)
               className="w-full bg-cyan-500 hover:bg-cyan-600 text-white font-medium mt-6"
               data-testid="button-pay-midtrans"
             >
-              Complete Order - Pay with Midtrans
+              Complete Order - Pay
             </Button>
           </form>
         </div>
