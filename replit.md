@@ -224,3 +224,47 @@ Preferred communication style: Simple, everyday language.
 - Consistent spacing with py-3 padding
 - Minimalist design with proper alignment and typography
 - No border on last row for cleaner appearance
+
+### Third Wave of UI/UX Improvements (November 2025)
+
+**Dialog Component Responsiveness**
+- Fixed Dialog component for mobile responsiveness
+- Added max-height constraint (max-h-[90vh]) to prevent overflow on mobile
+- Wrapped dialog content in scrollable container with overflow-y-auto
+- Responsive padding (p-4 on mobile, p-6 on larger screens)
+- Close button now has z-10 and background to ensure visibility
+- Changed from grid to flex layout for better content flow
+- Mobile users can now scroll to reach all dialog buttons
+
+**Product Detail Page**
+- Created dedicated product detail page at `/products/:id`
+- Extended Product interface with detailed fields:
+  - description: Product description text
+  - ingredients: List of product ingredients
+  - usage: How to use instructions
+  - benefits: Array of key benefits with checkmarks
+  - size: Product size (e.g., "30ml", "50ml")
+- Clean, minimalist design matching brand aesthetic
+- Two-column layout on desktop (image left, details right)
+- Responsive single-column layout on mobile
+- Product information sections:
+  - Brand name and product name
+  - Price and size
+  - Description
+  - Key benefits with checkmark icons
+  - Add to Cart button with success feedback
+  - Ingredients section
+  - How to Use section
+- Back button to return to products page
+- Scroll position preservation using sessionStorage
+- Handles out-of-stock products with disabled state
+- All 8 products updated with complete detailed information
+
+**Product Navigation Improvements**
+- Product cards are now clickable to view details
+- onClick handler with stopPropagation on Add to Cart button
+- Cursor pointer on hover for better UX
+- Scroll position saved before navigation
+- Scroll position restored when returning from detail page
+- Route added: `/products/:id` for individual product pages
+- ProductGrid component updated to pass click handlers
