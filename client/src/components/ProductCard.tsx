@@ -47,34 +47,35 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
           </div>
         )}
       </div>
-      <div className="p-3 md:p-4 flex flex-col flex-grow">
-        <div className="flex-grow space-y-1 md:space-y-2 mb-3 md:mb-4">
+      <div className="p-4 md:p-5 flex flex-col flex-grow">
+        <div className="flex-grow mb-4">
           {product.brand && (
-            <p className="text-[10px] md:text-xs font-medium text-slate-500 uppercase tracking-wider" data-testid={`text-brand-${product.id}`}>
+            <p className="text-[10px] md:text-[11px] font-medium text-slate-400 uppercase tracking-widest mb-2" data-testid={`text-brand-${product.id}`}>
               {product.brand}
             </p>
           )}
-          <h3 className="text-sm md:text-base font-medium text-slate-900 line-clamp-2" data-testid={`text-product-name-${product.id}`}>
+          <h3 className="text-sm md:text-base font-normal text-slate-900 line-clamp-2 mb-3 leading-relaxed" data-testid={`text-product-name-${product.id}`}>
             {product.name}
           </h3>
-          <p className={`text-base md:text-lg font-semibold ${
-            isOutOfStock ? 'text-slate-400' : 'text-slate-900'
+          <p className={`text-xs md:text-sm font-medium ${
+            isOutOfStock ? 'text-slate-300' : 'text-slate-600'
           }`} data-testid={`text-price-${product.id}`}>
             {formatPrice(product.price)}
           </p>
         </div>
         <Button
           variant="outline"
-          className={`w-full transition-all duration-300 ${
+          size="sm"
+          className={`w-full transition-all duration-300 text-xs md:text-sm font-medium ${
             isOutOfStock 
-              ? 'border-slate-300 text-slate-400 bg-slate-50 cursor-not-allowed hover:bg-slate-50 hover:text-slate-400' 
-              : 'border-slate-900 text-slate-900 hover:bg-slate-900 hover:text-white'
+              ? 'border-slate-200 text-slate-300 bg-slate-50 cursor-not-allowed hover:bg-slate-50 hover:text-slate-300' 
+              : 'border-slate-200 text-slate-700 hover:border-slate-900 hover:bg-slate-900 hover:text-white'
           }`}
           onClick={() => !isOutOfStock && onAddToCart?.(product)}
           disabled={isOutOfStock}
           data-testid={`button-add-to-cart-${product.id}`}
         >
-          {isOutOfStock ? 'Out of Stock' : 'Add to cart'}
+          {isOutOfStock ? 'Out of Stock' : 'Add to Cart'}
         </Button>
       </div>
     </div>

@@ -80,12 +80,12 @@ export default function Header({ cartItemCount = 0, onCartClick }: HeaderProps) 
             >
               <ShoppingCart className="h-5 w-5" />
               {cartItemCount > 0 && (
-                <Badge
-                  className="absolute -top-1 -right-1 h-5 min-w-5 rounded-full flex items-center justify-center px-1.5 bg-cyan-500 text-white text-xs font-semibold"
+                <span
+                  className="absolute -top-0.5 -right-0.5 h-4.5 min-w-4.5 rounded-full flex items-center justify-center px-1 bg-cyan-500 text-white text-[10px] font-bold"
                   data-testid="badge-cart-count"
                 >
                   {cartItemCount}
-                </Badge>
+                </span>
               )}
             </Button>
 
