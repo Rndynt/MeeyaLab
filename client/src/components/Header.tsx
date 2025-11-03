@@ -60,8 +60,8 @@ export default function Header({ cartItemCount = 0, onCartClick }: HeaderProps) 
                 <span
                   className={`text-sm font-medium transition-colors cursor-pointer ${
                     isActive(link.href)
-                      ? "text-cyan-500"
-                      : "text-slate-900 hover:text-cyan-500"
+                      ? "text-slate-900 font-semibold"
+                      : "text-slate-700 hover:text-slate-900"
                   }`}
                 >
                   {link.label}
@@ -74,24 +74,24 @@ export default function Header({ cartItemCount = 0, onCartClick }: HeaderProps) 
             <Button
               variant="ghost"
               size="icon"
-              className="relative"
+              className="relative hover:bg-slate-900/5"
               onClick={onCartClick}
               data-testid="button-cart"
             >
-              <ShoppingCart className="h-5 w-5" />
+              <ShoppingCart className="h-5 w-5 text-slate-900" />
               {cartItemCount > 0 && (
-                <span
-                  className="absolute -top-0.5 -right-0.5 h-4.5 min-w-4.5 rounded-full flex items-center justify-center px-1 bg-cyan-500 text-white text-[10px] font-bold"
+                <Badge
+                  className="absolute -top-1 -right-1 h-5 min-w-5 rounded-full flex items-center justify-center px-1.5 bg-slate-900 text-white text-xs font-semibold"
                   data-testid="badge-cart-count"
                 >
                   {cartItemCount}
-                </span>
+                </Badge>
               )}
             </Button>
 
             <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
               <SheetTrigger asChild className="md:hidden">
-                <Button variant="ghost" size="icon" data-testid="button-menu-toggle">
+                <Button variant="ghost" size="icon" className="hover:bg-slate-900/5" data-testid="button-menu-toggle">
                   {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
                 </Button>
               </SheetTrigger>
@@ -102,8 +102,8 @@ export default function Header({ cartItemCount = 0, onCartClick }: HeaderProps) 
                       <span
                         className={`block text-base font-medium py-2 cursor-pointer ${
                           isActive(link.href)
-                            ? "text-cyan-500"
-                            : "text-slate-900 hover:text-cyan-500"
+                            ? "text-slate-900 font-semibold"
+                            : "text-slate-700 hover:text-slate-900"
                         }`}
                         onClick={() => setMobileMenuOpen(false)}
                       >
