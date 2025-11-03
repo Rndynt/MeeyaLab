@@ -71,7 +71,7 @@ export default function Home() {
   const cartItemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   const handleProductClick = (product: Product) => {
-    setLocation(`/product/${product.id}`);
+    setLocation(`/products/${product.id}`);
   };
 
   return (

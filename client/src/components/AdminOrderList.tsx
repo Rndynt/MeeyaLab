@@ -1,3 +1,4 @@
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -15,6 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Eye } from "lucide-react";
 
 export interface AdminOrder {
   id: string;
@@ -84,22 +86,34 @@ export default function AdminOrderList({ orders, onUpdateStatus }: AdminOrderLis
                 </TableCell>
                 <TableCell className="text-sm text-slate-600">{order.createdAt}</TableCell>
                 <TableCell>
-                  <Select
-                    value={order.status}
-                    onValueChange={(value) => onUpdateStatus?.(order.id, value as AdminOrder["status"])}
-                  >
-                    <SelectTrigger className="w-[180px]" data-testid={`select-status-${order.id}`}>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="PENDING_PAYMENT">Pending Payment</SelectItem>
-                      <SelectItem value="PAID">Paid</SelectItem>
-                      <SelectItem value="PROCESSING">Processing</SelectItem>
-                      <SelectItem value="SHIPPED">Shipped</SelectItem>
-                      <SelectItem value="COMPLETED">Completed</SelectItem>
-                      <SelectItem value="CANCELLED">Cancelled</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <div className="flex items-center gap-2">
+                    <Link href={`/admin/orders/${order.id}`}>
+                      <Button 
+                        variant="ghost" 
+                        size="sm"
+                        className="h-8 w-8 p-0"
+                        data-testid={`button-view-${order.id}`}
+                      >
+                        <Eye className="h-4 w-4" />
+                      </Button>
+                    </Link>
+                    <Select
+                      value={order.status}
+                      onValueChange={(value) => onUpdateStatus?.(order.id, value as AdminOrder["status"])}
+                    >
+                      <SelectTrigger className="w-[150px]" data-testid={`select-status-${order.id}`}>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="PENDING_PAYMENT">Pending Payment</SelectItem>
+                        <SelectItem value="PAID">Paid</SelectItem>
+                        <SelectItem value="PROCESSING">Processing</SelectItem>
+                        <SelectItem value="SHIPPED">Shipped</SelectItem>
+                        <SelectItem value="COMPLETED">Completed</SelectItem>
+                        <SelectItem value="CANCELLED">Cancelled</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </TableCell>
               </TableRow>
             ))}

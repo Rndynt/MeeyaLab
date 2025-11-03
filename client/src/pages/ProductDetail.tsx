@@ -1,6 +1,6 @@
 import { useRoute, useLocation } from "wouter";
 import { ArrowLeft, ShoppingCart, Check } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import CartDrawer, { type CartItem } from "@/components/CartDrawer";
@@ -17,6 +17,10 @@ export default function ProductDetail() {
   const [cartOpen, setCartOpen] = useState(false);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [addedToCart, setAddedToCart] = useState(false);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [params?.id]);
 
   const allProducts: Product[] = [
     { 
