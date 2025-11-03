@@ -18,14 +18,14 @@ export default function Home() {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
   const allProducts: Product[] = [
-    { id: "1", name: "Hydrating Serum", price: 250000, imageUrl: serum, category: "Serums" },
-    { id: "2", name: "Daily Moisturizer", price: 180000, imageUrl: cream, category: "Moisturizers" },
-    { id: "3", name: "Gentle Cleanser", price: 150000, imageUrl: cleanser, category: "Cleansers" },
-    { id: "4", name: "Night Cream", price: 220000, imageUrl: tube, category: "Treatments" },
-    { id: "5", name: "Vitamin C Serum", price: 280000, imageUrl: serum, category: "Serums" },
-    { id: "6", name: "Eye Cream", price: 190000, imageUrl: cream, category: "Treatments" },
-    { id: "7", name: "Face Wash", price: 120000, imageUrl: cleanser, category: "Cleansers" },
-    { id: "8", name: "Sunscreen SPF 50", price: 160000, imageUrl: tube, category: "Sunscreen" },
+    { id: "1", name: "Hydrating Serum", price: 250000, imageUrl: serum, category: "Serums", brand: "SkinLite" },
+    { id: "2", name: "Daily Moisturizer", price: 180000, imageUrl: cream, category: "Moisturizers", brand: "SkinLite" },
+    { id: "3", name: "Gentle Cleanser", price: 150000, imageUrl: cleanser, category: "Cleansers", brand: "SkinLite" },
+    { id: "4", name: "Night Cream", price: 220000, imageUrl: tube, category: "Treatments", brand: "SkinLite" },
+    { id: "5", name: "Vitamin C Serum", price: 280000, imageUrl: serum, category: "Serums", brand: "SkinLite" },
+    { id: "6", name: "Eye Cream", price: 190000, imageUrl: cream, category: "Treatments", brand: "SkinLite" },
+    { id: "7", name: "Face Wash", price: 120000, imageUrl: cleanser, category: "Cleansers", brand: "SkinLite" },
+    { id: "8", name: "Sunscreen SPF 50", price: 160000, imageUrl: tube, category: "Sunscreen", brand: "SkinLite" },
   ];
 
   const categories = ["All", "Cleansers", "Serums", "Moisturizers", "Sunscreen", "Treatments"];

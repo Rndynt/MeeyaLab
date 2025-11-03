@@ -26,9 +26,12 @@ export interface AdminProduct {
   name: string;
   price: number;
   category: string;
+  brand: string;
   stock: number;
   isActive: boolean;
   imageUrl: string;
+  bpom?: string;
+  certificates?: string[];
 }
 
 interface AdminProductListProps {
@@ -54,13 +57,22 @@ export default function AdminProductList({
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
+    
+    const certificatesValue = formData.get("certificates") as string;
+    const certificates = certificatesValue 
+      ? certificatesValue.split(',').map(cert => cert.trim()).filter(cert => cert.length > 0)
+      : undefined;
+    
     const productData = {
       name: formData.get("name") as string,
       price: parseInt(formData.get("price") as string),
       category: formData.get("category") as string,
+      brand: formData.get("brand") as string,
       stock: parseInt(formData.get("stock") as string),
       isActive: formData.get("isActive") === "on",
       imageUrl: formData.get("imageUrl") as string,
+      bpom: formData.get("bpom") as string || undefined,
+      certificates,
     };
 
     if (editingProduct) {
@@ -124,6 +136,16 @@ export default function AdminProductList({
                 />
               </div>
               <div>
+                <Label htmlFor="brand">Brand</Label>
+                <Input
+                  id="brand"
+                  name="brand"
+                  required
+                  defaultValue={editingProduct?.brand}
+                  data-testid="input-product-brand"
+                />
+              </div>
+              <div>
                 <Label htmlFor="stock">Stock</Label>
                 <Input
                   id="stock"
@@ -133,6 +155,27 @@ export default function AdminProductList({
                   defaultValue={editingProduct?.stock}
                   data-testid="input-product-stock"
                 />
+              </div>
+              <div>
+                <Label htmlFor="bpom">BPOM Number (Optional)</Label>
+                <Input
+                  id="bpom"
+                  name="bpom"
+                  defaultValue={editingProduct?.bpom}
+                  placeholder="e.g., NA18210100123"
+                  data-testid="input-product-bpom"
+                />
+              </div>
+              <div>
+                <Label htmlFor="certificates">Certificates (Optional)</Label>
+                <Input
+                  id="certificates"
+                  name="certificates"
+                  defaultValue={editingProduct?.certificates?.join(', ')}
+                  placeholder="e.g., Halal, Cruelty-Free, Organic"
+                  data-testid="input-product-certificates"
+                />
+                <p className="text-xs text-slate-500 mt-1">Separate multiple certificates with commas</p>
               </div>
               <div>
                 <Label htmlFor="imageUrl">Image URL</Label>

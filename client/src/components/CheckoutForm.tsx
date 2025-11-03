@@ -377,15 +377,18 @@ export default function CheckoutForm({ cartItems, onSubmit }: CheckoutFormProps)
               <CardTitle>Order Summary</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="space-y-3">
-                {cartItems.map((item) => (
-                  <div key={item.id} className="flex justify-between text-sm">
-                    <span className="text-slate-600">
-                      {item.name} x {item.quantity}
-                    </span>
-                    <span className="font-medium">{formatPrice(item.price * item.quantity)}</span>
-                  </div>
-                ))}
+              <div>
+                <table className="w-full">
+                  <tbody>
+                    {cartItems.map((item) => (
+                      <tr key={item.id} className="border-b border-slate-100 last:border-0">
+                        <td className="py-3 text-sm text-slate-600">{item.name}</td>
+                        <td className="py-3 text-sm text-center text-slate-500">x{item.quantity}</td>
+                        <td className="py-3 text-sm text-right font-medium">{formatPrice(item.price * item.quantity)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
 
               <div className="border-t pt-4">

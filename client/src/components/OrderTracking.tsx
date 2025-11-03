@@ -101,16 +101,17 @@ export default function OrderTracking({ onSearch, order }: OrderTrackingProps) {
 
             <div>
               <h3 className="font-semibold text-sm mb-3">Order Items</h3>
-              <div className="space-y-2">
-                {order.items.map((item, idx) => (
-                  <div key={idx} className="flex justify-between text-sm">
-                    <span className="text-slate-600">
-                      {item.name} x {item.quantity}
-                    </span>
-                    <span className="font-medium">{formatPrice(item.price * item.quantity)}</span>
-                  </div>
-                ))}
-              </div>
+              <table className="w-full">
+                <tbody>
+                  {order.items.map((item, idx) => (
+                    <tr key={idx} className="border-b border-slate-100 last:border-0">
+                      <td className="py-3 text-sm text-slate-600">{item.name}</td>
+                      <td className="py-3 text-sm text-center text-slate-500">x{item.quantity}</td>
+                      <td className="py-3 text-sm text-right font-medium">{formatPrice(item.price * item.quantity)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
 
             <div className="border-t pt-4">
