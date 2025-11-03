@@ -154,8 +154,8 @@ export default function CheckoutForm({ cartItems, onSubmit }: CheckoutFormProps)
   }) => (
     <div className="flex items-center justify-between w-full">
       <div className="flex items-center gap-3">
-        <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium ${
-          isComplete ? 'bg-cyan-500 text-white' : 'border-2 border-slate-300 text-slate-500'
+        <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium transition-colors ${
+          isComplete ? 'bg-slate-900 text-white' : 'border-2 border-slate-200 text-slate-400'
         }`}>
           {isComplete ? <Check className="h-3.5 w-3.5" /> : ''}
         </div>
@@ -176,9 +176,9 @@ export default function CheckoutForm({ cartItems, onSubmit }: CheckoutFormProps)
               open={openSection === "contact"}
               onOpenChange={(open) => setOpenSection(open ? "contact" : "")}
             >
-              <Card className="border-2 border-slate-200">
+              <Card className="border border-slate-200/60 shadow-sm">
                 <CollapsibleTrigger asChild>
-                  <CardHeader className="cursor-pointer hover:bg-slate-50 transition-colors">
+                  <CardHeader className="cursor-pointer hover:bg-slate-50/50 transition-colors py-4">
                     <SectionHeader 
                       title="Contact Information" 
                       isComplete={!!isContactComplete} 
@@ -187,7 +187,7 @@ export default function CheckoutForm({ cartItems, onSubmit }: CheckoutFormProps)
                   </CardHeader>
                 </CollapsibleTrigger>
                 <CollapsibleContent>
-                  <CardContent className="space-y-4 pb-6">
+                  <CardContent className="space-y-4 pb-5 pt-1">
                     <div>
                       <Label htmlFor="fullName" className="text-sm">Full Name *</Label>
                       <Input
@@ -222,9 +222,9 @@ export default function CheckoutForm({ cartItems, onSubmit }: CheckoutFormProps)
               open={openSection === "address"}
               onOpenChange={(open) => setOpenSection(open ? "address" : "")}
             >
-              <Card className="border-2 border-slate-200">
+              <Card className="border border-slate-200/60 shadow-sm">
                 <CollapsibleTrigger asChild>
-                  <CardHeader className="cursor-pointer hover:bg-slate-50 transition-colors">
+                  <CardHeader className="cursor-pointer hover:bg-slate-50/50 transition-colors py-4">
                     <SectionHeader 
                       title="Shipping Address" 
                       isComplete={!!isAddressComplete} 
@@ -233,7 +233,7 @@ export default function CheckoutForm({ cartItems, onSubmit }: CheckoutFormProps)
                   </CardHeader>
                 </CollapsibleTrigger>
                 <CollapsibleContent>
-                  <CardContent className="space-y-4 pb-6">
+                  <CardContent className="space-y-4 pb-5 pt-1">
                     <div>
                       <Label htmlFor="streetAddress" className="text-sm">Street Address *</Label>
                       <Textarea
@@ -294,9 +294,9 @@ export default function CheckoutForm({ cartItems, onSubmit }: CheckoutFormProps)
               open={openSection === "shipping"}
               onOpenChange={(open) => setOpenSection(open ? "shipping" : "")}
             >
-              <Card className="border-2 border-slate-200">
+              <Card className="border border-slate-200/60 shadow-sm">
                 <CollapsibleTrigger asChild>
-                  <CardHeader className="cursor-pointer hover:bg-slate-50 transition-colors">
+                  <CardHeader className="cursor-pointer hover:bg-slate-50/50 transition-colors py-4">
                     <SectionHeader 
                       title="Shipping Method" 
                       isComplete={!!isShippingComplete} 
@@ -305,7 +305,7 @@ export default function CheckoutForm({ cartItems, onSubmit }: CheckoutFormProps)
                   </CardHeader>
                 </CollapsibleTrigger>
                 <CollapsibleContent>
-                  <CardContent className="space-y-4 pb-6">
+                  <CardContent className="space-y-4 pb-5 pt-1">
                     <div>
                       <Label htmlFor="courier" className={`text-sm ${courierError ? "text-red-600" : ""}`}>
                         Select Courier *
@@ -372,11 +372,11 @@ export default function CheckoutForm({ cartItems, onSubmit }: CheckoutFormProps)
         </div>
 
         <div>
-          <Card className="sticky top-24">
-            <CardHeader>
-              <CardTitle>Order Summary</CardTitle>
+          <Card className="sticky top-24 border border-slate-200/60 shadow-sm">
+            <CardHeader className="pb-4">
+              <CardTitle className="text-lg">Order Summary</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-4 pt-0">
               <div>
                 <table className="w-full">
                   <tbody>

@@ -157,23 +157,21 @@ export default function HeroHeader({
             </nav>
 
             <div className="flex items-center gap-2 md:gap-4">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="relative hover:bg-slate-900/5"
+              <button
+                className="relative p-2 hover:bg-slate-900/5 rounded-lg transition-colors"
                 onClick={onCartClick}
                 data-testid="button-cart"
               >
                 <ShoppingCart className="h-5 w-5 text-slate-900" />
                 {cartItemCount > 0 && (
-                  <Badge
-                    className="absolute -top-1 -right-1 h-5 min-w-5 rounded-full flex items-center justify-center px-1.5 bg-slate-900 text-white text-xs font-semibold"
+                  <span
+                    className="absolute top-0 right-0 h-4 min-w-[16px] px-1 flex items-center justify-center rounded-full bg-slate-900 text-white text-[10px] font-semibold leading-none"
                     data-testid="badge-cart-count"
                   >
                     {cartItemCount}
-                  </Badge>
+                  </span>
                 )}
-              </Button>
+              </button>
 
               <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
                 <SheetTrigger asChild className="md:hidden">
