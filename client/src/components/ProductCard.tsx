@@ -9,14 +9,20 @@ export interface Product {
   category?: string;
   brand?: string;
   inStock?: boolean;
+  description?: string;
+  ingredients?: string;
+  usage?: string;
+  benefits?: string[];
+  size?: string;
 }
 
 interface ProductCardProps {
   product: Product;
   onAddToCart?: (product: Product) => void;
+  onClick?: (product: Product) => void;
 }
 
-export default function ProductCard({ product, onAddToCart }: ProductCardProps) {
+export default function ProductCard({ product, onAddToCart, onClick }: ProductCardProps) {
   const formatPrice = (price: number) => {
     return `Rp${price.toLocaleString("id-ID")}`;
   };
@@ -26,9 +32,10 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
   return (
     <div
       className={`border border-slate-200 rounded-lg overflow-hidden bg-white transition-all duration-300 flex flex-col ${
-        isOutOfStock ? 'opacity-90' : 'hover:shadow-lg hover:-translate-y-1'
+        isOutOfStock ? 'opacity-90' : 'hover:shadow-lg hover:-translate-y-1 cursor-pointer'
       }`} 
       data-testid={`card-product-${product.id}`}
+      onClick={() => onClick?.(product)}
     >
       <div className="relative aspect-square overflow-hidden bg-white">
         <img
@@ -71,7 +78,10 @@ export default function ProductCard({ product, onAddToCart }: ProductCardProps) 
               ? 'border-slate-200 text-slate-300 bg-slate-50 cursor-not-allowed hover:bg-slate-50 hover:text-slate-300' 
               : 'border-slate-200 text-slate-700 hover:border-slate-900 hover:bg-slate-900 hover:text-white'
           }`}
-          onClick={() => !isOutOfStock && onAddToCart?.(product)}
+          onClick={(e) => {
+            e.stopPropagation();
+            !isOutOfStock && onAddToCart?.(product);
+          }}
           disabled={isOutOfStock}
           data-testid={`button-add-to-cart-${product.id}`}
         >

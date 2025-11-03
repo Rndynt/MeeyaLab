@@ -3,9 +3,10 @@ import ProductCard, { type Product } from "./ProductCard";
 interface ProductGridProps {
   products: Product[];
   onAddToCart?: (product: Product) => void;
+  onProductClick?: (product: Product) => void;
 }
 
-export default function ProductGrid({ products, onAddToCart }: ProductGridProps) {
+export default function ProductGrid({ products, onAddToCart, onProductClick }: ProductGridProps) {
   if (products.length === 0) {
     return (
       <div className="text-center py-16" data-testid="text-no-products">
@@ -21,6 +22,7 @@ export default function ProductGrid({ products, onAddToCart }: ProductGridProps)
           key={product.id}
           product={product}
           onAddToCart={onAddToCart}
+          onClick={onProductClick}
         />
       ))}
     </div>

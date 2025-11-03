@@ -1,35 +1,22 @@
+import { useRoute, useLocation } from "wouter";
+import { ArrowLeft, ShoppingCart, Check } from "lucide-react";
 import { useState } from "react";
-import { useLocation } from "wouter";
 import Header from "@/components/Header";
-import CategoryPills from "@/components/CategoryPills";
-import ProductGrid from "@/components/ProductGrid";
-import CartDrawer, { type CartItem } from "@/components/CartDrawer";
 import Footer from "@/components/Footer";
-import type { Product } from "@/components/ProductCard";
+import CartDrawer, { type CartItem } from "@/components/CartDrawer";
 import { Button } from "@/components/ui/button";
-import { ArrowUpDown, Filter } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import type { Product } from "@/components/ProductCard";
 import serum from "@assets/generated_images/White_serum_bottle_product_aa8e546e.png";
 import cream from "@assets/generated_images/White_cream_jar_product_ad76191c.png";
 import cleanser from "@assets/generated_images/White_pump_bottle_cleanser_5f9a5b07.png";
 import tube from "@assets/generated_images/White_skincare_tube_product_f0b2ba56.png";
 
-export default function Products() {
+export default function ProductDetail() {
+  const [, params] = useRoute("/products/:id");
   const [, setLocation] = useLocation();
   const [cartOpen, setCartOpen] = useState(false);
-  const [activeCategory, setActiveCategory] = useState("All");
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const [sortBy, setSortBy] = useState("default");
-  const [filterBrand, setFilterBrand] = useState("all");
-  const [filterAvailability, setFilterAvailability] = useState("all");
+  const [addedToCart, setAddedToCart] = useState(false);
 
   const allProducts: Product[] = [
     { 
@@ -146,43 +133,28 @@ export default function Products() {
     },
   ];
 
-  const categories = ["All", "Cleansers", "Serums", "Moisturizers", "Sunscreen", "Treatments"];
-  
-  const brands = ["all", ...Array.from(new Set(allProducts.map(p => p.brand).filter((b): b is string => !!b)))];
+  const product = allProducts.find(p => p.id === params?.id);
 
-  // Apply filters
-  let filteredProducts = allProducts;
-  
-  // Filter by category
-  if (activeCategory !== "All") {
-    filteredProducts = filteredProducts.filter((p) => p.category === activeCategory);
+  if (!product) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold mb-4">Product not found</h1>
+          <Button onClick={() => setLocation("/products")} data-testid="button-back-to-products">
+            Back to Products
+          </Button>
+        </div>
+      </div>
+    );
   }
-  
-  // Filter by brand
-  if (filterBrand !== "all") {
-    filteredProducts = filteredProducts.filter((p) => p.brand === filterBrand);
-  }
-  
-  // Filter by availability
-  if (filterAvailability === "in-stock") {
-    filteredProducts = filteredProducts.filter((p) => p.inStock === true);
-  } else if (filterAvailability === "out-of-stock") {
-    filteredProducts = filteredProducts.filter((p) => p.inStock === false);
-  }
-  
-  // Apply sorting
-  const sortedProducts = [...filteredProducts].sort((a, b) => {
-    if (sortBy === "price-low") {
-      return a.price - b.price;
-    } else if (sortBy === "price-high") {
-      return b.price - a.price;
-    } else if (sortBy === "name") {
-      return a.name.localeCompare(b.name);
-    }
-    return 0; // default order
-  });
 
-  const handleAddToCart = (product: Product) => {
+  const formatPrice = (price: number) => {
+    return `Rp${price.toLocaleString("id-ID")}`;
+  };
+
+  const isOutOfStock = product.inStock === false;
+
+  const handleAddToCart = () => {
     const existingItem = cartItems.find((item) => item.id === product.id);
     if (existingItem) {
       setCartItems(
@@ -202,6 +174,8 @@ export default function Products() {
         },
       ]);
     }
+    setAddedToCart(true);
+    setTimeout(() => setAddedToCart(false), 2000);
   };
 
   const handleUpdateQuantity = (id: string, quantity: number) => {
@@ -214,94 +188,149 @@ export default function Products() {
     setCartItems(cartItems.filter((item) => item.id !== id));
   };
 
-  const handleProductClick = (product: Product) => {
-    sessionStorage.setItem('productsScrollPosition', window.scrollY.toString());
-    setLocation(`/products/${product.id}`);
-  };
-
   const cartItemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
+  const handleBack = () => {
+    const scrollPos = sessionStorage.getItem('productsScrollPosition');
+    setLocation("/products");
+    if (scrollPos) {
+      setTimeout(() => {
+        window.scrollTo(0, parseInt(scrollPos));
+      }, 100);
+    }
+  };
+
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-white">
       <Header cartItemCount={cartItemCount} onCartClick={() => setCartOpen(true)} />
       
       <main className="flex-1 pt-16 md:pt-20">
-        <div className="bg-white py-8 border-b">
-          <div className="max-w-7xl mx-auto px-4 md:px-6">
-            <h1 className="text-3xl font-bold text-slate-900">All Products</h1>
-            <p className="text-slate-600 mt-2">Browse our complete skincare collection</p>
+        <div className="max-w-6xl mx-auto px-4 md:px-6 py-6 md:py-12">
+          <button
+            onClick={handleBack}
+            className="flex items-center gap-2 text-slate-600 hover:text-slate-900 mb-6 transition-colors"
+            data-testid="button-back"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            <span className="text-sm font-medium">Back to Products</span>
+          </button>
+
+          <div className="grid md:grid-cols-2 gap-8 md:gap-12">
+            <div className="relative aspect-square bg-slate-50 rounded-lg overflow-hidden">
+              <img
+                src={product.imageUrl}
+                alt={product.name}
+                className="w-full h-full object-cover"
+                data-testid="img-product-detail"
+              />
+              {isOutOfStock && (
+                <div className="absolute inset-0 bg-slate-900/50 flex items-center justify-center">
+                  <span className="bg-white/95 text-slate-900 px-6 py-3 rounded-full text-sm font-semibold uppercase tracking-wide">
+                    Out of Stock
+                  </span>
+                </div>
+              )}
+            </div>
+
+            <div className="flex flex-col">
+              {product.brand && (
+                <p className="text-xs font-medium text-slate-400 uppercase tracking-widest mb-2" data-testid="text-brand">
+                  {product.brand}
+                </p>
+              )}
+              
+              <h1 className="text-2xl md:text-3xl font-light text-slate-900 mb-4" data-testid="text-product-name">
+                {product.name}
+              </h1>
+
+              <div className="flex items-baseline gap-3 mb-6">
+                <p className="text-2xl font-medium text-slate-900" data-testid="text-price">
+                  {formatPrice(product.price)}
+                </p>
+                {product.size && (
+                  <p className="text-sm text-slate-500" data-testid="text-size">
+                    {product.size}
+                  </p>
+                )}
+              </div>
+
+              {product.description && (
+                <div className="mb-8">
+                  <p className="text-slate-600 leading-relaxed" data-testid="text-description">
+                    {product.description}
+                  </p>
+                </div>
+              )}
+
+              {product.benefits && product.benefits.length > 0 && (
+                <div className="mb-8">
+                  <h2 className="text-sm font-semibold text-slate-900 uppercase tracking-wide mb-3">
+                    Key Benefits
+                  </h2>
+                  <ul className="space-y-2" data-testid="list-benefits">
+                    {product.benefits.map((benefit, index) => (
+                      <li key={index} className="flex items-start gap-2 text-sm text-slate-600">
+                        <Check className="h-4 w-4 text-slate-400 mt-0.5 flex-shrink-0" />
+                        <span>{benefit}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              <div className="flex gap-3 mb-8">
+                <Button
+                  onClick={handleAddToCart}
+                  disabled={isOutOfStock}
+                  className={`flex-1 ${
+                    isOutOfStock
+                      ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
+                      : addedToCart
+                      ? 'bg-green-600 hover:bg-green-700'
+                      : 'bg-slate-900 hover:bg-slate-800'
+                  }`}
+                  data-testid="button-add-to-cart"
+                >
+                  {addedToCart ? (
+                    <>
+                      <Check className="h-4 w-4 mr-2" />
+                      Added to Cart
+                    </>
+                  ) : isOutOfStock ? (
+                    'Out of Stock'
+                  ) : (
+                    <>
+                      <ShoppingCart className="h-4 w-4 mr-2" />
+                      Add to Cart
+                    </>
+                  )}
+                </Button>
+              </div>
+
+              {product.ingredients && (
+                <div className="mb-6 pb-6 border-b border-slate-100">
+                  <h2 className="text-sm font-semibold text-slate-900 uppercase tracking-wide mb-3">
+                    Ingredients
+                  </h2>
+                  <p className="text-sm text-slate-600 leading-relaxed" data-testid="text-ingredients">
+                    {product.ingredients}
+                  </p>
+                </div>
+              )}
+
+              {product.usage && (
+                <div>
+                  <h2 className="text-sm font-semibold text-slate-900 uppercase tracking-wide mb-3">
+                    How to Use
+                  </h2>
+                  <p className="text-sm text-slate-600 leading-relaxed" data-testid="text-usage">
+                    {product.usage}
+                  </p>
+                </div>
+              )}
+            </div>
           </div>
         </div>
-
-        <CategoryPills
-          categories={categories}
-          activeCategory={activeCategory}
-          onCategoryClick={setActiveCategory}
-        />
-
-        <section className="max-w-7xl mx-auto px-4 md:px-6 py-6">
-          <div className="flex flex-wrap gap-3 mb-6">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="gap-2" data-testid="button-sort">
-                  <ArrowUpDown className="h-4 w-4" />
-                  Sort
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="start">
-                <DropdownMenuLabel>Sort By</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuRadioGroup value={sortBy} onValueChange={setSortBy}>
-                  <DropdownMenuRadioItem value="default" data-testid="sort-default">Default</DropdownMenuRadioItem>
-                  <DropdownMenuRadioItem value="price-low" data-testid="sort-price-low">Price: Low to High</DropdownMenuRadioItem>
-                  <DropdownMenuRadioItem value="price-high" data-testid="sort-price-high">Price: High to Low</DropdownMenuRadioItem>
-                  <DropdownMenuRadioItem value="name" data-testid="sort-name">Name (A-Z)</DropdownMenuRadioItem>
-                </DropdownMenuRadioGroup>
-              </DropdownMenuContent>
-            </DropdownMenu>
-
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="gap-2" data-testid="button-filter-brand">
-                  <Filter className="h-4 w-4" />
-                  Brand
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="start">
-                <DropdownMenuLabel>Filter by Brand</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuRadioGroup value={filterBrand} onValueChange={setFilterBrand}>
-                  <DropdownMenuRadioItem value="all" data-testid="filter-brand-all">All Brands</DropdownMenuRadioItem>
-                  {brands.filter(b => b !== "all").map((brand) => (
-                    <DropdownMenuRadioItem key={brand} value={brand} data-testid={`filter-brand-${brand}`}>
-                      {brand}
-                    </DropdownMenuRadioItem>
-                  ))}
-                </DropdownMenuRadioGroup>
-              </DropdownMenuContent>
-            </DropdownMenu>
-
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="gap-2" data-testid="button-filter-availability">
-                  <Filter className="h-4 w-4" />
-                  Availability
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="start">
-                <DropdownMenuLabel>Filter by Availability</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuRadioGroup value={filterAvailability} onValueChange={setFilterAvailability}>
-                  <DropdownMenuRadioItem value="all" data-testid="filter-availability-all">All Products</DropdownMenuRadioItem>
-                  <DropdownMenuRadioItem value="in-stock" data-testid="filter-availability-in-stock">In Stock</DropdownMenuRadioItem>
-                  <DropdownMenuRadioItem value="out-of-stock" data-testid="filter-availability-out-of-stock">Out of Stock</DropdownMenuRadioItem>
-                </DropdownMenuRadioGroup>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-          
-          <ProductGrid products={sortedProducts} onAddToCart={handleAddToCart} onProductClick={handleProductClick} />
-        </section>
       </main>
 
       <Footer />
