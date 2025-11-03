@@ -14,6 +14,8 @@ import {
   Dialog,
   DialogContent,
   DialogHeader,
+  DialogBody,
+  DialogFooter,
   DialogTitle,
   DialogDescription,
   DialogTrigger,
@@ -103,104 +105,110 @@ export default function AdminProductList({
                 {editingProduct ? "Update the product details below" : "Fill in the product details below"}
               </DialogDescription>
             </DialogHeader>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <Label htmlFor="name">Product Name</Label>
-                <Input
-                  id="name"
-                  name="name"
-                  required
-                  defaultValue={editingProduct?.name}
-                  data-testid="input-product-name"
-                />
-              </div>
-              <div>
-                <Label htmlFor="price">Price</Label>
-                <Input
-                  id="price"
-                  name="price"
-                  type="number"
-                  required
-                  defaultValue={editingProduct?.price}
-                  data-testid="input-product-price"
-                />
-              </div>
-              <div>
-                <Label htmlFor="category">Category</Label>
-                <Input
-                  id="category"
-                  name="category"
-                  required
-                  defaultValue={editingProduct?.category}
-                  data-testid="input-product-category"
-                />
-              </div>
-              <div>
-                <Label htmlFor="brand">Brand</Label>
-                <Input
-                  id="brand"
-                  name="brand"
-                  required
-                  defaultValue={editingProduct?.brand}
-                  data-testid="input-product-brand"
-                />
-              </div>
-              <div>
-                <Label htmlFor="stock">Stock</Label>
-                <Input
-                  id="stock"
-                  name="stock"
-                  type="number"
-                  required
-                  defaultValue={editingProduct?.stock}
-                  data-testid="input-product-stock"
-                />
-              </div>
-              <div>
-                <Label htmlFor="bpom">BPOM Number (Optional)</Label>
-                <Input
-                  id="bpom"
-                  name="bpom"
-                  defaultValue={editingProduct?.bpom}
-                  placeholder="e.g., NA18210100123"
-                  data-testid="input-product-bpom"
-                />
-              </div>
-              <div>
-                <Label htmlFor="certificates">Certificates (Optional)</Label>
-                <Input
-                  id="certificates"
-                  name="certificates"
-                  defaultValue={editingProduct?.certificates?.join(', ')}
-                  placeholder="e.g., Halal, Cruelty-Free, Organic"
-                  data-testid="input-product-certificates"
-                />
-                <p className="text-xs text-slate-500 mt-1">Separate multiple certificates with commas</p>
-              </div>
-              <div>
-                <Label htmlFor="imageUrl">Image URL</Label>
-                <Input
-                  id="imageUrl"
-                  name="imageUrl"
-                  required
-                  defaultValue={editingProduct?.imageUrl}
-                  data-testid="input-product-image"
-                />
-              </div>
-              <div className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  id="isActive"
-                  name="isActive"
-                  defaultChecked={editingProduct?.isActive ?? true}
-                  className="h-4 w-4"
-                  data-testid="input-product-active"
-                />
-                <Label htmlFor="isActive">Active</Label>
-              </div>
-              <Button type="submit" className="w-full bg-cyan-500 hover:bg-cyan-600" data-testid="button-save-product">
-                {editingProduct ? "Update Product" : "Add Product"}
-              </Button>
+            <form onSubmit={handleSubmit} id="product-form">
+              <DialogBody>
+                <div className="space-y-4">
+                  <div>
+                    <Label htmlFor="name">Product Name</Label>
+                    <Input
+                      id="name"
+                      name="name"
+                      required
+                      defaultValue={editingProduct?.name}
+                      data-testid="input-product-name"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="price">Price</Label>
+                    <Input
+                      id="price"
+                      name="price"
+                      type="number"
+                      required
+                      defaultValue={editingProduct?.price}
+                      data-testid="input-product-price"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="category">Category</Label>
+                    <Input
+                      id="category"
+                      name="category"
+                      required
+                      defaultValue={editingProduct?.category}
+                      data-testid="input-product-category"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="brand">Brand</Label>
+                    <Input
+                      id="brand"
+                      name="brand"
+                      required
+                      defaultValue={editingProduct?.brand}
+                      data-testid="input-product-brand"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="stock">Stock</Label>
+                    <Input
+                      id="stock"
+                      name="stock"
+                      type="number"
+                      required
+                      defaultValue={editingProduct?.stock}
+                      data-testid="input-product-stock"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="bpom">BPOM Number (Optional)</Label>
+                    <Input
+                      id="bpom"
+                      name="bpom"
+                      defaultValue={editingProduct?.bpom}
+                      placeholder="e.g., NA18210100123"
+                      data-testid="input-product-bpom"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="certificates">Certificates (Optional)</Label>
+                    <Input
+                      id="certificates"
+                      name="certificates"
+                      defaultValue={editingProduct?.certificates?.join(', ')}
+                      placeholder="e.g., Halal, Cruelty-Free, Organic"
+                      data-testid="input-product-certificates"
+                    />
+                    <p className="text-xs text-slate-500 mt-1">Separate multiple certificates with commas</p>
+                  </div>
+                  <div>
+                    <Label htmlFor="imageUrl">Image URL</Label>
+                    <Input
+                      id="imageUrl"
+                      name="imageUrl"
+                      required
+                      defaultValue={editingProduct?.imageUrl}
+                      data-testid="input-product-image"
+                    />
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      id="isActive"
+                      name="isActive"
+                      defaultChecked={editingProduct?.isActive ?? true}
+                      className="h-4 w-4"
+                      data-testid="input-product-active"
+                    />
+                    <Label htmlFor="isActive">Active</Label>
+                  </div>
+                </div>
+              </DialogBody>
+              <DialogFooter>
+                <Button type="submit" className="w-full sm:w-auto bg-cyan-500 hover:bg-cyan-600" data-testid="button-save-product">
+                  {editingProduct ? "Update Product" : "Add Product"}
+                </Button>
+              </DialogFooter>
             </form>
           </DialogContent>
         </Dialog>

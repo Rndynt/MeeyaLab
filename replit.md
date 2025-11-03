@@ -227,14 +227,19 @@ Preferred communication style: Simple, everyday language.
 
 ### Third Wave of UI/UX Improvements (November 2025)
 
-**Dialog Component Responsiveness**
-- Fixed Dialog component for mobile responsiveness
-- Added max-height constraint (max-h-[90vh]) to prevent overflow on mobile
-- Wrapped dialog content in scrollable container with overflow-y-auto
-- Responsive padding (p-4 on mobile, p-6 on larger screens)
-- Close button now has z-10 and background to ensure visibility
-- Changed from grid to flex layout for better content flow
-- Mobile users can now scroll to reach all dialog buttons
+**Dialog Component Redesign**
+- Completely redesigned Dialog component with fixed header/footer structure
+- Added new `DialogBody` component for scrollable content area
+- **DialogHeader** - Fixed at top with border-bottom, always visible
+- **DialogBody** - Scrollable content area in the middle (flex-1 overflow-y-auto)
+- **DialogFooter** - Fixed at bottom with border-top, always visible
+- Benefits:
+  - Title always visible while scrolling through long content
+  - Action buttons always accessible without scrolling
+  - Better UX for forms and long content
+  - Responsive padding (p-4 mobile, p-6 desktop)
+- Close button with z-20 to ensure it's above all content
+- Updated AdminProductList to use new structure
 
 **Product Detail Page**
 - Created dedicated product detail page at `/products/:id`
