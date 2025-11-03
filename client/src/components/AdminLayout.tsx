@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Package, ShoppingCart, LogOut, LayoutDashboard, Menu, Settings } from "lucide-react";
+import { Package, ShoppingCart, LogOut, LayoutDashboard, Menu, Settings, ExternalLink } from "lucide-react";
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -47,7 +47,18 @@ export default function AdminLayout({ children, onLogout }: AdminLayoutProps) {
           );
         })}
       </nav>
-      <div className="p-4 border-t border-slate-200 mt-auto">
+      <div className="p-4 border-t border-slate-200 mt-auto space-y-2">
+        <Link href="/">
+          <Button
+            variant="ghost"
+            className="w-full justify-start gap-3 text-cyan-600 hover:text-cyan-700 hover:bg-cyan-50"
+            onClick={() => setSidebarOpen(false)}
+            data-testid="button-visit-store"
+          >
+            <ExternalLink className="h-4 w-4" />
+            Visit Store
+          </Button>
+        </Link>
         <Button
           variant="ghost"
           className="w-full justify-start gap-3"

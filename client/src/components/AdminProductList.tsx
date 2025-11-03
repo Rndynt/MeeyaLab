@@ -99,13 +99,13 @@ export default function AdminProductList({
             </Button>
           </DialogTrigger>
           <DialogContent>
-            <DialogHeader>
-              <DialogTitle>{editingProduct ? "Edit Product" : "Add New Product"}</DialogTitle>
-              <DialogDescription>
-                {editingProduct ? "Update the product details below" : "Fill in the product details below"}
-              </DialogDescription>
-            </DialogHeader>
-            <form onSubmit={handleSubmit} id="product-form">
+            <form onSubmit={handleSubmit} id="product-form" className="flex flex-col h-full">
+              <DialogHeader>
+                <DialogTitle>{editingProduct ? "Edit Product" : "Add New Product"}</DialogTitle>
+                <DialogDescription>
+                  {editingProduct ? "Update the product details below" : "Fill in the product details below"}
+                </DialogDescription>
+              </DialogHeader>
               <DialogBody>
                 <div className="space-y-4">
                   <div>

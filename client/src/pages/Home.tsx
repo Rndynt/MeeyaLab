@@ -70,6 +70,10 @@ export default function Home() {
 
   const cartItemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
+  const handleProductClick = (product: Product) => {
+    setLocation(`/product/${product.id}`);
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <HeroHeader
@@ -90,7 +94,11 @@ export default function Home() {
           />
 
           <section className="max-w-7xl mx-auto px-4 md:px-6 py-8">
-            <ProductGrid products={filteredProducts} onAddToCart={handleAddToCart} />
+            <ProductGrid 
+              products={filteredProducts} 
+              onAddToCart={handleAddToCart}
+              onProductClick={handleProductClick}
+            />
           </section>
         </div>
       </main>
