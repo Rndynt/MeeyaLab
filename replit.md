@@ -230,9 +230,10 @@ Preferred communication style: Simple, everyday language.
 **Dialog Component Redesign**
 - Completely redesigned Dialog component with fixed header/footer structure
 - Added new `DialogBody` component for scrollable content area
-- **DialogHeader** - Fixed at top with border-bottom, always visible
+- **DialogHeader** - Fixed at top with border-bottom, always visible (flex-shrink-0)
 - **DialogBody** - Scrollable content area in the middle (flex-1 overflow-y-auto)
-- **DialogFooter** - Fixed at bottom with border-top, always visible
+- **DialogFooter** - Fixed at bottom with border-top, always visible (flex-shrink-0, bg-background)
+- Form structure updated: form wraps all three sections with flex flex-col h-full
 - Benefits:
   - Title always visible while scrolling through long content
   - Action buttons always accessible without scrolling
@@ -241,8 +242,48 @@ Preferred communication style: Simple, everyday language.
 - Close button with z-20 to ensure it's above all content
 - Updated AdminProductList to use new structure
 
+### Fourth Wave of UI/UX Improvements (November 2025)
+
+**Footer Redesign**
+- Completely redesigned footer with modern, minimalist aesthetic
+- Three-column grid layout (5-3-4 column spans on desktop)
+- Brand section with tagline and social media icons (Instagram, Mail)
+- Explore section with navigation links (All Products, Track Order, Contact Us)
+- Get in Touch section with contact details and location
+- Elegant bottom bar with copyright and legal links (Privacy Policy, Terms of Service)
+- Soft slate background (bg-slate-50) for subtle elevation
+- Rounded circular social icons with hover effects
+- Professional typography with balanced spacing
+- Fully responsive: single column on mobile, three columns on desktop
+
+**Admin Layout Enhancements**
+- Added "Visit Store" button in admin sidebar
+- Links to home page (/) to view end-user website from admin panel
+- Styled with cyan accent color matching admin theme
+- Positioned above Logout button in sidebar footer
+- Available in both desktop sidebar and mobile sheet menu
+- External link icon for visual clarity
+
+**Admin Order Management**
+- Created comprehensive order detail page at `/admin/orders/:id`
+- Clean, card-based layout with organized sections:
+  - Customer Information card (name, phone)
+  - Shipping Address card (full address details)
+  - Order Summary card (subtotal, total)
+  - Order Items section with table layout
+  - Order Notes section (optional, shows if present)
+  - Order Actions card with status selector and action buttons
+- Action buttons: Print Invoice, Send Tracking Info, Cancel Order
+- Status update selector with all order statuses
+- Back to Orders navigation button
+- View order detail button (eye icon) added to order list table
+- Route structure: `/admin/orders/:id` for detail, `/admin/orders` for list
+- Mock data structure includes items array, address details, and optional notes
+- Responsive design with grid layout adjusting for mobile/tablet/desktop
+
 **Product Detail Page**
 - Created dedicated product detail page at `/products/:id`
+- Auto-scroll to top when page opens (fixed scroll position issue)
 - Extended Product interface with detailed fields:
   - description: Product description text
   - ingredients: List of product ingredients
@@ -266,10 +307,11 @@ Preferred communication style: Simple, everyday language.
 - All 8 products updated with complete detailed information
 
 **Product Navigation Improvements**
-- Product cards are now clickable to view details
+- Product cards are now clickable to view details (both from home and products pages)
 - onClick handler with stopPropagation on Add to Cart button
 - Cursor pointer on hover for better UX
 - Scroll position saved before navigation
 - Scroll position restored when returning from detail page
 - Route added: `/products/:id` for individual product pages
 - ProductGrid component updated to pass click handlers
+- Auto-scroll to top when opening product detail page (useEffect on mount)
