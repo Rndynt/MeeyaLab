@@ -137,3 +137,52 @@ Preferred communication style: Simple, everyday language.
 
 **Shared**
 - `/shared/schema.ts` - Database schema and TypeScript types shared between client and server
+
+## Recent Changes
+
+### UI/UX Improvements (November 2025)
+
+**Admin Dashboard Enhancements**
+- Made admin layout fully responsive for mobile/tablet/desktop
+- Added collapsible sidebar menu for mobile devices using Sheet component
+- Mobile header with hamburger menu for small screens
+- Desktop maintains fixed sidebar navigation
+- Updated admin routes to include Settings page
+
+**Settings Page**
+- Created comprehensive settings page at `/admin/settings`
+- Configurable application information (name, tagline, description)
+- Contact information management (email, phone, WhatsApp, address)
+- Social media handles (Instagram, Facebook)
+- Form validation and toast notifications for user feedback
+
+**Product Card Redesign**
+- More elegant and minimalist typography
+- Reduced price text size for better visual hierarchy
+- Improved spacing and padding for cleaner look
+- Lighter borders and refined hover states
+- Consistent styling across Home and Products pages
+
+**Header Improvements**
+- Fixed cart icon and badge alignment
+- Smaller, better-positioned cart count indicator
+- Improved visual consistency
+
+**Checkout Page Redesign**
+- Fixed header overlap issue with proper top padding
+- Implemented collapsible form sections for better UX
+- Each section shows completion status with checkmark indicator
+- Sections: Contact Information, Shipping Address, Shipping Method
+- Smooth expand/collapse animations
+- Visual feedback for completed sections
+
+**Voucher/Promo System**
+- Added voucher code input in order summary
+- Three sample vouchers implemented:
+  - WELCOME10: 10% discount
+  - SAVE20K: Rp20,000 flat discount
+  - FREESHIP: Free shipping
+- Real-time discount calculation
+- Visual feedback for applied vouchers
+- Safe calculation prevents negative totals
+- Discount display in order summary
