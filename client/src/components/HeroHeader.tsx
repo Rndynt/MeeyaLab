@@ -276,8 +276,8 @@ export default function HeroHeader({
               </div>
             </div>
 
-            {/* Navigation Arrows - Fixed Position */}
-            <div className="absolute left-0 right-0 top-1/2 -translate-y-1/2 pointer-events-none z-10">
+            {/* Navigation Arrows - Fixed Position - Hidden on Mobile */}
+            <div className="hidden lg:block absolute left-0 right-0 top-1/2 -translate-y-1/2 pointer-events-none z-10">
               <div className="max-w-7xl mx-auto px-4 md:px-6">
                 <div className="flex justify-between items-center">
                   <button
