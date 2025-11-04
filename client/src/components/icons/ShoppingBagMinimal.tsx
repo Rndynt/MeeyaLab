@@ -17,9 +17,8 @@ export default function ShoppingBagMinimal({ className = "", size = 20 }: Shoppi
       strokeLinejoin="round"
       className={className}
     >
-      <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
-      <path d="M3 6h18" />
-      <path d="M16 10a4 4 0 0 1-8 0" />
+      <rect x="4" y="7" width="16" height="14" rx="2" ry="2" />
+      <path d="M8 7V5a4 4 0 0 1 8 0v2" />
     </svg>
   );
 }
