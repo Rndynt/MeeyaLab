@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Package, ShoppingCart, LogOut, LayoutDashboard, Menu, Settings, ExternalLink } from "lucide-react";
+import { Package, ShoppingBag, LogOut, LayoutDashboard, Menu, Settings, ExternalLink } from "lucide-react";
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -16,7 +16,7 @@ export default function AdminLayout({ children, onLogout }: AdminLayoutProps) {
   const menuItems = [
     { href: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
     { href: "/admin/products", label: "Products", icon: Package },
-    { href: "/admin/orders", label: "Orders", icon: ShoppingCart },
+    { href: "/admin/orders", label: "Orders", icon: ShoppingBag },
     { href: "/admin/settings", label: "Settings", icon: Settings },
   ];
 

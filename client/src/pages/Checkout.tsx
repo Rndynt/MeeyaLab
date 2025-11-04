@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useLocation } from "wouter";
 import Header from "@/components/Header";
 import CheckoutForm, { type CheckoutData } from "@/components/CheckoutForm";
 import Footer from "@/components/Footer";
@@ -7,6 +8,7 @@ import serum from "@assets/generated_images/White_serum_bottle_product_aa8e546e.
 import cream from "@assets/generated_images/White_cream_jar_product_ad76191c.png";
 
 export default function Checkout() {
+  const [, setLocation] = useLocation();
   const [cartOpen, setCartOpen] = useState(false);
   
   const cartItems: CartItem[] = [
@@ -23,7 +25,7 @@ export default function Checkout() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Header cartItemCount={cartItemCount} onCartClick={() => setCartOpen(true)} />
+      <Header cartItemCount={cartItemCount} onCartClick={() => setCartOpen(true)} onProfileClick={() => setLocation("/profile")} />
       
       <main className="flex-1 bg-slate-50">
         <CheckoutForm cartItems={cartItems} onSubmit={handleCheckoutSubmit} />

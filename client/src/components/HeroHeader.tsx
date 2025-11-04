@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
 import { Link, useLocation } from "wouter";
-import { ShoppingCart, Menu, X, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { ShoppingBag, Menu, X, ArrowRight, ChevronLeft, ChevronRight, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
@@ -14,6 +14,7 @@ import heroImage4 from "@assets/generated_images/Model_touching_face_skincare_fa
 interface HeroHeaderProps {
   cartItemCount?: number;
   onCartClick?: () => void;
+  onProfileClick?: () => void;
   onShopClick?: () => void;
 }
 
@@ -59,6 +60,7 @@ const slides = [
 export default function HeroHeader({
   cartItemCount = 0,
   onCartClick,
+  onProfileClick,
   onShopClick,
 }: HeroHeaderProps) {
   const [location] = useLocation();
@@ -158,11 +160,19 @@ export default function HeroHeader({
 
             <div className="flex items-center gap-2 md:gap-4">
               <button
+                className="p-2 hover:bg-slate-900/5 rounded-lg transition-colors"
+                onClick={onProfileClick}
+                data-testid="button-profile"
+              >
+                <User className="h-5 w-5 text-slate-900" />
+              </button>
+
+              <button
                 className="relative p-2 hover:bg-slate-900/5 rounded-lg transition-colors"
                 onClick={onCartClick}
                 data-testid="button-cart"
               >
-                <ShoppingCart className="h-5 w-5 text-slate-900" />
+                <ShoppingBag className="h-5 w-5 text-slate-900" />
                 {cartItemCount > 0 && (
                   <span
                     className="absolute top-0 right-0 h-4 min-w-[16px] px-1 flex items-center justify-center rounded-full bg-slate-900 text-white text-[10px] font-semibold leading-none"

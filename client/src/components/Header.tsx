@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
-import { ShoppingCart, Menu, X } from "lucide-react";
+import { ShoppingBag, Menu, X, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
@@ -8,9 +8,10 @@ import { Badge } from "@/components/ui/badge";
 interface HeaderProps {
   cartItemCount?: number;
   onCartClick?: () => void;
+  onProfileClick?: () => void;
 }
 
-export default function Header({ cartItemCount = 0, onCartClick }: HeaderProps) {
+export default function Header({ cartItemCount = 0, onCartClick, onProfileClick }: HeaderProps) {
   const [location] = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -72,11 +73,19 @@ export default function Header({ cartItemCount = 0, onCartClick }: HeaderProps) 
 
           <div className="flex items-center gap-2 md:gap-4">
             <button
+              className="p-2 hover:bg-slate-900/5 rounded-lg transition-colors"
+              onClick={onProfileClick}
+              data-testid="button-profile"
+            >
+              <User className="h-5 w-5 text-slate-900" />
+            </button>
+
+            <button
               className="relative p-2 hover:bg-slate-900/5 rounded-lg transition-colors"
               onClick={onCartClick}
               data-testid="button-cart"
             >
-              <ShoppingCart className="h-5 w-5 text-slate-900" />
+              <ShoppingBag className="h-5 w-5 text-slate-900" />
               {cartItemCount > 0 && (
                 <span
                   className="absolute top-0 right-0 h-4 min-w-[16px] px-1 flex items-center justify-center rounded-full bg-slate-900 text-white text-[10px] font-semibold leading-none"

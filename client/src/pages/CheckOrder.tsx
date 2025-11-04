@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { useLocation } from "wouter";
 import Header from "@/components/Header";
 import OrderTracking, { type Order } from "@/components/OrderTracking";
 import Footer from "@/components/Footer";
 import CartDrawer from "@/components/CartDrawer";
 
 export default function CheckOrder() {
+  const [, setLocation] = useLocation();
   const [cartOpen, setCartOpen] = useState(false);
   const [order, setOrder] = useState<Order | null>(null);
 
@@ -28,7 +30,7 @@ export default function CheckOrder() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Header cartItemCount={0} onCartClick={() => setCartOpen(true)} />
+      <Header cartItemCount={0} onCartClick={() => setCartOpen(true)} onProfileClick={() => setLocation("/profile")} />
       
       <main className="flex-1 bg-slate-50 pt-16 md:pt-20 pb-8">
         <OrderTracking onSearch={handleSearch} order={order} />

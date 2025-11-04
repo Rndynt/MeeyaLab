@@ -1,15 +1,17 @@
 import { useState } from "react";
+import { useLocation } from "wouter";
 import Header from "@/components/Header";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 import CartDrawer from "@/components/CartDrawer";
 
 export default function Contact() {
+  const [, setLocation] = useLocation();
   const [cartOpen, setCartOpen] = useState(false);
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Header cartItemCount={0} onCartClick={() => setCartOpen(true)} />
+      <Header cartItemCount={0} onCartClick={() => setCartOpen(true)} onProfileClick={() => setLocation("/profile")} />
       
       <main className="flex-1 bg-slate-50 pt-16 md:pt-20 pb-8">
         <ContactSection />

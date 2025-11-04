@@ -1,14 +1,14 @@
 import { useLocation } from "wouter";
 import AdminLayout from "@/components/AdminLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Package, ShoppingCart, DollarSign, Users } from "lucide-react";
+import { Package, ShoppingBag, DollarSign, Users } from "lucide-react";
 
 export default function AdminDashboard() {
   const [, setLocation] = useLocation();
 
   const stats = [
     { title: "Total Products", value: "24", icon: Package, color: "text-cyan-600" },
-    { title: "Total Orders", value: "156", icon: ShoppingCart, color: "text-green-600" },
+    { title: "Total Orders", value: "156", icon: ShoppingBag, color: "text-green-600" },
     { title: "Revenue", value: "Rp42.5M", icon: DollarSign, color: "text-yellow-600" },
     { title: "Customers", value: "89", icon: Users, color: "text-blue-600" },
   ];

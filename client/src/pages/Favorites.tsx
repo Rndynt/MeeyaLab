@@ -4,7 +4,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import CartDrawer, { type CartItem } from "@/components/CartDrawer";
 import { Button } from "@/components/ui/button";
-import { Heart, ShoppingCart } from "lucide-react";
+import { Heart, ShoppingBag } from "lucide-react";
 import serum from "@assets/generated_images/White_serum_bottle_product_aa8e546e.png";
 import cream from "@assets/generated_images/White_cream_jar_product_ad76191c.png";
 
@@ -54,7 +54,7 @@ export default function Favorites() {
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50">
-      <Header cartItemCount={cartItemCount} onCartClick={() => setCartOpen(true)} />
+      <Header cartItemCount={cartItemCount} onCartClick={() => setCartOpen(true)} onProfileClick={() => setLocation("/profile")} />
       
       <main className="flex-1">
         <div className="max-w-7xl mx-auto px-4 md:px-6 py-8 pt-24 md:pt-28">
@@ -134,7 +134,7 @@ export default function Favorites() {
                       className="w-full bg-slate-900 hover:bg-slate-800 text-white h-10"
                       data-testid={`button-add-to-cart-${product.id}`}
                     >
-                      <ShoppingCart className="h-4 w-4 mr-2" />
+                      <ShoppingBag className="h-4 w-4 mr-2" />
                       {product.inStock ? "Add to Cart" : "Out of Stock"}
                     </Button>
                   </div>

@@ -223,7 +223,7 @@ export default function Products() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Header cartItemCount={cartItemCount} onCartClick={() => setCartOpen(true)} />
+      <Header cartItemCount={cartItemCount} onCartClick={() => setCartOpen(true)} onProfileClick={() => setLocation("/profile")} />
       
       <main className="flex-1 pt-16 md:pt-20">
         <div className="bg-white py-8 border-b">

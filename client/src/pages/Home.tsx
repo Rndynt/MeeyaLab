@@ -79,6 +79,7 @@ export default function Home() {
       <HeroHeader
         cartItemCount={cartItemCount}
         onCartClick={() => setCartOpen(true)}
+        onProfileClick={() => setLocation("/profile")}
         onShopClick={() => {
           const productsSection = document.getElementById("products");
           productsSection?.scrollIntoView({ behavior: "smooth" });

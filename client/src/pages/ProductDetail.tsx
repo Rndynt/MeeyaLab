@@ -1,5 +1,5 @@
 import { useRoute, useLocation } from "wouter";
-import { ArrowLeft, Plus, Check, Heart, ShoppingCart } from "lucide-react";
+import { ArrowLeft, Plus, Check, Heart, ShoppingBag } from "lucide-react";
 import { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -212,7 +212,7 @@ export default function ProductDetail() {
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
-      <Header cartItemCount={cartItemCount} onCartClick={() => setCartOpen(true)} />
+      <Header cartItemCount={cartItemCount} onCartClick={() => setCartOpen(true)} onProfileClick={() => setLocation("/profile")} />
       
       <main className="flex-1 pt-16 md:pt-20">
         <div className="max-w-6xl mx-auto px-4 md:px-6 py-6 md:py-12">
@@ -308,7 +308,7 @@ export default function ProductDetail() {
                     </>
                   ) : (
                     <>
-                      <ShoppingCart className="h-5 w-5 mr-2" />
+                      <ShoppingBag className="h-5 w-5 mr-2" />
                       {isOutOfStock ? "Out of Stock" : "Add to Cart"}
                     </>
                   )}
