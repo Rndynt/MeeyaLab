@@ -23,37 +23,37 @@ interface HeroHeaderProps {
 const slides = [
   {
     id: 1,
-    title: "Stay Glowing",
-    subtitle: "With Naturally Fresh Skin",
-    description: "Clean, effective skincare for your daily routine. Simple formulas, real results.",
-    cta: "Shop Now",
+    title: "Radiant Skin",
+    subtitle: "Starts with Clean Beauty",
+    description: "Experience the power of natural ingredients combined with science. Our formulas are designed to nourish, protect, and reveal your skin's natural glow.",
+    cta: "Discover Now",
     image: heroImage1,
     bgColor: "bg-[#F5F1ED]",
   },
   {
     id: 2,
-    title: "Reveal Your",
-    subtitle: "Best Glow",
-    description: "Discover visible results with our premium skincare collection designed to delight.",
-    cta: "Explore Collection",
+    title: "Luxury Skincare",
+    subtitle: "For Every Day",
+    description: "Premium ingredients at accessible prices. Transform your daily routine with products that deliver visible results you can feel and see.",
+    cta: "Shop Collection",
     image: heroImage2,
     bgColor: "bg-[#F9E4D4]",
   },
   {
     id: 3,
-    title: "Pure Skincare",
-    subtitle: "Daily Rituals",
-    description: "Transform your skin with pure, gentle daily care made from natural ingredients.",
-    cta: "Learn More",
+    title: "Gentle Care",
+    subtitle: "Powerful Results",
+    description: "Pure, effective formulas for all skin types. From cleansing to moisturizing, every product is crafted with care for your skin's health.",
+    cta: "Explore Products",
     image: heroImage3,
     bgColor: "bg-[#EDE8E3]",
   },
   {
     id: 4,
-    title: "Healthy Skin",
-    subtitle: "Starts with Natural Care",
-    description: "Experience the difference of scientifically-backed, naturally-derived formulas.",
-    cta: "Shop Products",
+    title: "Your Beauty",
+    subtitle: "Naturally Enhanced",
+    description: "Scientifically proven, naturally inspired. Our skincare line brings out the best in your skin without harsh chemicals or artificial additives.",
+    cta: "Shop Now",
     image: heroImage4,
     bgColor: "bg-[#F8F4F0]",
   },
@@ -267,16 +267,6 @@ export default function HeroHeader({
                                 <ChevronRight className="h-4 w-4 md:h-5 md:w-5 text-slate-900" />
                               </button>
                             </div>
-                          </div>
-
-                          <div className="flex items-center gap-3 pt-2 md:pt-4">
-                            <span className="text-xl md:text-2xl font-bold text-slate-900">
-                              {String(selectedIndex + 1).padStart(2, "0")}
-                            </span>
-                            <div className="h-px flex-1 max-w-[60px] md:max-w-[80px] bg-slate-900/20"></div>
-                            <span className="text-xs md:text-sm text-slate-500">
-                              {String(slides.length).padStart(2, "0")}
-                            </span>
                           </div>
                         </div>
 
