@@ -8,13 +8,13 @@ import { Button } from "@/components/ui/button";
 import { 
   MapPin, 
   Heart, 
-  ShoppingBag, 
   User, 
   Settings, 
   LogOut,
   ChevronRight,
   Bell
 } from "lucide-react";
+import ShoppingBagMinimal from "@/components/icons/ShoppingBagMinimal";
 
 interface MenuItemProps {
   icon: React.ReactNode;
@@ -117,7 +117,7 @@ export default function Profile() {
             />
 
             <MenuItem
-              icon={<ShoppingBag className="h-5 w-5" />}
+              icon={<ShoppingBagMinimal size={20} />}
               title="Order History"
               description="Track and view your past orders"
               onClick={() => console.log("Order history clicked")}

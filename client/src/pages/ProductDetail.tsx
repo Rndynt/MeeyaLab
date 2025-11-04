@@ -1,9 +1,10 @@
 import { useRoute, useLocation } from "wouter";
-import { ArrowLeft, Plus, Check, Heart, ShoppingBag } from "lucide-react";
+import { ArrowLeft, Plus, Check, Heart } from "lucide-react";
 import { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import CartDrawer, { type CartItem } from "@/components/CartDrawer";
+import ShoppingBagMinimal from "@/components/icons/ShoppingBagMinimal";
 import { Button } from "@/components/ui/button";
 import type { Product } from "@/components/ProductCard";
 import serum from "@assets/generated_images/White_serum_bottle_product_aa8e546e.png";
@@ -308,7 +309,7 @@ export default function ProductDetail() {
                     </>
                   ) : (
                     <>
-                      <ShoppingBag className="h-5 w-5 mr-2" />
+                      <ShoppingBagMinimal className="mr-2" size={20} />
                       {isOutOfStock ? "Out of Stock" : "Add to Cart"}
                     </>
                   )}

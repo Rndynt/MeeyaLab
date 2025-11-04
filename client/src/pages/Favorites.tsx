@@ -4,7 +4,8 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import CartDrawer, { type CartItem } from "@/components/CartDrawer";
 import { Button } from "@/components/ui/button";
-import { Heart, ShoppingBag } from "lucide-react";
+import { Heart } from "lucide-react";
+import ShoppingBagMinimal from "@/components/icons/ShoppingBagMinimal";
 import serum from "@assets/generated_images/White_serum_bottle_product_aa8e546e.png";
 import cream from "@assets/generated_images/White_cream_jar_product_ad76191c.png";
 
@@ -134,7 +135,7 @@ export default function Favorites() {
                       className="w-full bg-slate-900 hover:bg-slate-800 text-white h-10"
                       data-testid={`button-add-to-cart-${product.id}`}
                     >
-                      <ShoppingBag className="h-4 w-4 mr-2" />
+                      <ShoppingBagMinimal className="mr-2" size={16} />
                       {product.inStock ? "Add to Cart" : "Out of Stock"}
                     </Button>
                   </div>

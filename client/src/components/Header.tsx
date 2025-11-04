@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
-import { ShoppingBag, Menu, X, User } from "lucide-react";
+import { Menu, X, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
+import ShoppingBagMinimal from "@/components/icons/ShoppingBagMinimal";
 
 interface HeaderProps {
   cartItemCount?: number;
@@ -85,7 +86,7 @@ export default function Header({ cartItemCount = 0, onCartClick, onProfileClick 
               onClick={onCartClick}
               data-testid="button-cart"
             >
-              <ShoppingBag className="h-5 w-5 text-slate-900" />
+              <ShoppingBagMinimal className="text-slate-900" size={20} />
               {cartItemCount > 0 && (
                 <span
                   className="absolute top-0 right-0 h-4 min-w-[16px] px-1 flex items-center justify-center rounded-full bg-slate-900 text-white text-[10px] font-semibold leading-none"

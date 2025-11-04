@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Package, ShoppingBag, LogOut, LayoutDashboard, Menu, Settings, ExternalLink } from "lucide-react";
+import { Package, LogOut, LayoutDashboard, Menu, Settings, ExternalLink } from "lucide-react";
+import ShoppingBagMinimal from "@/components/icons/ShoppingBagMinimal";
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -14,10 +15,10 @@ export default function AdminLayout({ children, onLogout }: AdminLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const menuItems = [
-    { href: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
-    { href: "/admin/products", label: "Products", icon: Package },
-    { href: "/admin/orders", label: "Orders", icon: ShoppingBag },
-    { href: "/admin/settings", label: "Settings", icon: Settings },
+    { href: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard, lucideIcon: true },
+    { href: "/admin/products", label: "Products", icon: Package, lucideIcon: true },
+    { href: "/admin/orders", label: "Orders", icon: ShoppingBagMinimal, lucideIcon: false },
+    { href: "/admin/settings", label: "Settings", icon: Settings, lucideIcon: true },
   ];
 
   const isActive = (href: string) => location === href;
@@ -40,7 +41,11 @@ export default function AdminLayout({ children, onLogout }: AdminLayoutProps) {
                 onClick={() => setSidebarOpen(false)}
                 data-testid={`link-${item.label.toLowerCase()}`}
               >
-                <Icon className="h-4 w-4" />
+                {item.lucideIcon ? (
+                  <Icon className="h-4 w-4" />
+                ) : (
+                  <Icon size={16} />
+                )}
                 {item.label}
               </Button>
             </Link>
