@@ -79,29 +79,27 @@ export default function AdminLayout({ children, onLogout }: AdminLayoutProps) {
 
   return (
     <div className="min-h-screen bg-slate-50" data-testid="layout-admin">
-      <div className="lg:flex">
-        <aside className="hidden lg:flex lg:flex-col w-64 bg-white border-r border-slate-200 min-h-screen fixed">
-          <SidebarContent />
-        </aside>
+      <aside className="hidden lg:flex lg:flex-col w-64 bg-white border-r border-slate-200 h-screen fixed top-0 left-0 z-30">
+        <SidebarContent />
+      </aside>
 
-        <div className="lg:hidden fixed top-0 left-0 right-0 z-40 bg-white border-b border-slate-200 px-4 py-3 flex items-center justify-between">
-          <h2 className="text-lg font-bold">MeeyaLab Admin</h2>
-          <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" data-testid="button-menu-toggle">
-                <Menu className="h-5 w-5" />
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="left" className="w-64 p-0 flex flex-col">
-              <SidebarContent />
-            </SheetContent>
-          </Sheet>
-        </div>
-
-        <main className="flex-1 lg:ml-64 pt-16 lg:pt-0">
-          <div className="p-4 md:p-6 lg:p-8">{children}</div>
-        </main>
+      <div className="lg:hidden fixed top-0 left-0 right-0 z-40 bg-white border-b border-slate-200 px-4 py-3 flex items-center justify-between">
+        <h2 className="text-lg font-bold">MeeyaLab Admin</h2>
+        <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
+          <SheetTrigger asChild>
+            <Button variant="ghost" size="icon" data-testid="button-menu-toggle">
+              <Menu className="h-5 w-5" />
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="left" className="w-64 p-0 flex flex-col">
+            <SidebarContent />
+          </SheetContent>
+        </Sheet>
       </div>
+
+      <main className="pt-16 lg:pt-0 lg:ml-64">
+        <div className="p-4 md:p-6 lg:p-8">{children}</div>
+      </main>
     </div>
   );
 }
