@@ -46,12 +46,35 @@ Admin panel MeeyaLab saat ini memiliki foundation yang baik dengan fitur dasar s
 
 ---
 
+## 📁 PHASE IMPLEMENTATION STRUCTURE
+
+**Important:** Setiap fitur P1 memiliki file planning terpisah dengan struktur:
+- **Location:** `docs/phase-plans/PHASE_1_P{number}_{FEATURE_NAME}.md`
+- **Format:** Detailed design mockups, database schema, implementation steps
+- **Purpose:** Panduan lengkap untuk agent build design & functionality
+
+**Phase 1 Files (P1 Features):**
+1. `docs/phase-plans/PHASE_1_P1_INVENTORY_MANAGEMENT.md` - Inventory system ✅ (Design DONE)
+2. `docs/phase-plans/PHASE_1_P2_PAYMENT_VERIFICATION.md` - Payment verification 🔄 (In Progress)
+3. `docs/phase-plans/PHASE_1_P3_SHIPPING_LOGISTICS.md` - Shipping & logistics ⏳ (Pending)
+4. `docs/phase-plans/PHASE_1_P4_CUSTOMER_CRM.md` - Customer database & CRM ⏳ (Pending)
+5. `docs/phase-plans/PHASE_1_P5_ANALYTICS_REPORTING.md` - Real-time analytics ⏳ (Pending)
+6. `docs/phase-plans/PHASE_1_P6_INVOICE_MANAGEMENT.md` - Invoice & receipt ⏳ (Pending)
+7. `docs/phase-plans/PHASE_1_P7_PROMO_DISCOUNT.md` - Promo & discount ⏳ (Pending)
+8. `docs/phase-plans/PHASE_1_P8_ADMIN_USER_ROLES.md` - Admin user management ⏳ (Pending)
+
+**Phase 2 & 3 Files:** Will be created as Phase 1 completes
+
+---
+
 ## 🚀 FITUR YANG HARUS DIBANGUN (Prioritas & Design)
 
 ## PRIORITAS 1 (CRITICAL) - Wajib untuk Operasional Dasar
 *Tanpa fitur ini bisnis tidak bisa berjalan*
 
-### 📦 1. INVENTORY MANAGEMENT SYSTEM
+### 📦 1. INVENTORY MANAGEMENT SYSTEM (P1-1)
+**Status:** ✅ Design COMPLETE | ⏳ Functionality PENDING  
+**Planning File:** `docs/phase-plans/PHASE_1_P1_INVENTORY_MANAGEMENT.md`  
 **Tujuan:** Kelola stok produk secara real-time dan otomatis
 
 **Fitur Utama:**
@@ -85,9 +108,17 @@ Admin panel MeeyaLab saat ini memiliki foundation yang baik dengan fitur dasar s
 - `stock_alerts` table
 - `product_batches` table
 
+**Next Steps After Design:**
+1. Implement database tables (see planning file)
+2. Build API routes dan storage methods
+3. Connect frontend dengan backend API
+4. Test end-to-end inventory workflows
+
 ---
 
-### 💳 2. PAYMENT VERIFICATION & MANAGEMENT
+### 💳 2. PAYMENT VERIFICATION & MANAGEMENT (P1-2)
+**Status:** 🔄 Design IN PROGRESS | ⏳ Functionality PENDING  
+**Planning File:** `docs/phase-plans/PHASE_1_P2_PAYMENT_VERIFICATION.md`  
 **Tujuan:** Verifikasi pembayaran customer dan manage payment methods
 
 **Fitur Utama:**
@@ -115,9 +146,23 @@ Admin panel MeeyaLab saat ini memiliki foundation yang baik dengan fitur dasar s
 └─────────────────────────────────────────────┘
 ```
 
+**Database Schema Needed:**
+- `payment_proofs` table
+- `payment_methods` table
+- `refunds` table
+
+**Next Steps After Design:**
+1. Build PaymentVerificationPage UI component
+2. Build payment dialogs (proof viewer, rejection, refund)
+3. Implement database schema
+4. Build API routes untuk verification workflow
+5. Connect frontend dengan backend
+
 ---
 
-### 🚚 3. SHIPPING & LOGISTICS MANAGEMENT
+### 🚚 3. SHIPPING & LOGISTICS MANAGEMENT (P1-3)
+**Status:** ⏳ PENDING  
+**Planning File:** `docs/phase-plans/PHASE_1_P3_SHIPPING_LOGISTICS.md` (to be created)  
 **Tujuan:** Manage pengiriman dan tracking order
 
 **Fitur Utama:**

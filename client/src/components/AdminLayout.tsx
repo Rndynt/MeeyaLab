@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Package, LogOut, LayoutDashboard, Menu, Settings, ExternalLink, Boxes } from "lucide-react";
+import { Package, LogOut, LayoutDashboard, Menu, Settings, ExternalLink, Boxes, CreditCard } from "lucide-react";
 import ShoppingBagMinimal from "@/components/icons/ShoppingBagMinimal";
 
 interface AdminLayoutProps {
@@ -19,6 +19,7 @@ export default function AdminLayout({ children, onLogout }: AdminLayoutProps) {
     { href: "/admin/products", label: "Products", icon: Package, lucideIcon: true },
     { href: "/admin/inventory", label: "Inventory", icon: Boxes, lucideIcon: true },
     { href: "/admin/orders", label: "Orders", icon: ShoppingBagMinimal, lucideIcon: false },
+    { href: "/admin/payments", label: "Payments", icon: CreditCard, lucideIcon: true },
     { href: "/admin/settings", label: "Settings", icon: Settings, lucideIcon: true },
   ];
 
