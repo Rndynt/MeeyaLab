@@ -225,13 +225,13 @@ export default function HeroHeader({
       <section className={`relative w-full transition-colors duration-700 ${currentSlide.bgColor}`} data-testid="section-hero">
         <div className="relative pt-20 md:pt-24 pb-8 md:pb-12 lg:pb-16">
           <div className="w-full">
-            <div className="overflow-hidden -mx-4 md:mx-0" ref={emblaRef}>
+            <div className="overflow-visible md:overflow-hidden" ref={emblaRef}>
               <div className="flex touch-pan-y">
                 {slides.map((slide) => (
-                  <div key={slide.id} className="flex-[0_0_95%] md:flex-[0_0_100%] min-w-0 pl-4 md:pl-0">
-                    <div className="max-w-7xl mx-auto md:px-6">
-                      <div className="grid md:grid-cols-2 gap-6 md:gap-12 lg:gap-20 items-center min-h-[500px] md:min-h-[600px]">
-                        <div className="space-y-5 md:space-y-8 py-6 md:py-12 pr-4 md:pr-0">
+                  <div key={slide.id} className="flex-[0_0_90%] sm:flex-[0_0_95%] md:flex-[0_0_100%] min-w-0 px-2 sm:px-3 md:px-0">
+                    <div className="max-w-7xl mx-auto px-4 md:px-6">
+                      <div className="grid md:grid-cols-2 gap-6 md:gap-12 lg:gap-20 items-center min-h-[520px] md:min-h-[600px]">
+                        <div className="space-y-5 md:space-y-8 py-6 md:py-12">
                           <div className="inline-block">
                             <span className="text-xs md:text-sm font-medium text-slate-500 uppercase tracking-widest">
                               Premium Skincare
@@ -264,7 +264,7 @@ export default function HeroHeader({
                           </div>
                         </div>
 
-                        <div className="relative order-first md:order-last pr-4 md:pr-0">
+                        <div className="relative order-first md:order-last">
                           <div className="relative w-full aspect-[4/3] overflow-hidden rounded-2xl md:rounded-3xl shadow-xl md:shadow-2xl">
                             <img
                               src={slide.image}
