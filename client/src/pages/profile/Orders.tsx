@@ -256,10 +256,15 @@ export default function Orders() {
                         <CardContent className="p-4 md:p-6">
                           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 md:gap-0">
                             <div className="flex-1">
-                              <div className="flex items-start justify-between mb-2">
-                                <h3 className="font-semibold text-slate-900 text-base" data-testid={`text-order-code-${order.id}`}>
-                                  {order.orderCode}
-                                </h3>
+                              <div className="flex items-start justify-between mb-3">
+                                <div className="flex-1">
+                                  <h3 className="font-semibold text-slate-900 text-base mb-1" data-testid={`text-order-code-${order.id}`}>
+                                    {order.orderCode}
+                                  </h3>
+                                  <p className="text-sm text-slate-500" data-testid={`text-order-date-${order.id}`}>
+                                    {formatDate(order.date)}
+                                  </p>
+                                </div>
                                 <div className="md:hidden">
                                   {expandedOrders.has(order.id) ? (
                                     <ChevronUp className="h-5 w-5 text-slate-400" />
@@ -269,18 +274,13 @@ export default function Orders() {
                                 </div>
                               </div>
                               
-                              <div className="flex flex-col gap-2 md:flex-row md:items-center md:gap-3">
-                                <span 
-                                  className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border w-fit ${statusConfig[order.status].color}`}
-                                  data-testid={`badge-status-${order.id}`}
-                                >
-                                  <StatusIcon className="h-3 w-3" />
-                                  {statusConfig[order.status].label}
-                                </span>
-                                <p className="text-sm text-slate-500" data-testid={`text-order-date-${order.id}`}>
-                                  {formatDate(order.date)}
-                                </p>
-                              </div>
+                              <span 
+                                className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border w-fit ${statusConfig[order.status].color}`}
+                                data-testid={`badge-status-${order.id}`}
+                              >
+                                <StatusIcon className="h-3 w-3" />
+                                {statusConfig[order.status].label}
+                              </span>
                             </div>
                             
                             <div className="flex items-center justify-between md:justify-end md:gap-6 pt-3 md:pt-0 border-t md:border-t-0 border-slate-100">
