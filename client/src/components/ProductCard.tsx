@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Plus } from "lucide-react";
+import { Plus, Check } from "lucide-react";
+import { motion } from "framer-motion";
 
 export interface Product {
   id: string;
@@ -24,11 +26,25 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product, onAddToCart, onClick }: ProductCardProps) {
+  const [isAdding, setIsAdding] = useState(false);
+
   const formatPrice = (price: number) => {
     return `Rp${price.toLocaleString("id-ID")}`;
   };
 
   const isOutOfStock = product.inStock === false;
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (isOutOfStock || isAdding) return;
+    
+    setIsAdding(true);
+    onAddToCart?.(product);
+    
+    setTimeout(() => {
+      setIsAdding(false);
+    }, 800);
+  };
 
   return (
     <div
@@ -72,25 +88,39 @@ export default function ProductCard({ product, onAddToCart, onClick }: ProductCa
           </p>
         </div>
         <div className="flex justify-end">
-          <Button
-            variant="outline"
-            size="icon"
-            className={`h-9 w-9 rounded-md transition-all duration-300 ${
-              isOutOfStock 
-                ? 'border-slate-200 text-slate-300 bg-slate-50 cursor-not-allowed hover:bg-slate-50 hover:text-slate-300' 
-                : 'border-slate-300 text-slate-700 hover:border-slate-900 hover:bg-slate-900 hover:text-white'
-            }`}
-            onClick={(e) => {
-              e.stopPropagation();
-              !isOutOfStock && onAddToCart?.(product);
-            }}
-            disabled={isOutOfStock}
-            aria-label={isOutOfStock ? "Out of stock" : "Add to cart"}
-            title={isOutOfStock ? "Out of stock" : "Add to cart"}
-            data-testid={`button-add-to-cart-${product.id}`}
+          <motion.div
+            animate={isAdding ? { scale: [1, 0.9, 1.05, 1] } : { scale: 1 }}
+            transition={{ duration: 0.4, ease: "easeInOut" }}
           >
-            <Plus className="h-5 w-5" strokeWidth={2} />
-          </Button>
+            <Button
+              variant="outline"
+              size="icon"
+              className={`h-9 w-9 rounded-md transition-all duration-300 ${
+                isAdding
+                  ? 'border-slate-900 bg-slate-900 text-white'
+                  : isOutOfStock 
+                    ? 'border-slate-200 text-slate-300 bg-slate-50 cursor-not-allowed hover:bg-slate-50 hover:text-slate-300' 
+                    : 'border-slate-300 text-slate-700 hover:border-slate-900 hover:bg-slate-900 hover:text-white'
+              }`}
+              onClick={handleAddToCart}
+              disabled={isOutOfStock || isAdding}
+              aria-label={isOutOfStock ? "Out of stock" : isAdding ? "Adding to cart" : "Add to cart"}
+              title={isOutOfStock ? "Out of stock" : isAdding ? "Adding to cart" : "Add to cart"}
+              data-testid={`button-add-to-cart-${product.id}`}
+            >
+              <motion.div
+                initial={false}
+                animate={isAdding ? { rotate: [0, 15, -15, 0], scale: [1, 1.1, 1] } : { rotate: 0, scale: 1 }}
+                transition={{ duration: 0.4 }}
+              >
+                {isAdding ? (
+                  <Check className="h-5 w-5" strokeWidth={2.5} />
+                ) : (
+                  <Plus className="h-5 w-5" strokeWidth={2} />
+                )}
+              </motion.div>
+            </Button>
+          </motion.div>
         </div>
       </div>
     </div>
