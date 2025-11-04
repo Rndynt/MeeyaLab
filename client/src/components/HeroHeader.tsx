@@ -71,7 +71,12 @@ export default function HeroHeader({
   const [isScrolled, setIsScrolled] = useState(false);
 
   const [emblaRef, emblaApi] = useEmblaCarousel(
-    { loop: true, duration: 20 },
+    { 
+      loop: true, 
+      duration: 20,
+      align: 'start',
+      containScroll: 'trimSnaps',
+    },
     [Autoplay({ delay: 5000, stopOnInteraction: false })]
   );
 
@@ -218,49 +223,49 @@ export default function HeroHeader({
 
       {/* Full-width Hero Section with background */}
       <section className={`relative w-full transition-colors duration-700 ${currentSlide.bgColor}`} data-testid="section-hero">
-        <div className="relative pt-20 md:pt-24 pb-8 md:pb-12 lg:pb-16 overflow-hidden">
+        <div className="relative pt-20 md:pt-24 pb-8 md:pb-12 lg:pb-16">
           <div className="w-full">
-            <div className="overflow-hidden" ref={emblaRef}>
-              <div className="flex transition-opacity">
+            <div className="overflow-hidden -mx-4 md:mx-0" ref={emblaRef}>
+              <div className="flex touch-pan-y">
                 {slides.map((slide) => (
-                  <div key={slide.id} className="flex-[0_0_100%] min-w-0">
-                    <div className="max-w-7xl mx-auto px-4 md:px-6">
-                      <div className="grid md:grid-cols-2 gap-8 md:gap-12 lg:gap-20 items-center min-h-[500px] md:min-h-[600px]">
-                        <div className="space-y-6 md:space-y-8 py-8 md:py-12">
+                  <div key={slide.id} className="flex-[0_0_95%] md:flex-[0_0_100%] min-w-0 pl-4 md:pl-0">
+                    <div className="max-w-7xl mx-auto md:px-6">
+                      <div className="grid md:grid-cols-2 gap-6 md:gap-12 lg:gap-20 items-center min-h-[500px] md:min-h-[600px]">
+                        <div className="space-y-5 md:space-y-8 py-6 md:py-12 pr-4 md:pr-0">
                           <div className="inline-block">
                             <span className="text-xs md:text-sm font-medium text-slate-500 uppercase tracking-widest">
                               Premium Skincare
                             </span>
                           </div>
                           
-                          <div className="space-y-3 md:space-y-4">
-                            <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-slate-900 tracking-tight leading-[1.1]">
+                          <div className="space-y-2 md:space-y-4">
+                            <h1 className="text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-slate-900 tracking-tight leading-[1.1]">
                               {slide.title}
                             </h1>
-                            <h2 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-slate-900 tracking-tight leading-[1.1]">
+                            <h2 className="text-3xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-slate-900 tracking-tight leading-[1.1]">
                               {slide.subtitle}
                             </h2>
                           </div>
                           
-                          <p className="text-base md:text-lg text-slate-600 max-w-lg leading-relaxed">
+                          <p className="text-sm md:text-lg text-slate-600 max-w-lg leading-relaxed">
                             {slide.description}
                           </p>
                           
                           <div className="pt-2">
                             <Button
                               size="lg"
-                              className="bg-slate-900 hover:bg-slate-800 text-white px-8 py-6 md:px-10 md:py-7 text-base md:text-lg rounded-full group transition-all duration-300 shadow-lg hover:shadow-xl"
+                              className="bg-slate-900 hover:bg-slate-800 text-white px-6 py-5 md:px-10 md:py-7 text-sm md:text-lg rounded-full group transition-all duration-300 shadow-lg hover:shadow-xl"
                               onClick={onShopClick}
                               data-testid="button-shop-now"
                             >
                               {slide.cta}
-                              <ArrowRight className="ml-2 h-5 w-5 md:h-6 md:w-6 group-hover:translate-x-1 transition-transform" />
+                              <ArrowRight className="ml-2 h-4 w-4 md:h-6 md:w-6 group-hover:translate-x-1 transition-transform" />
                             </Button>
                           </div>
                         </div>
 
-                        <div className="relative order-first md:order-last">
-                          <div className="relative w-full aspect-[4/3] overflow-hidden rounded-3xl shadow-2xl">
+                        <div className="relative order-first md:order-last pr-4 md:pr-0">
+                          <div className="relative w-full aspect-[4/3] overflow-hidden rounded-2xl md:rounded-3xl shadow-xl md:shadow-2xl">
                             <img
                               src={slide.image}
                               alt={`${slide.title} - Skincare`}
