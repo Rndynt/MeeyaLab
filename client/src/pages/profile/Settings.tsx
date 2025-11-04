@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocation } from "wouter";
 import ProfileLayout from "@/components/ProfileLayout";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -11,7 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
-import { Lock, Shield, Trash2 } from "lucide-react";
+import { Lock, Shield, Trash2, ArrowLeft } from "lucide-react";
 
 const passwordSchema = z.object({
   currentPassword: z.string().min(1, "Current password is required"),
@@ -26,7 +27,12 @@ type PasswordFormData = z.infer<typeof passwordSchema>;
 
 export default function Settings() {
   const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
+  const [, setLocation] = useLocation();
   const { toast } = useToast();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const form = useForm<PasswordFormData>({
     resolver: zodResolver(passwordSchema),
@@ -58,6 +64,15 @@ export default function Settings() {
   return (
     <ProfileLayout>
       <div className="max-w-4xl mx-auto px-4 md:px-6">
+        <button
+          onClick={() => setLocation("/profile")}
+          className="flex items-center gap-2 text-slate-600 hover:text-slate-900 mb-6 transition-colors"
+          data-testid="button-back-to-profile"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          <span className="text-sm font-medium">Back to Profile</span>
+        </button>
+
         <div className="mb-8">
           <h1 className="text-2xl md:text-3xl font-bold text-slate-900 mb-2" data-testid="text-page-title">
             Account Settings

@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocation } from "wouter";
 import ProfileLayout from "@/components/ProfileLayout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { MapPin, Plus, Trash2, Edit2, Star } from "lucide-react";
+import { MapPin, Plus, Trash2, Edit2, Star, ArrowLeft } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -57,7 +58,12 @@ export default function Addresses() {
   const [addresses, setAddresses] = useState<Address[]>(mockAddresses);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingAddress, setEditingAddress] = useState<Address | null>(null);
+  const [, setLocation] = useLocation();
   const { toast } = useToast();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const form = useForm<AddressFormData>({
     resolver: zodResolver(addressSchema),
@@ -142,6 +148,15 @@ export default function Addresses() {
   return (
     <ProfileLayout>
       <div className="max-w-4xl mx-auto px-4 md:px-6">
+        <button
+          onClick={() => setLocation("/profile")}
+          className="flex items-center gap-2 text-slate-600 hover:text-slate-900 mb-6 transition-colors"
+          data-testid="button-back-to-profile"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          <span className="text-sm font-medium">Back to Profile</span>
+        </button>
+
         <div className="mb-8">
           <h1 className="text-2xl md:text-3xl font-bold text-slate-900 mb-2" data-testid="text-page-title">
             Shipping Addresses
