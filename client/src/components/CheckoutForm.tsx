@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 import {
   Collapsible,
   CollapsibleContent,
@@ -17,7 +18,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { ChevronDown, Check } from "lucide-react";
+import { ChevronDown, Check, Package, DollarSign, Tag } from "lucide-react";
 import type { CartItem } from "./CartDrawer";
 
 interface CheckoutFormProps {
@@ -371,120 +372,143 @@ export default function CheckoutForm({ cartItems, onSubmit }: CheckoutFormProps)
           </form>
         </div>
 
-        <div>
-          <Card className="sticky top-24 border border-slate-200/60 shadow-sm">
-            <CardHeader className="pb-4">
-              <CardTitle className="text-lg">Order Summary</CardTitle>
+        <div className="space-y-4">
+          <Card className="border border-slate-200/60 shadow-sm">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base font-medium flex items-center gap-2">
+                <Package className="h-4 w-4" />
+                Order Items
+              </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4 pt-0">
-              <div>
-                <table className="w-full">
-                  <tbody>
-                    {cartItems.map((item) => (
-                      <tr key={item.id} className="border-b border-slate-100 last:border-0">
-                        <td className="py-3 text-sm text-slate-600">{item.name}</td>
-                        <td className="py-3 text-sm text-center text-slate-500">x{item.quantity}</td>
-                        <td className="py-3 text-sm text-right font-medium">{formatPrice(item.price * item.quantity)}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-
-              <div className="border-t pt-4">
-                <Label className="text-sm font-medium mb-2 block">Promo Code</Label>
-                {appliedVoucher ? (
-                  <div className="flex items-center justify-between p-3 bg-cyan-50 border border-cyan-200 rounded-md">
-                    <div>
-                      <p className="text-sm font-medium text-cyan-900">{appliedVoucher.code}</p>
-                      <p className="text-xs text-cyan-700">
-                        {validVouchers.find(v => v.code === appliedVoucher.code)?.description}
+            <CardContent>
+              <div className="space-y-4">
+                {cartItems.map((item) => (
+                  <div key={item.id} className="flex items-center justify-between py-3 border-b last:border-0" data-testid={`checkout-item-${item.id}`}>
+                    <div className="flex-1">
+                      <p className="font-medium text-sm">{item.name}</p>
+                      <p className="text-xs text-slate-500">Qty: {item.quantity}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-medium text-sm">{formatPrice(item.price)}</p>
+                      <p className="text-xs text-slate-500">
+                        {formatPrice(item.price * item.quantity)}
                       </p>
                     </div>
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      onClick={handleRemoveVoucher}
-                      className="text-cyan-700 hover:text-cyan-900 hover:bg-cyan-100"
-                      data-testid="button-remove-voucher"
-                    >
-                      Remove
-                    </Button>
                   </div>
-                ) : (
-                  <div className="flex gap-2">
-                    <Input
-                      placeholder="Enter code"
-                      value={voucherCode}
-                      onChange={(e) => setVoucherCode(e.target.value.toUpperCase())}
-                      className="text-sm"
-                      data-testid="input-voucher"
-                    />
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      onClick={handleApplyVoucher}
-                      disabled={!voucherCode}
-                      className="whitespace-nowrap"
-                      data-testid="button-apply-voucher"
-                    >
-                      Apply
-                    </Button>
-                  </div>
-                )}
+                ))}
               </div>
-              
-              <div className="border-t pt-4 space-y-3">
-                <div className="flex justify-between text-sm">
-                  <span className="text-slate-600">Subtotal</span>
-                  <span className="font-medium" data-testid="text-subtotal">
-                    {formatPrice(subtotal)}
-                  </span>
-                </div>
-                
-                <div className="flex justify-between text-sm">
-                  <span className="text-slate-600">Shipping Cost</span>
-                  <span className="font-medium" data-testid="text-shipping">
-                    {baseShippingCost > 0 ? (
-                      <>
-                        {shippingCost === 0 && baseShippingCost > 0 ? (
-                          <>
-                            <span className="line-through text-slate-400 mr-2">{formatPrice(baseShippingCost)}</span>
-                            <span className="text-cyan-600">FREE</span>
-                          </>
-                        ) : (
-                          formatPrice(shippingCost)
-                        )}
-                      </>
-                    ) : "-"}
-                  </span>
-                </div>
-                
-                {selectedCourier && (
-                  <div className="text-xs text-slate-500">
-                    via {selectedCourier.label.split(" - ")[0]}
-                  </div>
-                )}
+            </CardContent>
+          </Card>
 
-                {discount > 0 && (
-                  <div className="flex justify-between text-sm">
-                    <span className="text-slate-600">Discount</span>
-                    <span className="font-medium text-cyan-600" data-testid="text-discount">
-                      -{formatPrice(discount)}
-                    </span>
+          <Card className="border border-slate-200/60 shadow-sm">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base font-medium flex items-center gap-2">
+                <Tag className="h-4 w-4" />
+                Promo Code
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              {appliedVoucher ? (
+                <div className="flex items-center justify-between p-3 bg-cyan-50 border border-cyan-200 rounded-md">
+                  <div>
+                    <p className="text-sm font-medium text-cyan-900">{appliedVoucher.code}</p>
+                    <p className="text-xs text-cyan-700">
+                      {validVouchers.find(v => v.code === appliedVoucher.code)?.description}
+                    </p>
                   </div>
-                )}
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={handleRemoveVoucher}
+                    className="text-cyan-700 hover:text-cyan-900 hover:bg-cyan-100"
+                    data-testid="button-remove-voucher"
+                  >
+                    Remove
+                  </Button>
+                </div>
+              ) : (
+                <div className="flex gap-2">
+                  <Input
+                    placeholder="Enter code"
+                    value={voucherCode}
+                    onChange={(e) => setVoucherCode(e.target.value.toUpperCase())}
+                    className="text-sm"
+                    data-testid="input-voucher"
+                  />
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={handleApplyVoucher}
+                    disabled={!voucherCode}
+                    className="whitespace-nowrap"
+                    data-testid="button-apply-voucher"
+                  >
+                    Apply
+                  </Button>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
+          <Card className="sticky top-24 border border-slate-200/60 shadow-sm">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base font-medium flex items-center gap-2">
+                <DollarSign className="h-4 w-4" />
+                Order Summary
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              <div className="flex justify-between text-sm">
+                <span className="text-slate-500">Subtotal</span>
+                <span className="font-medium" data-testid="text-subtotal">
+                  {formatPrice(subtotal)}
+                </span>
               </div>
               
-              <div className="border-t pt-4">
-                <div className="flex justify-between items-center">
-                  <span className="font-semibold text-lg">Total</span>
-                  <span className="text-xl font-bold text-cyan-600" data-testid="text-total">
-                    {formatPrice(total)}
+              <div className="flex justify-between text-sm">
+                <span className="text-slate-500">Shipping Cost</span>
+                <span className="font-medium" data-testid="text-shipping">
+                  {baseShippingCost > 0 ? (
+                    <>
+                      {shippingCost === 0 && baseShippingCost > 0 ? (
+                        <>
+                          <span className="line-through text-slate-400 mr-2">{formatPrice(baseShippingCost)}</span>
+                          <span className="text-cyan-600">FREE</span>
+                        </>
+                      ) : (
+                        formatPrice(shippingCost)
+                      )}
+                    </>
+                  ) : (
+                    <span className="text-slate-400">Select courier</span>
+                  )}
+                </span>
+              </div>
+              
+              {selectedCourier && (
+                <div className="text-xs text-slate-500 pl-4">
+                  via {selectedCourier.label.split(" - ")[0]}
+                </div>
+              )}
+
+              {discount > 0 && (
+                <div className="flex justify-between text-sm">
+                  <span className="text-slate-500">Discount</span>
+                  <span className="font-medium text-cyan-600" data-testid="text-discount">
+                    -{formatPrice(discount)}
                   </span>
                 </div>
+              )}
+
+              <Separator className="my-3" />
+              
+              <div className="flex justify-between">
+                <span className="text-sm font-semibold">Total</span>
+                <span className="font-bold text-lg" data-testid="text-total">
+                  {formatPrice(total)}
+                </span>
               </div>
             </CardContent>
           </Card>

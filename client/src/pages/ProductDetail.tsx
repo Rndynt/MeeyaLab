@@ -1,5 +1,5 @@
 import { useRoute, useLocation } from "wouter";
-import { ArrowLeft, ShoppingCart, Check } from "lucide-react";
+import { ArrowLeft, Plus, Check } from "lucide-react";
 import { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -286,27 +286,34 @@ export default function ProductDetail() {
                 <Button
                   onClick={handleAddToCart}
                   disabled={isOutOfStock}
-                  className={`flex-1 ${
+                  size="lg"
+                  className={`h-11 w-11 rounded-md transition-all duration-300 ${
                     isOutOfStock
                       ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
                       : addedToCart
-                      ? 'bg-green-600 hover:bg-green-700'
-                      : 'bg-slate-900 hover:bg-slate-800'
+                      ? 'bg-green-600 hover:bg-green-700 text-white'
+                      : 'bg-slate-900 hover:bg-slate-800 text-white'
                   }`}
+                  aria-label={
+                    isOutOfStock 
+                      ? "Out of stock" 
+                      : addedToCart 
+                      ? "Added to cart" 
+                      : "Add to cart"
+                  }
+                  title={
+                    isOutOfStock 
+                      ? "Out of stock" 
+                      : addedToCart 
+                      ? "Added to cart" 
+                      : "Add to cart"
+                  }
                   data-testid="button-add-to-cart"
                 >
                   {addedToCart ? (
-                    <>
-                      <Check className="h-4 w-4 mr-2" />
-                      Added to Cart
-                    </>
-                  ) : isOutOfStock ? (
-                    'Out of Stock'
+                    <Check className="h-5 w-5" strokeWidth={2.5} />
                   ) : (
-                    <>
-                      <ShoppingCart className="h-4 w-4 mr-2" />
-                      Add to Cart
-                    </>
+                    <Plus className="h-6 w-6" strokeWidth={2.5} />
                   )}
                 </Button>
               </div>

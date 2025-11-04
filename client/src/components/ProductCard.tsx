@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Plus } from "lucide-react";
 
 export interface Product {
   id: string;
@@ -71,21 +72,23 @@ export default function ProductCard({ product, onAddToCart, onClick }: ProductCa
           </p>
         </div>
         <Button
-          variant="outline"
-          size="sm"
-          className={`w-full transition-all duration-300 text-xs md:text-sm font-medium ${
+          variant="ghost"
+          size="icon"
+          className={`h-9 w-9 rounded-md transition-all duration-300 ${
             isOutOfStock 
-              ? 'border-slate-200 text-slate-300 bg-slate-50 cursor-not-allowed hover:bg-slate-50 hover:text-slate-300' 
-              : 'border-slate-200 text-slate-700 hover:border-slate-900 hover:bg-slate-900 hover:text-white'
+              ? 'text-slate-300 bg-slate-50 cursor-not-allowed hover:bg-slate-50 hover:text-slate-300' 
+              : 'text-slate-700 hover:bg-slate-900 hover:text-white'
           }`}
           onClick={(e) => {
             e.stopPropagation();
             !isOutOfStock && onAddToCart?.(product);
           }}
           disabled={isOutOfStock}
+          aria-label={isOutOfStock ? "Out of stock" : "Add to cart"}
+          title={isOutOfStock ? "Out of stock" : "Add to cart"}
           data-testid={`button-add-to-cart-${product.id}`}
         >
-          {isOutOfStock ? 'Out of Stock' : 'Add to Cart'}
+          <Plus className="h-5 w-5" strokeWidth={2} />
         </Button>
       </div>
     </div>
