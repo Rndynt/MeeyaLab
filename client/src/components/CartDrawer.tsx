@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetFooter } from "@/components/ui/sheet";
-import { Minus, Plus, Trash2 } from "lucide-react";
+import { Minus, Plus, Trash2, User } from "lucide-react";
 
 export interface CartItem {
   id: string;
@@ -17,6 +17,7 @@ interface CartDrawerProps {
   onUpdateQuantity?: (id: string, quantity: number) => void;
   onRemoveItem?: (id: string) => void;
   onCheckout?: () => void;
+  onLogin?: () => void;
 }
 
 export default function CartDrawer({
@@ -26,6 +27,7 @@ export default function CartDrawer({
   onUpdateQuantity,
   onRemoveItem,
   onCheckout,
+  onLogin,
 }: CartDrawerProps) {
   const formatPrice = (price: number) => {
     return `Rp${price.toLocaleString("id-ID")}`;
@@ -105,14 +107,28 @@ export default function CartDrawer({
                   {formatPrice(subtotal)}
                 </span>
               </div>
-              <Button
-                className="w-full bg-cyan-500 hover:bg-cyan-600 text-white"
-                size="lg"
-                onClick={onCheckout}
-                data-testid="button-checkout"
-              >
-                Go to checkout
-              </Button>
+              
+              <div className="w-full space-y-2">
+                <Button
+                  className="w-full bg-slate-900 hover:bg-slate-800 text-white"
+                  size="lg"
+                  onClick={onLogin}
+                  data-testid="button-login-checkout"
+                >
+                  <User className="h-4 w-4 mr-2" />
+                  Login to Checkout
+                </Button>
+                
+                <Button
+                  variant="outline"
+                  className="w-full border-slate-300 hover:bg-slate-50 text-slate-700"
+                  size="lg"
+                  onClick={onCheckout}
+                  data-testid="button-guest-checkout"
+                >
+                  Continue as Guest
+                </Button>
+              </div>
             </SheetFooter>
           </>
         )}

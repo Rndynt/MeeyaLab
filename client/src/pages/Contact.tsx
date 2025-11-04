@@ -22,6 +22,7 @@ export default function Contact() {
         onOpenChange={setCartOpen}
         items={[]}
         onCheckout={() => setCartOpen(false)}
+        onLogin={() => setCartOpen(false)}
       />
     </div>
   );

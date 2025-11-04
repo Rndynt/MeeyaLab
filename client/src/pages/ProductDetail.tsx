@@ -1,5 +1,5 @@
 import { useRoute, useLocation } from "wouter";
-import { ArrowLeft, Plus, Check } from "lucide-react";
+import { ArrowLeft, Plus, Check, Heart, ShoppingCart } from "lucide-react";
 import { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -17,6 +17,7 @@ export default function ProductDetail() {
   const [cartOpen, setCartOpen] = useState(false);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [addedToCart, setAddedToCart] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -204,6 +205,11 @@ export default function ProductDetail() {
     }
   };
 
+  const handleToggleFavorite = () => {
+    setIsFavorite(!isFavorite);
+    console.log("Toggle favorite:", product.id);
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <Header cartItemCount={cartItemCount} onCartClick={() => setCartOpen(true)} />
@@ -286,36 +292,46 @@ export default function ProductDetail() {
                 <Button
                   onClick={handleAddToCart}
                   disabled={isOutOfStock}
-                  variant={addedToCart ? "default" : "outline"}
-                  size="icon"
-                  className={`h-11 w-11 rounded-md transition-all duration-300 ${
+                  className={`flex-1 h-12 font-medium transition-all duration-300 ${
                     isOutOfStock
-                      ? 'border-slate-200 bg-slate-100 text-slate-400 cursor-not-allowed'
+                      ? 'bg-slate-100 text-slate-400 cursor-not-allowed border border-slate-200'
                       : addedToCart
-                      ? 'bg-green-600 hover:bg-green-700 text-white border-green-600'
-                      : 'border-slate-300 text-slate-700 hover:border-slate-900 hover:bg-slate-900 hover:text-white'
+                      ? 'bg-green-600 hover:bg-green-700 text-white'
+                      : 'bg-slate-900 hover:bg-slate-800 text-white'
                   }`}
-                  aria-label={
-                    isOutOfStock 
-                      ? "Out of stock" 
-                      : addedToCart 
-                      ? "Added to cart" 
-                      : "Add to cart"
-                  }
-                  title={
-                    isOutOfStock 
-                      ? "Out of stock" 
-                      : addedToCart 
-                      ? "Added to cart" 
-                      : "Add to cart"
-                  }
                   data-testid="button-add-to-cart"
                 >
                   {addedToCart ? (
-                    <Check className="h-5 w-5" strokeWidth={2.5} />
+                    <>
+                      <Check className="h-5 w-5 mr-2" strokeWidth={2.5} />
+                      Added to Cart
+                    </>
                   ) : (
-                    <Plus className="h-6 w-6" strokeWidth={2.5} />
+                    <>
+                      <ShoppingCart className="h-5 w-5 mr-2" />
+                      {isOutOfStock ? "Out of Stock" : "Add to Cart"}
+                    </>
                   )}
+                </Button>
+                
+                <Button
+                  onClick={handleToggleFavorite}
+                  variant="outline"
+                  size="icon"
+                  className={`h-12 w-12 rounded-md transition-all duration-300 ${
+                    isFavorite
+                      ? 'border-red-500 bg-red-50 hover:bg-red-100'
+                      : 'border-slate-300 hover:border-slate-400 hover:bg-slate-50'
+                  }`}
+                  aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
+                  title={isFavorite ? "Remove from favorites" : "Add to favorites"}
+                  data-testid="button-favorite"
+                >
+                  <Heart 
+                    className={`h-5 w-5 transition-all duration-300 ${
+                      isFavorite ? 'text-red-500 fill-red-500' : 'text-slate-600'
+                    }`}
+                  />
                 </Button>
               </div>
 
@@ -356,6 +372,10 @@ export default function ProductDetail() {
         onCheckout={() => {
           setCartOpen(false);
           setLocation("/checkout");
+        }}
+        onLogin={() => {
+          setCartOpen(false);
+          setLocation("/login");
         }}
       />
     </div>

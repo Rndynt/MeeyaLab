@@ -41,6 +41,7 @@ export default function CheckOrder() {
         onOpenChange={setCartOpen}
         items={[]}
         onCheckout={() => setCartOpen(false)}
+        onLogin={() => setCartOpen(false)}
       />
     </div>
   );

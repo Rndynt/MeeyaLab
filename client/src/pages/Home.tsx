@@ -115,6 +115,10 @@ export default function Home() {
           setCartOpen(false);
           setLocation("/checkout");
         }}
+        onLogin={() => {
+          setCartOpen(false);
+          setLocation("/login");
+        }}
       />
     </div>
   );

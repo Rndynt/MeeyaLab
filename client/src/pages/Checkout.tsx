@@ -38,6 +38,7 @@ export default function Checkout() {
         onUpdateQuantity={(id, qty) => console.log("Update qty:", id, qty)}
         onRemoveItem={(id) => console.log("Remove:", id)}
         onCheckout={() => setCartOpen(false)}
+        onLogin={() => setCartOpen(false)}
       />
     </div>
   );

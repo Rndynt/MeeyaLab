@@ -10,6 +10,8 @@ import ProductDetail from "@/pages/ProductDetail";
 import Checkout from "@/pages/Checkout";
 import CheckOrder from "@/pages/CheckOrder";
 import Contact from "@/pages/Contact";
+import LoginPage from "@/pages/Login";
+import Favorites from "@/pages/Favorites";
 import AdminLoginPage from "@/pages/admin/Login";
 import AdminDashboard from "@/pages/admin/Dashboard";
 import AdminProductsPage from "@/pages/admin/ProductsPage";
@@ -26,6 +28,8 @@ function Router() {
       <Route path="/checkout" component={Checkout} />
       <Route path="/check-order" component={CheckOrder} />
       <Route path="/contact" component={Contact} />
+      <Route path="/login" component={LoginPage} />
+      <Route path="/favorites" component={Favorites} />
       
       <Route path="/admin/login" component={AdminLoginPage} />
       <Route path="/admin/dashboard" component={AdminDashboard} />
