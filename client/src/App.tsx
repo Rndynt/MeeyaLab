@@ -20,6 +20,7 @@ import ProfileSettings from "@/pages/profile/Settings";
 import AdminLoginPage from "@/pages/admin/Login";
 import AdminDashboard from "@/pages/admin/Dashboard";
 import AdminProductsPage from "@/pages/admin/ProductsPage";
+import AdminInventoryPage from "@/pages/admin/InventoryPage";
 import AdminOrdersPage from "@/pages/admin/OrdersPage";
 import AdminOrderDetailPage from "@/pages/admin/OrderDetailPage";
 import AdminSettingsPage from "@/pages/admin/SettingsPage";
@@ -44,6 +45,7 @@ function Router() {
       <Route path="/admin/login" component={AdminLoginPage} />
       <Route path="/admin/dashboard" component={AdminDashboard} />
       <Route path="/admin/products" component={AdminProductsPage} />
+      <Route path="/admin/inventory" component={AdminInventoryPage} />
       <Route path="/admin/orders/:id" component={AdminOrderDetailPage} />
       <Route path="/admin/orders" component={AdminOrdersPage} />
       <Route path="/admin/settings" component={AdminSettingsPage} />

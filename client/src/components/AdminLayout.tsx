@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Package, LogOut, LayoutDashboard, Menu, Settings, ExternalLink } from "lucide-react";
+import { Package, LogOut, LayoutDashboard, Menu, Settings, ExternalLink, Boxes } from "lucide-react";
 import ShoppingBagMinimal from "@/components/icons/ShoppingBagMinimal";
 
 interface AdminLayoutProps {
@@ -17,6 +17,7 @@ export default function AdminLayout({ children, onLogout }: AdminLayoutProps) {
   const menuItems = [
     { href: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard, lucideIcon: true },
     { href: "/admin/products", label: "Products", icon: Package, lucideIcon: true },
+    { href: "/admin/inventory", label: "Inventory", icon: Boxes, lucideIcon: true },
     { href: "/admin/orders", label: "Orders", icon: ShoppingBagMinimal, lucideIcon: false },
     { href: "/admin/settings", label: "Settings", icon: Settings, lucideIcon: true },
   ];
@@ -79,11 +80,11 @@ export default function AdminLayout({ children, onLogout }: AdminLayoutProps) {
 
   return (
     <div className="min-h-screen bg-slate-50" data-testid="layout-admin">
-      <aside className="hidden lg:flex lg:flex-col w-64 bg-white border-r border-slate-200 h-screen fixed top-0 left-0 z-30">
+      <aside className="hidden md:flex md:flex-col w-64 bg-white border-r border-slate-200 h-screen fixed top-0 left-0 z-30">
         <SidebarContent />
       </aside>
 
-      <div className="lg:hidden fixed top-0 left-0 right-0 z-40 bg-white border-b border-slate-200 px-4 py-3 flex items-center justify-between">
+      <div className="md:hidden fixed top-0 left-0 right-0 z-40 bg-white border-b border-slate-200 px-4 py-3 flex items-center justify-between">
         <h2 className="text-lg font-bold">MeeyaLab Admin</h2>
         <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
           <SheetTrigger asChild>
@@ -97,7 +98,7 @@ export default function AdminLayout({ children, onLogout }: AdminLayoutProps) {
         </Sheet>
       </div>
 
-      <main className="pt-16 lg:pt-0 lg:ml-64">
+      <main className="pt-16 md:pt-0 md:ml-64">
         <div className="p-4 md:p-6 lg:p-8">{children}</div>
       </main>
     </div>
