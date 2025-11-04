@@ -17,7 +17,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Plus, Download, Package, History, PackageOpen, PackageSearch, PackageX, Search } from "lucide-react";
+import { Plus, Download, Package, History, PackageOpen, PackageSearch, PackageX, Search, AlertTriangle } from "lucide-react";
 
 interface InventoryItem {
   id: string;
@@ -212,11 +212,14 @@ export default function InventoryPage() {
   return (
     <AdminLayout onLogout={() => setLocation("/admin/login")}>
       <div data-testid="inventory-page" className="space-y-6">
-        <div className="flex flex-col gap-4">
-          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
-            <h1 className="text-3xl font-bold tracking-tight">Inventory Management</h1>
+        <div className="flex flex-col gap-6">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
+            <div>
+              <h1 className="text-3xl font-bold tracking-tight">Inventory Management</h1>
+              <p className="text-sm text-slate-500 mt-1">Track and manage your product inventory</p>
+            </div>
             <Button
-              className="bg-cyan-500 hover:bg-cyan-600 transition-colors sm:w-auto w-full"
+              className="bg-cyan-500 hover:bg-cyan-600 transition-all shadow-sm hover:shadow-md sm:w-auto w-full"
               onClick={() => setAdjustmentDialogOpen(true)}
               data-testid="button-add-adjustment"
             >
@@ -224,12 +227,13 @@ export default function InventoryPage() {
               Stock Adjustment
             </Button>
           </div>
-          <div className="flex flex-wrap gap-2">
+          
+          <div className="flex flex-wrap gap-3">
             <Button
               variant="outline"
               onClick={handleViewHistory}
               data-testid="button-view-history"
-              className="transition-colors hover:bg-slate-50"
+              className="transition-all hover:bg-slate-50 hover:border-cyan-300 shadow-sm"
             >
               <History className="h-4 w-4 mr-2" />
               <span className="hidden sm:inline">Stock History</span>
@@ -239,7 +243,7 @@ export default function InventoryPage() {
               variant="outline"
               onClick={handleManageBatches}
               data-testid="button-manage-batches"
-              className="transition-colors hover:bg-slate-50"
+              className="transition-all hover:bg-slate-50 hover:border-cyan-300 shadow-sm"
             >
               <PackageOpen className="h-4 w-4 mr-2" />
               <span className="hidden sm:inline">Manage Batches</span>
@@ -249,7 +253,7 @@ export default function InventoryPage() {
               variant="outline"
               onClick={handleBulkStockUpdate}
               data-testid="button-bulk-update"
-              className="transition-colors hover:bg-slate-50"
+              className="transition-all hover:bg-slate-50 hover:border-cyan-300 shadow-sm"
             >
               <Package className="h-4 w-4 mr-2" />
               <span className="hidden sm:inline">Bulk Update</span>
@@ -259,7 +263,7 @@ export default function InventoryPage() {
               variant="outline"
               onClick={handleExportReport}
               data-testid="button-export-report"
-              className="transition-colors hover:bg-slate-50"
+              className="transition-all hover:bg-slate-50 hover:border-cyan-300 shadow-sm"
             >
               <Download className="h-4 w-4 mr-2" />
               <span className="hidden sm:inline">Export Report</span>
@@ -277,42 +281,45 @@ export default function InventoryPage() {
           onFilterExpiringBatches={() => console.log("Filter expiring batches")}
         />
 
-        <div className="bg-white rounded-lg border border-slate-200 p-6 shadow-sm">
-          <div className="flex flex-col gap-4">
+        <div className="bg-gradient-to-br from-white to-slate-50/50 rounded-xl border border-slate-200 p-6 shadow-sm">
+          <div className="flex flex-col gap-5">
             <div className="flex flex-col sm:flex-row gap-4 justify-between items-stretch sm:items-center">
               <div className="flex flex-wrap gap-2">
                 <Button
                   variant={filter === "all" ? "default" : "outline"}
                   onClick={() => setFilter("all")}
-                  className={filter === "all" ? "bg-cyan-500 hover:bg-cyan-600 transition-colors" : "transition-colors hover:bg-slate-50"}
+                  className={filter === "all" ? "bg-cyan-500 hover:bg-cyan-600 transition-all shadow-sm" : "transition-all hover:bg-slate-50 hover:border-cyan-200 shadow-sm"}
                   data-testid="button-filter-all"
                 >
+                  <Package className="h-4 w-4 mr-2" />
                   All Products
                 </Button>
                 <Button
                   variant={filter === "low" ? "default" : "outline"}
                   onClick={() => setFilter("low")}
-                  className={filter === "low" ? "bg-yellow-500 hover:bg-yellow-600 transition-colors" : "transition-colors hover:bg-slate-50"}
+                  className={filter === "low" ? "bg-yellow-500 hover:bg-yellow-600 transition-all shadow-sm" : "transition-all hover:bg-slate-50 hover:border-yellow-200 shadow-sm"}
                   data-testid="button-filter-low"
                 >
+                  <AlertTriangle className="h-4 w-4 mr-2" />
                   Low Stock
                 </Button>
                 <Button
                   variant={filter === "out" ? "default" : "outline"}
                   onClick={() => setFilter("out")}
-                  className={filter === "out" ? "bg-red-500 hover:bg-red-600 transition-colors" : "transition-colors hover:bg-slate-50"}
+                  className={filter === "out" ? "bg-red-500 hover:bg-red-600 transition-all shadow-sm" : "transition-all hover:bg-slate-50 hover:border-red-200 shadow-sm"}
                   data-testid="button-filter-out"
                 >
+                  <PackageX className="h-4 w-4 mr-2" />
                   Out of Stock
                 </Button>
               </div>
-              <div className="relative flex-1 sm:flex-none sm:w-64">
+              <div className="relative flex-1 sm:flex-none sm:w-72">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400" />
                 <Input
                   placeholder="Search by product name..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 transition-colors focus:ring-2 focus:ring-cyan-500"
+                  className="w-full pl-10 transition-all focus:ring-2 focus:ring-cyan-500/20 focus:border-cyan-300 shadow-sm"
                   data-testid="input-search"
                 />
               </div>
@@ -320,21 +327,21 @@ export default function InventoryPage() {
           </div>
         </div>
 
-        <div className="bg-white rounded-lg border border-slate-200 overflow-hidden shadow-sm">
+        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
           {filteredItems.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-16 px-6 text-center">
+            <div className="flex flex-col items-center justify-center py-20 px-6 text-center animate-in fade-in duration-300">
               {(() => {
                 const EmptyIcon = getEmptyStateContent().icon;
                 const content = getEmptyStateContent();
                 return (
                   <>
-                    <div className="mb-4 rounded-full bg-slate-100 p-6">
-                      <EmptyIcon className="h-12 w-12 text-slate-400" />
+                    <div className="mb-6 rounded-full bg-gradient-to-br from-slate-100 to-slate-200/50 p-8 shadow-sm">
+                      <EmptyIcon className="h-14 w-14 text-slate-400" />
                     </div>
-                    <h3 className="text-lg font-semibold text-slate-900 mb-2">
+                    <h3 className="text-xl font-semibold text-slate-900 mb-2">
                       {content.title}
                     </h3>
-                    <p className="text-sm text-slate-500 max-w-md">
+                    <p className="text-sm text-slate-500 max-w-md leading-relaxed">
                       {content.description}
                     </p>
                   </>
@@ -342,16 +349,16 @@ export default function InventoryPage() {
               })()}
             </div>
           ) : (
-            <div className="overflow-x-auto">
-              <Table>
+            <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-slate-100">
+              <Table className="min-w-full">
                 <TableHeader>
-                  <TableRow>
-                    <TableHead>Product Name</TableHead>
-                    <TableHead className="text-right">Current Stock</TableHead>
-                    <TableHead className="text-right">Reserved Stock</TableHead>
-                    <TableHead className="text-right">Available Stock</TableHead>
-                    <TableHead className="text-right">Reorder Point</TableHead>
-                    <TableHead>Status</TableHead>
+                  <TableRow className="bg-gradient-to-r from-slate-50 to-slate-100/50">
+                    <TableHead className="font-semibold whitespace-nowrap min-w-[180px]">Product Name</TableHead>
+                    <TableHead className="text-right font-semibold whitespace-nowrap min-w-[120px]">Current Stock</TableHead>
+                    <TableHead className="text-right font-semibold whitespace-nowrap min-w-[130px]">Reserved Stock</TableHead>
+                    <TableHead className="text-right font-semibold whitespace-nowrap min-w-[140px]">Available Stock</TableHead>
+                    <TableHead className="text-right font-semibold whitespace-nowrap min-w-[120px]">Reorder Point</TableHead>
+                    <TableHead className="font-semibold whitespace-nowrap min-w-[120px]">Status</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -362,9 +369,9 @@ export default function InventoryPage() {
                       <TableRow 
                         key={item.id} 
                         data-testid={`row-inventory-${item.id}`}
-                        className="transition-colors hover:bg-slate-50"
+                        className="transition-all duration-200 hover:bg-slate-50/70 hover:shadow-sm"
                       >
-                        <TableCell className="font-medium">{item.productName}</TableCell>
+                        <TableCell className="font-medium whitespace-nowrap">{item.productName}</TableCell>
                         <TableCell className="text-right" data-testid={`text-current-stock-${item.id}`}>
                           {item.currentStock}
                         </TableCell>

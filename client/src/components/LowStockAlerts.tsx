@@ -21,15 +21,21 @@ export default function LowStockAlerts({
   onFilterExpiringBatches,
 }: LowStockAlertsProps) {
   const hasAlerts = lowStockCount > 0 || outOfStockCount > 0 || expiringBatchesCount > 0;
+  const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const animationProps = prefersReducedMotion 
+    ? {} 
+    : {
+        initial: { opacity: 0, y: -10 },
+        animate: { opacity: 1, y: 0 },
+        exit: { opacity: 0, height: 0 },
+        transition: { duration: 0.3 }
+      };
 
   if (!hasAlerts) {
     return (
       <div className="mb-6" data-testid="low-stock-alerts">
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
-        >
+        <motion.div {...animationProps}>
           <Alert className="border-green-600 bg-green-50" data-testid="alert-all-clear">
             <CheckCircle className="h-4 w-4 text-green-600 mr-3" />
             <AlertTitle className="text-green-800">All Clear</AlertTitle>
@@ -48,10 +54,7 @@ export default function LowStockAlerts({
         {outOfStockCount > 0 && (
           <motion.div
             key="out-of-stock"
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
+            {...animationProps}
           >
             <Alert variant="destructive" data-testid="alert-out-of-stock">
               <XCircle className="h-4 w-4 mr-3" />
@@ -77,10 +80,7 @@ export default function LowStockAlerts({
         {lowStockCount > 0 && (
           <motion.div
             key="low-stock"
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
+            {...animationProps}
           >
             <Alert className="border-yellow-600 bg-yellow-50" data-testid="alert-low-stock">
               <AlertTriangle className="h-4 w-4 text-yellow-600 mr-3" />
@@ -106,10 +106,7 @@ export default function LowStockAlerts({
         {expiringBatchesCount > 0 && (
           <motion.div
             key="expiring-batches"
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
+            {...animationProps}
           >
             <Alert className="border-red-600 bg-red-50" data-testid="alert-expiring-batches">
               <Clock className="h-4 w-4 text-red-600 mr-3" />
