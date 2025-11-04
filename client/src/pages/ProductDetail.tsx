@@ -286,13 +286,14 @@ export default function ProductDetail() {
                 <Button
                   onClick={handleAddToCart}
                   disabled={isOutOfStock}
-                  size="lg"
+                  variant={addedToCart ? "default" : "outline"}
+                  size="icon"
                   className={`h-11 w-11 rounded-md transition-all duration-300 ${
                     isOutOfStock
-                      ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
+                      ? 'border-slate-200 bg-slate-100 text-slate-400 cursor-not-allowed'
                       : addedToCart
-                      ? 'bg-green-600 hover:bg-green-700 text-white'
-                      : 'bg-slate-900 hover:bg-slate-800 text-white'
+                      ? 'bg-green-600 hover:bg-green-700 text-white border-green-600'
+                      : 'border-slate-300 text-slate-700 hover:border-slate-900 hover:bg-slate-900 hover:text-white'
                   }`}
                   aria-label={
                     isOutOfStock 

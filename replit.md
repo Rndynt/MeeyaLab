@@ -18,6 +18,7 @@ Preferred communication style: Simple, everyday language.
     - **Component Redesigns**: Redesigned Toast Notifications, Dialog components (fixed header/footer), Product Cards, Checkout page (collapsible sections, voucher system), Footer (three-column responsive layout), Admin layout (responsive, "Visit Store" link).
     - **Product Detail Page**: Dedicated page with detailed product info (description, ingredients, usage, benefits), responsive layout, and Add to Cart functionality.
     - **Admin Order Management**: Detailed order view with customer info, shipping, order summary, items, notes, and status updates. Orders are grouped by date and include status filtering.
+    - **Add to Cart Design**: Icon-only buttons using Plus icon (not ShoppingCart) with square shape and rounded corners (rounded-md), includes full accessibility support (aria-label, title tooltips), shows Check icon when item added successfully.
 
 ### Backend
 - **Server Framework**: Express.js with TypeScript for API endpoints.
