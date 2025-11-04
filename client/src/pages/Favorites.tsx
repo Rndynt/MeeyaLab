@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import CartDrawer, { type CartItem } from "@/components/CartDrawer";
 import { Button } from "@/components/ui/button";
-import { Heart } from "lucide-react";
+import { Heart, ArrowLeft } from "lucide-react";
 import ShoppingBagMinimal from "@/components/icons/ShoppingBagMinimal";
 import serum from "@assets/generated_images/White_serum_bottle_product_aa8e546e.png";
 import cream from "@assets/generated_images/White_cream_jar_product_ad76191c.png";
@@ -18,11 +18,15 @@ interface FavoriteProduct {
 }
 
 export default function Favorites() {
-  const [, setLocation] = useLocation();
+  const [location, setLocation] = useLocation();
   const [cartOpen, setCartOpen] = useState(false);
   
   const cartItems: CartItem[] = [];
   const cartItemCount = 0;
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [location]);
 
   const favoriteProducts: FavoriteProduct[] = [
     {
@@ -59,6 +63,15 @@ export default function Favorites() {
       
       <main className="flex-1">
         <div className="max-w-7xl mx-auto px-4 md:px-6 py-8 pt-24 md:pt-28">
+          <button
+            onClick={() => setLocation("/profile")}
+            className="flex items-center gap-2 text-slate-600 hover:text-slate-900 mb-6 transition-colors"
+            data-testid="button-back-to-profile"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            <span className="text-sm font-medium">Back to Profile</span>
+          </button>
+
           <div className="mb-8">
             <h1 className="text-2xl md:text-3xl font-bold text-slate-900 mb-2" data-testid="text-page-title">
               My Favorites

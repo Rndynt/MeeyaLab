@@ -105,11 +105,11 @@ export default function Orders() {
   const [orders] = useState<Order[]>(mockOrders);
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("ALL");
   const [expandedOrders, setExpandedOrders] = useState<Set<string>>(new Set(["1"]));
-  const [, setLocation] = useLocation();
+  const [location, setLocation] = useLocation();
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [location]);
 
   const toggleOrder = (orderId: string) => {
     setExpandedOrders(prev => {
@@ -253,36 +253,44 @@ export default function Orders() {
                   >
                     <CollapsibleTrigger asChild>
                       <button className="w-full">
-                        <CardContent className="p-6">
-                          <div className="flex items-center justify-between">
-                            <div className="flex-1 flex items-center gap-4">
-                              <div className="flex-1">
-                                <div className="flex items-center gap-3 mb-1.5">
-                                  <h3 className="font-semibold text-slate-900 text-base" data-testid={`text-order-code-${order.id}`}>
-                                    {order.orderCode}
-                                  </h3>
-                                  <span 
-                                    className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border ${statusConfig[order.status].color}`}
-                                    data-testid={`badge-status-${order.id}`}
-                                  >
-                                    <StatusIcon className="h-3 w-3" />
-                                    {statusConfig[order.status].label}
-                                  </span>
+                        <CardContent className="p-4 md:p-6">
+                          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 md:gap-0">
+                            <div className="flex-1">
+                              <div className="flex items-start justify-between mb-2">
+                                <h3 className="font-semibold text-slate-900 text-base" data-testid={`text-order-code-${order.id}`}>
+                                  {order.orderCode}
+                                </h3>
+                                <div className="md:hidden">
+                                  {expandedOrders.has(order.id) ? (
+                                    <ChevronUp className="h-5 w-5 text-slate-400" />
+                                  ) : (
+                                    <ChevronDown className="h-5 w-5 text-slate-400" />
+                                  )}
                                 </div>
+                              </div>
+                              
+                              <div className="flex flex-col gap-2 md:flex-row md:items-center md:gap-3">
+                                <span 
+                                  className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border w-fit ${statusConfig[order.status].color}`}
+                                  data-testid={`badge-status-${order.id}`}
+                                >
+                                  <StatusIcon className="h-3 w-3" />
+                                  {statusConfig[order.status].label}
+                                </span>
                                 <p className="text-sm text-slate-500" data-testid={`text-order-date-${order.id}`}>
                                   {formatDate(order.date)}
                                 </p>
                               </div>
                             </div>
                             
-                            <div className="flex items-center gap-6">
-                              <div className="text-right">
+                            <div className="flex items-center justify-between md:justify-end md:gap-6 pt-3 md:pt-0 border-t md:border-t-0 border-slate-100">
+                              <div className="text-left md:text-right">
                                 <p className="text-xs text-slate-500 mb-0.5">Total</p>
                                 <p className="text-lg font-semibold text-slate-900" data-testid={`text-order-total-${order.id}`}>
                                   {formatPrice(order.total)}
                                 </p>
                               </div>
-                              <div className="ml-2">
+                              <div className="hidden md:block ml-2">
                                 {expandedOrders.has(order.id) ? (
                                   <ChevronUp className="h-5 w-5 text-slate-400" />
                                 ) : (

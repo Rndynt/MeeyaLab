@@ -23,12 +23,12 @@ export default function Notifications() {
     newsletter: true,
   });
 
-  const [, setLocation] = useLocation();
+  const [location, setLocation] = useLocation();
   const { toast } = useToast();
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [location]);
 
   const handleToggle = (key: keyof NotificationPreferences) => {
     setPreferences(prev => ({

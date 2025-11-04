@@ -58,12 +58,12 @@ export default function Addresses() {
   const [addresses, setAddresses] = useState<Address[]>(mockAddresses);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingAddress, setEditingAddress] = useState<Address | null>(null);
-  const [, setLocation] = useLocation();
+  const [location, setLocation] = useLocation();
   const { toast } = useToast();
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [location]);
 
   const form = useForm<AddressFormData>({
     resolver: zodResolver(addressSchema),

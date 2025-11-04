@@ -27,12 +27,12 @@ type PasswordFormData = z.infer<typeof passwordSchema>;
 
 export default function Settings() {
   const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);
-  const [, setLocation] = useLocation();
+  const [location, setLocation] = useLocation();
   const { toast } = useToast();
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [location]);
 
   const form = useForm<PasswordFormData>({
     resolver: zodResolver(passwordSchema),
