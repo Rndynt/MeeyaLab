@@ -17,7 +17,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Plus, Download, Package, History, PackageOpen } from "lucide-react";
+import { Plus, Download, Package, History, PackageOpen, PackageSearch, PackageX, Search } from "lucide-react";
 
 interface InventoryItem {
   id: string;
@@ -107,11 +107,11 @@ export default function InventoryPage() {
   const getStatusBadge = (status: "good" | "low" | "out") => {
     switch (status) {
       case "good":
-        return <Badge className="bg-green-500 hover:bg-green-600" data-testid="badge-status-good">In Stock</Badge>;
+        return <Badge className="bg-green-500 hover:bg-green-600 transition-colors" data-testid="badge-status-good">In Stock</Badge>;
       case "low":
-        return <Badge className="bg-yellow-500 hover:bg-yellow-600" data-testid="badge-status-low">Low Stock</Badge>;
+        return <Badge className="bg-yellow-500 hover:bg-yellow-600 transition-colors" data-testid="badge-status-low">Low Stock</Badge>;
       case "out":
-        return <Badge variant="destructive" data-testid="badge-status-out">Out of Stock</Badge>;
+        return <Badge variant="destructive" className="transition-colors" data-testid="badge-status-out">Out of Stock</Badge>;
     }
   };
 
@@ -178,51 +178,92 @@ export default function InventoryPage() {
     name: item.productName,
   }));
 
+  const getEmptyStateContent = () => {
+    if (searchQuery && filteredItems.length === 0) {
+      return {
+        icon: PackageSearch,
+        title: "No products match your search",
+        description: `We couldn't find any products matching "${searchQuery}". Try adjusting your search terms.`,
+      };
+    }
+
+    switch (filter) {
+      case "low":
+        return {
+          icon: Package,
+          title: "No low stock items",
+          description: "Great news! All your products are well-stocked above their reorder points.",
+        };
+      case "out":
+        return {
+          icon: PackageX,
+          title: "No out of stock items",
+          description: "Excellent! All products currently have inventory available.",
+        };
+      default:
+        return {
+          icon: Package,
+          title: "No inventory items yet",
+          description: "Start by adding products to your inventory using the Stock Adjustment button.",
+        };
+    }
+  };
+
   return (
     <AdminLayout onLogout={() => setLocation("/admin/login")}>
-      <div data-testid="inventory-page">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-          <h1 className="text-2xl font-bold">Inventory Management</h1>
-          <div className="flex flex-wrap gap-2">
+      <div data-testid="inventory-page" className="space-y-6">
+        <div className="flex flex-col gap-4">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+            <h1 className="text-3xl font-bold tracking-tight">Inventory Management</h1>
             <Button
-              variant="outline"
-              onClick={handleViewHistory}
-              data-testid="button-view-history"
-            >
-              <History className="h-4 w-4 mr-2" />
-              Stock History
-            </Button>
-            <Button
-              variant="outline"
-              onClick={handleManageBatches}
-              data-testid="button-manage-batches"
-            >
-              <PackageOpen className="h-4 w-4 mr-2" />
-              Manage Batches
-            </Button>
-            <Button
-              variant="outline"
-              onClick={handleBulkStockUpdate}
-              data-testid="button-bulk-update"
-            >
-              <Package className="h-4 w-4 mr-2" />
-              Bulk Update
-            </Button>
-            <Button
-              variant="outline"
-              onClick={handleExportReport}
-              data-testid="button-export-report"
-            >
-              <Download className="h-4 w-4 mr-2" />
-              Export Report
-            </Button>
-            <Button
-              className="bg-cyan-500 hover:bg-cyan-600"
+              className="bg-cyan-500 hover:bg-cyan-600 transition-colors sm:w-auto w-full"
               onClick={() => setAdjustmentDialogOpen(true)}
               data-testid="button-add-adjustment"
             >
               <Plus className="h-4 w-4 mr-2" />
               Stock Adjustment
+            </Button>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <Button
+              variant="outline"
+              onClick={handleViewHistory}
+              data-testid="button-view-history"
+              className="transition-colors hover:bg-slate-50"
+            >
+              <History className="h-4 w-4 mr-2" />
+              <span className="hidden sm:inline">Stock History</span>
+              <span className="sm:hidden">History</span>
+            </Button>
+            <Button
+              variant="outline"
+              onClick={handleManageBatches}
+              data-testid="button-manage-batches"
+              className="transition-colors hover:bg-slate-50"
+            >
+              <PackageOpen className="h-4 w-4 mr-2" />
+              <span className="hidden sm:inline">Manage Batches</span>
+              <span className="sm:hidden">Batches</span>
+            </Button>
+            <Button
+              variant="outline"
+              onClick={handleBulkStockUpdate}
+              data-testid="button-bulk-update"
+              className="transition-colors hover:bg-slate-50"
+            >
+              <Package className="h-4 w-4 mr-2" />
+              <span className="hidden sm:inline">Bulk Update</span>
+              <span className="sm:hidden">Bulk</span>
+            </Button>
+            <Button
+              variant="outline"
+              onClick={handleExportReport}
+              data-testid="button-export-report"
+              className="transition-colors hover:bg-slate-50"
+            >
+              <Download className="h-4 w-4 mr-2" />
+              <span className="hidden sm:inline">Export Report</span>
+              <span className="sm:hidden">Export</span>
             </Button>
           </div>
         </div>
@@ -236,70 +277,93 @@ export default function InventoryPage() {
           onFilterExpiringBatches={() => console.log("Filter expiring batches")}
         />
 
-        <div className="bg-white rounded-lg border border-slate-200 p-4 mb-4">
-          <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
-            <div className="flex gap-2">
-              <Button
-                variant={filter === "all" ? "default" : "outline"}
-                onClick={() => setFilter("all")}
-                className={filter === "all" ? "bg-cyan-500 hover:bg-cyan-600" : ""}
-                data-testid="button-filter-all"
-              >
-                All Products
-              </Button>
-              <Button
-                variant={filter === "low" ? "default" : "outline"}
-                onClick={() => setFilter("low")}
-                className={filter === "low" ? "bg-yellow-500 hover:bg-yellow-600" : ""}
-                data-testid="button-filter-low"
-              >
-                Low Stock
-              </Button>
-              <Button
-                variant={filter === "out" ? "default" : "outline"}
-                onClick={() => setFilter("out")}
-                className={filter === "out" ? "bg-red-500 hover:bg-red-600" : ""}
-                data-testid="button-filter-out"
-              >
-                Out of Stock
-              </Button>
+        <div className="bg-white rounded-lg border border-slate-200 p-6 shadow-sm">
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col sm:flex-row gap-4 justify-between items-stretch sm:items-center">
+              <div className="flex flex-wrap gap-2">
+                <Button
+                  variant={filter === "all" ? "default" : "outline"}
+                  onClick={() => setFilter("all")}
+                  className={filter === "all" ? "bg-cyan-500 hover:bg-cyan-600 transition-colors" : "transition-colors hover:bg-slate-50"}
+                  data-testid="button-filter-all"
+                >
+                  All Products
+                </Button>
+                <Button
+                  variant={filter === "low" ? "default" : "outline"}
+                  onClick={() => setFilter("low")}
+                  className={filter === "low" ? "bg-yellow-500 hover:bg-yellow-600 transition-colors" : "transition-colors hover:bg-slate-50"}
+                  data-testid="button-filter-low"
+                >
+                  Low Stock
+                </Button>
+                <Button
+                  variant={filter === "out" ? "default" : "outline"}
+                  onClick={() => setFilter("out")}
+                  className={filter === "out" ? "bg-red-500 hover:bg-red-600 transition-colors" : "transition-colors hover:bg-slate-50"}
+                  data-testid="button-filter-out"
+                >
+                  Out of Stock
+                </Button>
+              </div>
+              <div className="relative flex-1 sm:flex-none sm:w-64">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400" />
+                <Input
+                  placeholder="Search by product name..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-10 transition-colors focus:ring-2 focus:ring-cyan-500"
+                  data-testid="input-search"
+                />
+              </div>
             </div>
-            <Input
-              placeholder="Search by product name..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full sm:w-64"
-              data-testid="input-search"
-            />
           </div>
         </div>
 
-        <div className="bg-white rounded-lg border border-slate-200 overflow-hidden">
-          <div className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Product Name</TableHead>
-                  <TableHead className="text-right">Current Stock</TableHead>
-                  <TableHead className="text-right">Reserved Stock</TableHead>
-                  <TableHead className="text-right">Available Stock</TableHead>
-                  <TableHead className="text-right">Reorder Point</TableHead>
-                  <TableHead>Status</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredItems.length === 0 ? (
+        <div className="bg-white rounded-lg border border-slate-200 overflow-hidden shadow-sm">
+          {filteredItems.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-16 px-6 text-center">
+              {(() => {
+                const EmptyIcon = getEmptyStateContent().icon;
+                const content = getEmptyStateContent();
+                return (
+                  <>
+                    <div className="mb-4 rounded-full bg-slate-100 p-6">
+                      <EmptyIcon className="h-12 w-12 text-slate-400" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-slate-900 mb-2">
+                      {content.title}
+                    </h3>
+                    <p className="text-sm text-slate-500 max-w-md">
+                      {content.description}
+                    </p>
+                  </>
+                );
+              })()}
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
                   <TableRow>
-                    <TableCell colSpan={6} className="text-center text-slate-500 py-8">
-                      No products found
-                    </TableCell>
+                    <TableHead>Product Name</TableHead>
+                    <TableHead className="text-right">Current Stock</TableHead>
+                    <TableHead className="text-right">Reserved Stock</TableHead>
+                    <TableHead className="text-right">Available Stock</TableHead>
+                    <TableHead className="text-right">Reorder Point</TableHead>
+                    <TableHead>Status</TableHead>
                   </TableRow>
-                ) : (
-                  filteredItems.map((item) => {
+                </TableHeader>
+                <TableBody>
+                  {filteredItems.map((item) => {
                     const availableStock = item.currentStock - item.reservedStock;
                     const status = getStockStatus(item);
                     return (
-                      <TableRow key={item.id} data-testid={`row-inventory-${item.id}`}>
+                      <TableRow 
+                        key={item.id} 
+                        data-testid={`row-inventory-${item.id}`}
+                        className="transition-colors hover:bg-slate-50"
+                      >
                         <TableCell className="font-medium">{item.productName}</TableCell>
                         <TableCell className="text-right" data-testid={`text-current-stock-${item.id}`}>
                           {item.currentStock}
@@ -316,11 +380,11 @@ export default function InventoryPage() {
                         <TableCell>{getStatusBadge(status)}</TableCell>
                       </TableRow>
                     );
-                  })
-                )}
-              </TableBody>
-            </Table>
-          </div>
+                  })}
+                </TableBody>
+              </Table>
+            </div>
+          )}
         </div>
 
         <StockAdjustmentDialog

@@ -18,7 +18,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Calendar, TrendingUp, TrendingDown, FileEdit, Package2, ShoppingCart } from "lucide-react";
+import { Calendar, TrendingUp, TrendingDown, FileEdit, Package2, ShoppingCart, ClipboardList } from "lucide-react";
 import { format } from "date-fns";
 
 interface StockTransaction {
@@ -165,6 +165,32 @@ export default function StockHistoryView({
 
         <DialogBody>
           <div className="space-y-4">
+            <div className="bg-slate-50 border border-slate-200 rounded-lg p-4">
+              <p className="text-sm font-medium text-slate-700 mb-3">Transaction Types Legend</p>
+              <div className="flex flex-wrap gap-4">
+                <div className="flex items-center gap-2" data-testid="legend-stock-in">
+                  <TrendingUp className="h-4 w-4 text-green-600" />
+                  <Badge className="bg-green-100 text-green-800 hover:bg-green-100">Stock In</Badge>
+                </div>
+                <div className="flex items-center gap-2" data-testid="legend-stock-out">
+                  <TrendingDown className="h-4 w-4 text-red-600" />
+                  <Badge className="bg-red-100 text-red-800 hover:bg-red-100">Stock Out</Badge>
+                </div>
+                <div className="flex items-center gap-2" data-testid="legend-adjustment">
+                  <FileEdit className="h-4 w-4 text-cyan-600" />
+                  <Badge className="bg-cyan-100 text-cyan-800 hover:bg-cyan-100">Adjustment</Badge>
+                </div>
+                <div className="flex items-center gap-2" data-testid="legend-order">
+                  <ShoppingCart className="h-4 w-4 text-yellow-600" />
+                  <Badge className="bg-yellow-100 text-yellow-800 hover:bg-yellow-100">Order</Badge>
+                </div>
+                <div className="flex items-center gap-2" data-testid="legend-return">
+                  <Package2 className="h-4 w-4 text-green-600" />
+                  <Badge className="bg-green-100 text-green-800 hover:bg-green-100">Return</Badge>
+                </div>
+              </div>
+            </div>
+
             <div className="flex flex-col sm:flex-row gap-4">
               <Input
                 placeholder="Search by reason, user, or order ID..."
@@ -184,29 +210,39 @@ export default function StockHistoryView({
             <div className="border border-slate-200 rounded-lg overflow-hidden">
               <div className="overflow-x-auto max-h-[50vh]">
                 <Table>
-                  <TableHeader>
+                  <TableHeader className="sticky top-0 bg-white z-10 shadow-sm">
                     <TableRow>
                       <TableHead className="w-[180px]">Date & Time</TableHead>
-                      <TableHead>Type</TableHead>
-                      <TableHead className="text-right">Quantity</TableHead>
-                      <TableHead className="text-right">Before</TableHead>
-                      <TableHead className="text-right">After</TableHead>
+                      <TableHead className="w-[140px]">Type</TableHead>
+                      <TableHead className="w-[100px] text-right">Quantity</TableHead>
+                      <TableHead className="w-[100px] text-right">Before</TableHead>
+                      <TableHead className="w-[100px] text-right">After</TableHead>
                       <TableHead>Reason</TableHead>
-                      <TableHead>Batch</TableHead>
-                      <TableHead>Performed By</TableHead>
+                      <TableHead className="w-[140px]">Batch</TableHead>
+                      <TableHead className="w-[150px]">Performed By</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {filteredTransactions.length === 0 ? (
                       <TableRow>
-                        <TableCell colSpan={8} className="text-center text-slate-500 py-8">
-                          No transactions found
+                        <TableCell colSpan={8} className="text-center py-12" data-testid="empty-state-history">
+                          <div className="flex flex-col items-center gap-3">
+                            <ClipboardList className="h-12 w-12 text-slate-300" />
+                            <div>
+                              <p className="text-slate-600 font-medium">
+                                {searchQuery ? "No transactions match your search" : "No stock movements recorded yet"}
+                              </p>
+                              <p className="text-sm text-slate-400 mt-1">
+                                {searchQuery ? "Try adjusting your search terms" : "Stock changes will appear here when transactions occur"}
+                              </p>
+                            </div>
+                          </div>
                         </TableCell>
                       </TableRow>
                     ) : (
                       filteredTransactions.map((transaction) => (
                         <TableRow key={transaction.id} data-testid={`row-transaction-${transaction.id}`}>
-                          <TableCell className="font-medium">
+                          <TableCell className="font-medium" data-testid={`cell-date-${transaction.id}`}>
                             <div className="flex flex-col">
                               <span className="text-sm">
                                 {format(transaction.date, "dd MMM yyyy")}
@@ -216,24 +252,24 @@ export default function StockHistoryView({
                               </span>
                             </div>
                           </TableCell>
-                          <TableCell>
+                          <TableCell data-testid={`cell-type-${transaction.id}`}>
                             <div className="flex items-center gap-2">
                               {getTypeIcon(transaction.type)}
                               {getTypeBadge(transaction.type)}
                             </div>
                           </TableCell>
-                          <TableCell className="text-right font-semibold">
+                          <TableCell className="text-right font-semibold" data-testid={`cell-quantity-${transaction.id}`}>
                             <span className={transaction.type === "add" ? "text-green-600" : "text-red-600"}>
                               {transaction.type === "add" ? "+" : "-"}{transaction.quantity}
                             </span>
                           </TableCell>
-                          <TableCell className="text-right text-slate-600">
+                          <TableCell className="text-right text-slate-600" data-testid={`cell-before-${transaction.id}`}>
                             {transaction.previousStock}
                           </TableCell>
-                          <TableCell className="text-right font-medium">
+                          <TableCell className="text-right font-medium" data-testid={`cell-after-${transaction.id}`}>
                             {transaction.newStock}
                           </TableCell>
-                          <TableCell>
+                          <TableCell data-testid={`cell-reason-${transaction.id}`}>
                             <div className="max-w-[200px]">
                               <p className="text-sm truncate">{transaction.reason}</p>
                               {transaction.orderId && (
@@ -243,14 +279,14 @@ export default function StockHistoryView({
                               )}
                             </div>
                           </TableCell>
-                          <TableCell>
+                          <TableCell data-testid={`cell-batch-${transaction.id}`}>
                             {transaction.batchNumber && (
                               <Badge variant="outline" className="text-xs">
                                 {transaction.batchNumber}
                               </Badge>
                             )}
                           </TableCell>
-                          <TableCell className="text-sm text-slate-600">
+                          <TableCell className="text-sm text-slate-600" data-testid={`cell-performed-by-${transaction.id}`}>
                             {transaction.performedBy}
                           </TableCell>
                         </TableRow>

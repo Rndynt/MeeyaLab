@@ -29,7 +29,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { Plus, Package, AlertTriangle, Calendar, Truck } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Plus, Package, AlertTriangle, Calendar, Truck, Archive, Clock, TrendingDown, CheckCircle } from "lucide-react";
 import { format, differenceInDays } from "date-fns";
 
 interface ProductBatch {
@@ -188,6 +189,10 @@ export default function BatchManagementView({
     return percentage < 30;
   }).length;
 
+  const totalBatches = mockBatches.length;
+  const activeBatches = mockBatches.filter(b => b.isActive).length;
+  const inactiveBatches = totalBatches - activeBatches;
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent 
@@ -205,201 +210,253 @@ export default function BatchManagementView({
         </DialogHeader>
 
         <DialogBody>
-          <div className="space-y-4">
-            {(expiringCount > 0 || lowStockCount > 0) && (
-              <div className="flex flex-wrap gap-2">
-                {expiringCount > 0 && (
-                  <div className="flex items-center gap-2 bg-red-50 border border-red-200 rounded-lg px-3 py-2 text-sm" data-testid="alert-expiring-batches">
-                    <AlertTriangle className="h-4 w-4 text-red-600" />
-                    <span className="text-red-800">
-                      <strong>{expiringCount}</strong> batches expiring in 30 days
-                    </span>
+          <div className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <Card className="transition-all hover:shadow-md" data-testid="card-total-batches">
+                <CardContent className="pt-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-slate-600">Total Batches</p>
+                      <p className="text-3xl font-bold mt-2">{totalBatches}</p>
+                    </div>
+                    <div className="h-12 w-12 bg-cyan-100 rounded-lg flex items-center justify-center">
+                      <Archive className="h-6 w-6 text-cyan-600" />
+                    </div>
                   </div>
-                )}
-                {lowStockCount > 0 && (
-                  <div className="flex items-center gap-2 bg-yellow-50 border border-yellow-200 rounded-lg px-3 py-2 text-sm" data-testid="alert-low-batch-stock">
-                    <Package className="h-4 w-4 text-yellow-600" />
-                    <span className="text-yellow-800">
-                      <strong>{lowStockCount}</strong> batches running low
-                    </span>
+                </CardContent>
+              </Card>
+
+              <Card className="transition-all hover:shadow-md" data-testid="card-expiring-soon">
+                <CardContent className="pt-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-slate-600">Expiring Soon</p>
+                      <p className="text-3xl font-bold mt-2 text-red-600">{expiringCount}</p>
+                      <p className="text-xs text-slate-500 mt-1">Within 30 days</p>
+                    </div>
+                    <div className="h-12 w-12 bg-red-100 rounded-lg flex items-center justify-center">
+                      <Clock className="h-6 w-6 text-red-600" />
+                    </div>
                   </div>
-                )}
-              </div>
-            )}
+                </CardContent>
+              </Card>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
-              <div className="flex gap-2">
-                <Button
-                  variant={filterStatus === "all" ? "default" : "outline"}
-                  onClick={() => setFilterStatus("all")}
-                  className={filterStatus === "all" ? "bg-cyan-500 hover:bg-cyan-600" : ""}
-                  data-testid="button-filter-all-batches"
-                >
-                  All Batches
-                </Button>
-                <Button
-                  variant={filterStatus === "expiring" ? "default" : "outline"}
-                  onClick={() => setFilterStatus("expiring")}
-                  className={filterStatus === "expiring" ? "bg-red-500 hover:bg-red-600" : ""}
-                  data-testid="button-filter-expiring"
-                >
-                  Expiring Soon
-                </Button>
-                <Button
-                  variant={filterStatus === "low" ? "default" : "outline"}
-                  onClick={() => setFilterStatus("low")}
-                  className={filterStatus === "low" ? "bg-yellow-500 hover:bg-yellow-600" : ""}
-                  data-testid="button-filter-low-stock"
-                >
-                  Low Stock
-                </Button>
-              </div>
-              
-              <div className="flex gap-2 w-full sm:w-auto">
-                <Input
-                  placeholder="Search batches..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="flex-1 sm:w-64"
-                  data-testid="input-search-batches"
-                />
-                <Dialog open={addBatchOpen} onOpenChange={setAddBatchOpen}>
-                  <DialogTrigger asChild>
-                    <Button 
-                      className="bg-cyan-500 hover:bg-cyan-600"
-                      data-testid="button-add-batch"
-                    >
-                      <Plus className="h-4 w-4 mr-2" />
-                      Add Batch
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent className="flex flex-col" data-testid="dialog-add-batch">
-                    <DialogHeader>
-                      <DialogTitle>Add New Batch</DialogTitle>
-                      <DialogDescription>
-                        Register a new product batch with expiry tracking
-                      </DialogDescription>
-                    </DialogHeader>
-                    <form id="add-batch-form" className="flex flex-col flex-1 min-h-0">
-                      <DialogBody>
-                        <div className="space-y-4">
-                          <div>
-                            <Label htmlFor="product">Product *</Label>
-                            <Select>
-                              <SelectTrigger id="product" data-testid="select-product">
-                                <SelectValue placeholder="Select product" />
-                              </SelectTrigger>
-                              <SelectContent>
-                                {mockProducts.map((product) => (
-                                  <SelectItem key={product.id} value={product.id}>
-                                    {product.name}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                          </div>
+              <Card className="transition-all hover:shadow-md" data-testid="card-low-stock">
+                <CardContent className="pt-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-slate-600">Low Stock</p>
+                      <p className="text-3xl font-bold mt-2 text-yellow-600">{lowStockCount}</p>
+                      <p className="text-xs text-slate-500 mt-1">&lt;30% remaining</p>
+                    </div>
+                    <div className="h-12 w-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+                      <TrendingDown className="h-6 w-6 text-yellow-600" />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
 
-                          <div className="grid grid-cols-2 gap-4">
+              <Card className="transition-all hover:shadow-md" data-testid="card-active-status">
+                <CardContent className="pt-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-slate-600">Active Status</p>
+                      <div className="flex items-baseline gap-2 mt-2">
+                        <p className="text-3xl font-bold text-green-600">{activeBatches}</p>
+                        <p className="text-sm text-slate-400">/ {inactiveBatches}</p>
+                      </div>
+                      <p className="text-xs text-slate-500 mt-1">Active / Inactive</p>
+                    </div>
+                    <div className="h-12 w-12 bg-green-100 rounded-lg flex items-center justify-center">
+                      <CheckCircle className="h-6 w-6 text-green-600" />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            <div className="space-y-4">
+              <div className="flex flex-col lg:flex-row gap-4 items-start lg:items-center justify-between bg-slate-50 p-4 rounded-lg border border-slate-200">
+                <div className="flex flex-wrap gap-2">
+                  <Button
+                    variant={filterStatus === "all" ? "default" : "outline"}
+                    onClick={() => setFilterStatus("all")}
+                    className={`transition-all ${filterStatus === "all" ? "bg-cyan-500 hover:bg-cyan-600" : ""}`}
+                    data-testid="button-filter-all-batches"
+                  >
+                    <Archive className="h-4 w-4 mr-2" />
+                    All Batches
+                  </Button>
+                  <Button
+                    variant={filterStatus === "expiring" ? "default" : "outline"}
+                    onClick={() => setFilterStatus("expiring")}
+                    className={`transition-all ${filterStatus === "expiring" ? "bg-red-500 hover:bg-red-600" : ""}`}
+                    data-testid="button-filter-expiring"
+                  >
+                    <Clock className="h-4 w-4 mr-2" />
+                    Expiring Soon
+                  </Button>
+                  <Button
+                    variant={filterStatus === "low" ? "default" : "outline"}
+                    onClick={() => setFilterStatus("low")}
+                    className={`transition-all ${filterStatus === "low" ? "bg-yellow-500 hover:bg-yellow-600" : ""}`}
+                    data-testid="button-filter-low-stock"
+                  >
+                    <TrendingDown className="h-4 w-4 mr-2" />
+                    Low Stock
+                  </Button>
+                </div>
+                
+                <div className="flex gap-2 w-full lg:w-auto">
+                  <Input
+                    placeholder="Search batches..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="flex-1 lg:w-64 transition-all focus:ring-2 focus:ring-cyan-500"
+                    data-testid="input-search-batches"
+                  />
+                  <Dialog open={addBatchOpen} onOpenChange={setAddBatchOpen}>
+                    <DialogTrigger asChild>
+                      <Button 
+                        className="bg-cyan-500 hover:bg-cyan-600 transition-all whitespace-nowrap"
+                        data-testid="button-add-batch"
+                      >
+                        <Plus className="h-4 w-4 mr-2" />
+                        Add Batch
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="flex flex-col" data-testid="dialog-add-batch">
+                      <DialogHeader>
+                        <DialogTitle>Add New Batch</DialogTitle>
+                        <DialogDescription>
+                          Register a new product batch with expiry tracking
+                        </DialogDescription>
+                      </DialogHeader>
+                      <form id="add-batch-form" className="flex flex-col flex-1 min-h-0">
+                        <DialogBody>
+                          <div className="space-y-4">
                             <div>
-                              <Label htmlFor="batchNumber">Batch Number *</Label>
+                              <Label htmlFor="product">Product *</Label>
+                              <Select>
+                                <SelectTrigger id="product" data-testid="select-product">
+                                  <SelectValue placeholder="Select product" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  {mockProducts.map((product) => (
+                                    <SelectItem key={product.id} value={product.id}>
+                                      {product.name}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-4">
+                              <div>
+                                <Label htmlFor="batchNumber">Batch Number *</Label>
+                                <Input 
+                                  id="batchNumber" 
+                                  placeholder="BATCH-2025-XXX" 
+                                  data-testid="input-batch-number"
+                                />
+                              </div>
+                              <div>
+                                <Label htmlFor="quantity">Quantity *</Label>
+                                <Input 
+                                  id="quantity" 
+                                  type="number" 
+                                  placeholder="100" 
+                                  data-testid="input-quantity"
+                                />
+                              </div>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-4">
+                              <div>
+                                <Label htmlFor="manufacturingDate">Manufacturing Date</Label>
+                                <Input 
+                                  id="manufacturingDate" 
+                                  type="date" 
+                                  data-testid="input-manufacturing-date"
+                                />
+                              </div>
+                              <div>
+                                <Label htmlFor="expiryDate">Expiry Date *</Label>
+                                <Input 
+                                  id="expiryDate" 
+                                  type="date" 
+                                  data-testid="input-expiry-date"
+                                />
+                              </div>
+                            </div>
+
+                            <div>
+                              <Label htmlFor="supplier">Supplier</Label>
                               <Input 
-                                id="batchNumber" 
-                                placeholder="BATCH-2025-XXX" 
-                                data-testid="input-batch-number"
+                                id="supplier" 
+                                placeholder="Supplier name" 
+                                data-testid="input-supplier"
                               />
                             </div>
+
                             <div>
-                              <Label htmlFor="quantity">Quantity *</Label>
-                              <Input 
-                                id="quantity" 
-                                type="number" 
-                                placeholder="100" 
-                                data-testid="input-quantity"
+                              <Label htmlFor="notes">Notes</Label>
+                              <Textarea 
+                                id="notes" 
+                                placeholder="Additional notes about this batch..." 
+                                rows={3}
+                                data-testid="textarea-notes"
                               />
                             </div>
                           </div>
-
-                          <div className="grid grid-cols-2 gap-4">
-                            <div>
-                              <Label htmlFor="manufacturingDate">Manufacturing Date</Label>
-                              <Input 
-                                id="manufacturingDate" 
-                                type="date" 
-                                data-testid="input-manufacturing-date"
-                              />
-                            </div>
-                            <div>
-                              <Label htmlFor="expiryDate">Expiry Date *</Label>
-                              <Input 
-                                id="expiryDate" 
-                                type="date" 
-                                data-testid="input-expiry-date"
-                              />
-                            </div>
-                          </div>
-
-                          <div>
-                            <Label htmlFor="supplier">Supplier</Label>
-                            <Input 
-                              id="supplier" 
-                              placeholder="Supplier name" 
-                              data-testid="input-supplier"
-                            />
-                          </div>
-
-                          <div>
-                            <Label htmlFor="notes">Notes</Label>
-                            <Textarea 
-                              id="notes" 
-                              placeholder="Additional notes about this batch..." 
-                              rows={3}
-                              data-testid="textarea-notes"
-                            />
-                          </div>
-                        </div>
-                      </DialogBody>
-                      <DialogFooter>
-                        <Button
-                          type="button"
-                          variant="outline"
-                          onClick={() => setAddBatchOpen(false)}
-                          data-testid="button-cancel-batch"
-                        >
-                          Cancel
-                        </Button>
-                        <Button 
-                          type="submit"
-                          className="bg-cyan-500 hover:bg-cyan-600"
-                          data-testid="button-save-batch"
-                        >
-                          Save Batch
-                        </Button>
-                      </DialogFooter>
-                    </form>
-                  </DialogContent>
-                </Dialog>
+                        </DialogBody>
+                        <DialogFooter>
+                          <Button
+                            type="button"
+                            variant="outline"
+                            onClick={() => setAddBatchOpen(false)}
+                            data-testid="button-cancel-batch"
+                          >
+                            Cancel
+                          </Button>
+                          <Button 
+                            type="submit"
+                            className="bg-cyan-500 hover:bg-cyan-600"
+                            data-testid="button-save-batch"
+                          >
+                            Save Batch
+                          </Button>
+                        </DialogFooter>
+                      </form>
+                    </DialogContent>
+                  </Dialog>
+                </div>
               </div>
             </div>
 
-            <div className="border border-slate-200 rounded-lg overflow-hidden">
+            <div className="border border-slate-200 rounded-lg overflow-hidden shadow-sm">
               <div className="overflow-x-auto max-h-[50vh]">
                 <Table>
                   <TableHeader>
-                    <TableRow>
-                      <TableHead>Batch Number</TableHead>
-                      <TableHead>Product</TableHead>
-                      <TableHead className="text-right">Quantity</TableHead>
-                      <TableHead className="text-right">Remaining</TableHead>
-                      <TableHead>Stock %</TableHead>
-                      <TableHead>Expiry Date</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead>Supplier</TableHead>
+                    <TableRow className="bg-slate-50 hover:bg-slate-50">
+                      <TableHead data-testid="header-batch-number">Batch Number</TableHead>
+                      <TableHead data-testid="header-product">Product</TableHead>
+                      <TableHead className="text-right" data-testid="header-quantity">Quantity</TableHead>
+                      <TableHead className="text-right" data-testid="header-remaining">Remaining</TableHead>
+                      <TableHead data-testid="header-stock-percentage">Stock %</TableHead>
+                      <TableHead data-testid="header-expiry-date">Expiry Date</TableHead>
+                      <TableHead data-testid="header-status">Status</TableHead>
+                      <TableHead data-testid="header-supplier">Supplier</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {filteredBatches.length === 0 ? (
                       <TableRow>
-                        <TableCell colSpan={8} className="text-center text-slate-500 py-8">
+                        <TableCell 
+                          colSpan={8} 
+                          className="text-center text-slate-500 py-8"
+                          data-testid="cell-no-batches"
+                        >
                           No batches found
                         </TableCell>
                       </TableRow>
@@ -407,21 +464,49 @@ export default function BatchManagementView({
                       filteredBatches.map((batch) => {
                         const percentageRemaining = Math.round((batch.remainingQuantity / batch.quantity) * 100);
                         const expiryStatus = getExpiryStatus(batch.expiryDate);
+                        const isExpiring = expiryStatus.days >= 0 && expiryStatus.days <= 30;
+                        const isLowStock = percentageRemaining < 30;
+                        
+                        let rowBgClass = "transition-colors hover:bg-slate-50";
+                        if (isExpiring && isLowStock) {
+                          rowBgClass = "bg-red-50 hover:bg-red-100 transition-colors border-l-4 border-l-red-500";
+                        } else if (isExpiring) {
+                          rowBgClass = "bg-red-50 hover:bg-red-100 transition-colors border-l-4 border-l-red-400";
+                        } else if (isLowStock) {
+                          rowBgClass = "bg-yellow-50 hover:bg-yellow-100 transition-colors border-l-4 border-l-yellow-400";
+                        }
 
                         return (
-                          <TableRow key={batch.id} data-testid={`row-batch-${batch.id}`}>
-                            <TableCell className="font-medium">
+                          <TableRow 
+                            key={batch.id} 
+                            data-testid={`row-batch-${batch.id}`}
+                            className={rowBgClass}
+                          >
+                            <TableCell 
+                              className="font-medium" 
+                              data-testid={`cell-batch-number-${batch.id}`}
+                            >
                               <div className="flex items-center gap-2">
                                 <Package className="h-4 w-4 text-slate-400" />
                                 {batch.batchNumber}
                               </div>
                             </TableCell>
-                            <TableCell>{batch.productName}</TableCell>
-                            <TableCell className="text-right">{batch.quantity}</TableCell>
-                            <TableCell className="text-right font-medium">
+                            <TableCell data-testid={`cell-product-${batch.id}`}>
+                              {batch.productName}
+                            </TableCell>
+                            <TableCell 
+                              className="text-right" 
+                              data-testid={`cell-quantity-${batch.id}`}
+                            >
+                              {batch.quantity}
+                            </TableCell>
+                            <TableCell 
+                              className="text-right font-medium" 
+                              data-testid={`cell-remaining-${batch.id}`}
+                            >
                               {batch.remainingQuantity}
                             </TableCell>
-                            <TableCell>
+                            <TableCell data-testid={`cell-stock-percentage-${batch.id}`}>
                               <div className="flex items-center gap-2">
                                 <div className="w-16 h-2 bg-slate-200 rounded-full overflow-hidden">
                                   <div 
@@ -436,7 +521,7 @@ export default function BatchManagementView({
                                 <span className="text-sm text-slate-600">{percentageRemaining}%</span>
                               </div>
                             </TableCell>
-                            <TableCell>
+                            <TableCell data-testid={`cell-expiry-date-${batch.id}`}>
                               {batch.expiryDate ? (
                                 <div className="flex items-center gap-2">
                                   <Calendar className="h-4 w-4 text-slate-400" />
@@ -448,14 +533,20 @@ export default function BatchManagementView({
                                 <span className="text-slate-400 text-sm">No expiry</span>
                               )}
                             </TableCell>
-                            <TableCell>
+                            <TableCell data-testid={`cell-status-${batch.id}`}>
                               {expiryStatus.status !== "none" && (
-                                <Badge className={expiryStatus.className}>
+                                <Badge 
+                                  className={`${expiryStatus.className} px-3 py-1 text-sm font-semibold transition-all`}
+                                  data-testid={`badge-status-${batch.id}`}
+                                >
+                                  {expiryStatus.status === "expired" || expiryStatus.status === "expiring-soon" ? (
+                                    <AlertTriangle className="h-3 w-3 mr-1 inline" />
+                                  ) : null}
                                   {expiryStatus.label}
                                 </Badge>
                               )}
                             </TableCell>
-                            <TableCell>
+                            <TableCell data-testid={`cell-supplier-${batch.id}`}>
                               <div className="flex items-center gap-2 text-sm text-slate-600">
                                 <Truck className="h-4 w-4" />
                                 {batch.supplier}
@@ -470,9 +561,9 @@ export default function BatchManagementView({
               </div>
             </div>
 
-            <div className="flex justify-between items-center text-sm text-slate-600 pt-2">
-              <span>Showing {filteredBatches.length} batches</span>
-              <span>Total batches: {mockBatches.length}</span>
+            <div className="flex justify-between items-center text-sm text-slate-600 pt-2" data-testid="text-batch-count">
+              <span data-testid="text-showing-count">Showing {filteredBatches.length} batches</span>
+              <span data-testid="text-total-count">Total batches: {mockBatches.length}</span>
             </div>
           </div>
         </DialogBody>
