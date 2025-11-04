@@ -3,9 +3,7 @@ import { useLocation } from "wouter";
 import ProfileLayout from "@/components/ProfileLayout";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ChevronDown, ChevronUp, Package, ArrowLeft } from "lucide-react";
+import { ChevronDown, ChevronUp, Package, ArrowLeft, Truck, CheckCircle, Clock, CreditCard } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 interface OrderItem {
@@ -74,11 +72,31 @@ const mockOrders: Order[] = [
 ];
 
 const statusConfig = {
-  PENDING_PAYMENT: { label: "Pending Payment", color: "bg-yellow-100 text-yellow-800 border-yellow-300" },
-  PAID: { label: "Paid", color: "bg-blue-100 text-blue-800 border-blue-300" },
-  PROCESSING: { label: "Processing", color: "bg-purple-100 text-purple-800 border-purple-300" },
-  SHIPPED: { label: "Shipped", color: "bg-cyan-100 text-cyan-800 border-cyan-300" },
-  COMPLETED: { label: "Completed", color: "bg-green-100 text-green-800 border-green-300" },
+  PENDING_PAYMENT: { 
+    label: "Pending Payment", 
+    color: "bg-amber-50 text-amber-700 border-amber-100",
+    icon: Clock 
+  },
+  PAID: { 
+    label: "Paid", 
+    color: "bg-blue-50 text-blue-700 border-blue-100",
+    icon: CreditCard 
+  },
+  PROCESSING: { 
+    label: "Processing", 
+    color: "bg-purple-50 text-purple-700 border-purple-100",
+    icon: Package 
+  },
+  SHIPPED: { 
+    label: "Shipped", 
+    color: "bg-cyan-50 text-cyan-700 border-cyan-100",
+    icon: Truck 
+  },
+  COMPLETED: { 
+    label: "Completed", 
+    color: "bg-emerald-50 text-emerald-700 border-emerald-100",
+    icon: CheckCircle 
+  },
 };
 
 type StatusFilter = "ALL" | Order["status"];
@@ -86,7 +104,7 @@ type StatusFilter = "ALL" | Order["status"];
 export default function Orders() {
   const [orders] = useState<Order[]>(mockOrders);
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("ALL");
-  const [expandedOrders, setExpandedOrders] = useState<Set<string>>(new Set());
+  const [expandedOrders, setExpandedOrders] = useState<Set<string>>(new Set(["1"]));
   const [, setLocation] = useLocation();
 
   useEffect(() => {
@@ -143,147 +161,198 @@ export default function Orders() {
           </p>
         </div>
 
-        <Tabs value={statusFilter} onValueChange={(v) => setStatusFilter(v as StatusFilter)} className="mb-6">
-          <TabsList className="grid w-full grid-cols-3 md:grid-cols-6 h-auto gap-2 bg-transparent">
-            <TabsTrigger 
-              value="ALL" 
-              className="data-[state=active]:bg-slate-900 data-[state=active]:text-white"
+        <div className="mb-8">
+          <div className="flex flex-wrap gap-2">
+            <button
+              onClick={() => setStatusFilter("ALL")}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                statusFilter === "ALL"
+                  ? "bg-slate-900 text-white shadow-sm"
+                  : "bg-slate-50 text-slate-700 hover:bg-slate-100"
+              }`}
               data-testid="filter-all"
             >
-              All
-            </TabsTrigger>
-            <TabsTrigger 
-              value="PENDING_PAYMENT"
-              className="data-[state=active]:bg-slate-900 data-[state=active]:text-white"
+              All Orders
+            </button>
+            <button
+              onClick={() => setStatusFilter("PENDING_PAYMENT")}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all flex items-center gap-1.5 ${
+                statusFilter === "PENDING_PAYMENT"
+                  ? "bg-slate-900 text-white shadow-sm"
+                  : "bg-slate-50 text-slate-700 hover:bg-slate-100"
+              }`}
               data-testid="filter-pending"
             >
+              <Clock className="h-3.5 w-3.5" />
               Pending
-            </TabsTrigger>
-            <TabsTrigger 
-              value="PROCESSING"
-              className="data-[state=active]:bg-slate-900 data-[state=active]:text-white"
+            </button>
+            <button
+              onClick={() => setStatusFilter("PROCESSING")}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all flex items-center gap-1.5 ${
+                statusFilter === "PROCESSING"
+                  ? "bg-slate-900 text-white shadow-sm"
+                  : "bg-slate-50 text-slate-700 hover:bg-slate-100"
+              }`}
               data-testid="filter-processing"
             >
+              <Package className="h-3.5 w-3.5" />
               Processing
-            </TabsTrigger>
-            <TabsTrigger 
-              value="SHIPPED"
-              className="data-[state=active]:bg-slate-900 data-[state=active]:text-white"
+            </button>
+            <button
+              onClick={() => setStatusFilter("SHIPPED")}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all flex items-center gap-1.5 ${
+                statusFilter === "SHIPPED"
+                  ? "bg-slate-900 text-white shadow-sm"
+                  : "bg-slate-50 text-slate-700 hover:bg-slate-100"
+              }`}
               data-testid="filter-shipped"
             >
+              <Truck className="h-3.5 w-3.5" />
               Shipped
-            </TabsTrigger>
-            <TabsTrigger 
-              value="COMPLETED"
-              className="data-[state=active]:bg-slate-900 data-[state=active]:text-white"
+            </button>
+            <button
+              onClick={() => setStatusFilter("COMPLETED")}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all flex items-center gap-1.5 ${
+                statusFilter === "COMPLETED"
+                  ? "bg-slate-900 text-white shadow-sm"
+                  : "bg-slate-50 text-slate-700 hover:bg-slate-100"
+              }`}
               data-testid="filter-completed"
             >
+              <CheckCircle className="h-3.5 w-3.5" />
               Completed
-            </TabsTrigger>
-          </TabsList>
-        </Tabs>
+            </button>
+          </div>
+        </div>
 
         {filteredOrders.length === 0 ? (
-          <Card className="border-slate-200/60">
-            <CardContent className="p-12 text-center">
-              <Package className="h-12 w-12 mx-auto mb-4 text-slate-400" />
-              <p className="text-slate-600" data-testid="text-no-orders">
-                No orders found for this status
+          <Card className="border-slate-100 shadow-sm">
+            <CardContent className="p-16 text-center">
+              <div className="w-16 h-16 rounded-full bg-slate-50 flex items-center justify-center mx-auto mb-4">
+                <Package className="h-8 w-8 text-slate-400" />
+              </div>
+              <h3 className="text-lg font-semibold text-slate-900 mb-2">No orders found</h3>
+              <p className="text-sm text-slate-500" data-testid="text-no-orders">
+                No orders match the selected filter
               </p>
             </CardContent>
           </Card>
         ) : (
-          <div className="space-y-4">
-            {filteredOrders.map((order) => (
-              <Collapsible 
-                key={order.id}
-                open={expandedOrders.has(order.id)}
-                onOpenChange={() => toggleOrder(order.id)}
-              >
-                <Card 
-                  className="border border-slate-200/60 hover:shadow-sm transition-shadow"
-                  data-testid={`card-order-${order.id}`}
+          <div className="space-y-3">
+            {filteredOrders.map((order) => {
+              const StatusIcon = statusConfig[order.status].icon;
+              return (
+                <Collapsible 
+                  key={order.id}
+                  open={expandedOrders.has(order.id)}
+                  onOpenChange={() => toggleOrder(order.id)}
                 >
-                  <CardContent className="p-6">
+                  <Card 
+                    className="border border-slate-100 hover:border-slate-200 transition-all duration-200 overflow-hidden"
+                    data-testid={`card-order-${order.id}`}
+                  >
                     <CollapsibleTrigger asChild>
                       <button className="w-full">
-                        <div className="flex items-start justify-between mb-4">
-                          <div className="flex-1 text-left">
-                            <div className="flex items-center gap-3 mb-2">
-                              <h3 className="font-semibold text-slate-900" data-testid={`text-order-code-${order.id}`}>
-                                {order.orderCode}
-                              </h3>
-                              <Badge 
-                                variant="outline" 
-                                className={statusConfig[order.status].color}
-                                data-testid={`badge-status-${order.id}`}
-                              >
-                                {statusConfig[order.status].label}
-                              </Badge>
+                        <CardContent className="p-6">
+                          <div className="flex items-center justify-between">
+                            <div className="flex-1 flex items-center gap-4">
+                              <div className="flex-1">
+                                <div className="flex items-center gap-3 mb-1.5">
+                                  <h3 className="font-semibold text-slate-900 text-base" data-testid={`text-order-code-${order.id}`}>
+                                    {order.orderCode}
+                                  </h3>
+                                  <span 
+                                    className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border ${statusConfig[order.status].color}`}
+                                    data-testid={`badge-status-${order.id}`}
+                                  >
+                                    <StatusIcon className="h-3 w-3" />
+                                    {statusConfig[order.status].label}
+                                  </span>
+                                </div>
+                                <p className="text-sm text-slate-500" data-testid={`text-order-date-${order.id}`}>
+                                  {formatDate(order.date)}
+                                </p>
+                              </div>
                             </div>
-                            <p className="text-sm text-slate-600" data-testid={`text-order-date-${order.id}`}>
-                              {formatDate(order.date)}
-                            </p>
-                          </div>
-                          <div className="flex items-center gap-4">
-                            <div className="text-right">
-                              <p className="text-sm text-slate-600 mb-1">Total</p>
-                              <p className="font-semibold text-slate-900" data-testid={`text-order-total-${order.id}`}>
-                                {formatPrice(order.total)}
-                              </p>
+                            
+                            <div className="flex items-center gap-6">
+                              <div className="text-right">
+                                <p className="text-xs text-slate-500 mb-0.5">Total</p>
+                                <p className="text-lg font-semibold text-slate-900" data-testid={`text-order-total-${order.id}`}>
+                                  {formatPrice(order.total)}
+                                </p>
+                              </div>
+                              <div className="ml-2">
+                                {expandedOrders.has(order.id) ? (
+                                  <ChevronUp className="h-5 w-5 text-slate-400" />
+                                ) : (
+                                  <ChevronDown className="h-5 w-5 text-slate-400" />
+                                )}
+                              </div>
                             </div>
-                            {expandedOrders.has(order.id) ? (
-                              <ChevronUp className="h-5 w-5 text-slate-400" />
-                            ) : (
-                              <ChevronDown className="h-5 w-5 text-slate-400" />
-                            )}
                           </div>
-                        </div>
+                        </CardContent>
                       </button>
                     </CollapsibleTrigger>
 
                     <CollapsibleContent>
-                      <div className="border-t border-slate-100 pt-4 mt-2">
-                        <div className="mb-4">
-                          <h4 className="text-sm font-semibold text-slate-900 mb-2">Items</h4>
-                          <div className="space-y-2">
-                            {order.items.map((item, idx) => (
-                              <div 
-                                key={idx} 
-                                className="flex justify-between text-sm"
-                                data-testid={`order-item-${order.id}-${idx}`}
-                              >
-                                <span className="text-slate-700">
-                                  {item.productName} <span className="text-slate-500">x{item.quantity}</span>
-                                </span>
-                                <span className="font-medium text-slate-900">
-                                  {formatPrice(item.price * item.quantity)}
-                                </span>
-                              </div>
-                            ))}
+                      <div className="border-t border-slate-50 bg-slate-25">
+                        <CardContent className="p-6 pt-5 space-y-5">
+                          <div>
+                            <div className="flex items-center gap-2 mb-3">
+                              <Package className="h-4 w-4 text-slate-400" />
+                              <h4 className="text-xs font-semibold text-slate-900 uppercase tracking-wide">Order Items</h4>
+                            </div>
+                            <div className="space-y-2.5">
+                              {order.items.map((item, idx) => (
+                                <div 
+                                  key={idx} 
+                                  className="flex items-center justify-between py-2"
+                                  data-testid={`order-item-${order.id}-${idx}`}
+                                >
+                                  <div className="flex-1">
+                                    <p className="text-sm text-slate-900 font-medium">
+                                      {item.productName}
+                                    </p>
+                                    <p className="text-xs text-slate-500 mt-0.5">
+                                      Qty: {item.quantity} × {formatPrice(item.price)}
+                                    </p>
+                                  </div>
+                                  <p className="text-sm font-semibold text-slate-900">
+                                    {formatPrice(item.price * item.quantity)}
+                                  </p>
+                                </div>
+                              ))}
+                            </div>
                           </div>
-                        </div>
 
-                        <div className="mb-4">
-                          <h4 className="text-sm font-semibold text-slate-900 mb-2">Shipping Address</h4>
-                          <p className="text-sm text-slate-700" data-testid={`text-shipping-address-${order.id}`}>
-                            {order.shippingAddress}
-                          </p>
-                        </div>
+                          <div className="border-t border-slate-100 pt-4">
+                            <div className="flex items-center gap-2 mb-3">
+                              <Truck className="h-4 w-4 text-slate-400" />
+                              <h4 className="text-xs font-semibold text-slate-900 uppercase tracking-wide">Delivery Address</h4>
+                            </div>
+                            <p className="text-sm text-slate-600 leading-relaxed" data-testid={`text-shipping-address-${order.id}`}>
+                              {order.shippingAddress}
+                            </p>
+                          </div>
 
-                        <Button
-                          variant="outline"
-                          className="w-full border-slate-300 hover:bg-slate-50"
-                          data-testid={`button-track-order-${order.id}`}
-                        >
-                          Track Order
-                        </Button>
+                          <div className="border-t border-slate-100 pt-4">
+                            <Button
+                              variant="ghost"
+                              className="w-full justify-center text-slate-700 hover:text-slate-900 hover:bg-slate-50 h-10"
+                              data-testid={`button-track-order-${order.id}`}
+                            >
+                              <Truck className="h-4 w-4 mr-2" />
+                              Track Shipment
+                            </Button>
+                          </div>
+                        </CardContent>
                       </div>
                     </CollapsibleContent>
-                  </CardContent>
-                </Card>
-              </Collapsible>
-            ))}
+                  </Card>
+                </Collapsible>
+              );
+            })}
           </div>
         )}
       </div>
