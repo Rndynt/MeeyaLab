@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
-import { Menu, X, User } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
 import ShoppingBagMinimal from "@/components/icons/ShoppingBagMinimal";
+import UserMinimal from "@/components/icons/UserMinimal";
 
 interface HeaderProps {
   cartItemCount?: number;
@@ -78,7 +79,7 @@ export default function Header({ cartItemCount = 0, onCartClick, onProfileClick 
               onClick={onProfileClick}
               data-testid="button-profile"
             >
-              <User className="h-5 w-5 text-slate-900" />
+              <UserMinimal className="text-slate-900" size={20} />
             </button>
 
             <button
