@@ -70,10 +70,10 @@ export default function LowStockAlerts({
       )}
 
       {expiringBatchesCount > 0 && (
-        <Alert className="border-orange-600 bg-orange-50" data-testid="alert-expiring-batches">
-          <Clock className="h-4 w-4 text-orange-600" />
-          <AlertTitle className="text-orange-800">Expiring Batches</AlertTitle>
-          <AlertDescription className="flex items-center justify-between text-orange-700">
+        <Alert className="border-red-600 bg-red-50" data-testid="alert-expiring-batches">
+          <Clock className="h-4 w-4 text-red-600" />
+          <AlertTitle className="text-red-800">Expiring Batches</AlertTitle>
+          <AlertDescription className="flex items-center justify-between text-red-700">
             <span>
               {expiringBatchesCount} {expiringBatchesCount === 1 ? "batch is" : "batches are"} expiring within 30 days
             </span>
@@ -81,7 +81,7 @@ export default function LowStockAlerts({
               variant="outline"
               size="sm"
               onClick={onFilterExpiringBatches}
-              className="ml-4 border-orange-600 text-orange-700 hover:bg-orange-100"
+              className="ml-4 border-red-600 text-red-700 hover:bg-red-100"
               data-testid="button-filter-expiring-batches"
             >
               View Batches

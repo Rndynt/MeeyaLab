@@ -3,6 +3,9 @@ import { useLocation } from "wouter";
 import AdminLayout from "@/components/AdminLayout";
 import LowStockAlerts from "@/components/LowStockAlerts";
 import StockAdjustmentDialog from "@/components/StockAdjustmentDialog";
+import StockHistoryView from "@/components/StockHistoryView";
+import BatchManagementView from "@/components/BatchManagementView";
+import BulkStockUpdateDialog from "@/components/BulkStockUpdateDialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -14,7 +17,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Plus, Download, Package } from "lucide-react";
+import { Plus, Download, Package, History, PackageOpen } from "lucide-react";
 
 interface InventoryItem {
   id: string;
@@ -29,6 +32,9 @@ type FilterType = "all" | "low" | "out";
 export default function InventoryPage() {
   const [, setLocation] = useLocation();
   const [adjustmentDialogOpen, setAdjustmentDialogOpen] = useState(false);
+  const [stockHistoryOpen, setStockHistoryOpen] = useState(false);
+  const [batchManagementOpen, setBatchManagementOpen] = useState(false);
+  const [bulkUpdateOpen, setBulkUpdateOpen] = useState(false);
   const [filter, setFilter] = useState<FilterType>("all");
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -156,7 +162,15 @@ export default function InventoryPage() {
   };
 
   const handleBulkStockUpdate = () => {
-    console.log("Opening bulk stock update...");
+    setBulkUpdateOpen(true);
+  };
+
+  const handleViewHistory = () => {
+    setStockHistoryOpen(true);
+  };
+
+  const handleManageBatches = () => {
+    setBatchManagementOpen(true);
   };
 
   const products = inventoryItems.map((item) => ({
@@ -172,11 +186,27 @@ export default function InventoryPage() {
           <div className="flex flex-wrap gap-2">
             <Button
               variant="outline"
+              onClick={handleViewHistory}
+              data-testid="button-view-history"
+            >
+              <History className="h-4 w-4 mr-2" />
+              Stock History
+            </Button>
+            <Button
+              variant="outline"
+              onClick={handleManageBatches}
+              data-testid="button-manage-batches"
+            >
+              <PackageOpen className="h-4 w-4 mr-2" />
+              Manage Batches
+            </Button>
+            <Button
+              variant="outline"
               onClick={handleBulkStockUpdate}
               data-testid="button-bulk-update"
             >
               <Package className="h-4 w-4 mr-2" />
-              Bulk Stock Update
+              Bulk Update
             </Button>
             <Button
               variant="outline"
@@ -192,7 +222,7 @@ export default function InventoryPage() {
               data-testid="button-add-adjustment"
             >
               <Plus className="h-4 w-4 mr-2" />
-              Add Stock Adjustment
+              Stock Adjustment
             </Button>
           </div>
         </div>
@@ -315,6 +345,24 @@ export default function InventoryPage() {
                 )
               );
             }
+          }}
+        />
+        
+        <StockHistoryView
+          open={stockHistoryOpen}
+          onOpenChange={setStockHistoryOpen}
+        />
+        
+        <BatchManagementView
+          open={batchManagementOpen}
+          onOpenChange={setBatchManagementOpen}
+        />
+        
+        <BulkStockUpdateDialog
+          open={bulkUpdateOpen}
+          onOpenChange={setBulkUpdateOpen}
+          onSubmit={(updates) => {
+            console.log("Bulk update submitted:", updates);
           }}
         />
       </div>
