@@ -106,7 +106,7 @@ export default function Profile() {
               icon={<MapPin className="h-5 w-5" />}
               title="Shipping Addresses"
               description="Manage your delivery addresses"
-              onClick={() => console.log("Shipping addresses clicked")}
+              onClick={() => setLocation("/profile/addresses")}
             />
 
             <MenuItem
@@ -120,14 +120,14 @@ export default function Profile() {
               icon={<ShoppingBagMinimal size={20} />}
               title="Order History"
               description="Track and view your past orders"
-              onClick={() => console.log("Order history clicked")}
+              onClick={() => setLocation("/profile/orders")}
             />
 
             <MenuItem
               icon={<Bell className="h-5 w-5" />}
               title="Notifications"
               description="Manage your notification preferences"
-              onClick={() => console.log("Notifications clicked")}
+              onClick={() => setLocation("/profile/notifications")}
             />
           </div>
 
@@ -138,7 +138,7 @@ export default function Profile() {
               icon={<Settings className="h-5 w-5" />}
               title="Account Settings"
               description="Update password and security"
-              onClick={() => console.log("Account settings clicked")}
+              onClick={() => setLocation("/profile/settings")}
             />
           </div>
 

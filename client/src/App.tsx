@@ -13,6 +13,10 @@ import Contact from "@/pages/Contact";
 import LoginPage from "@/pages/Login";
 import Favorites from "@/pages/Favorites";
 import Profile from "@/pages/Profile";
+import ProfileAddresses from "@/pages/profile/Addresses";
+import ProfileOrders from "@/pages/profile/Orders";
+import ProfileNotifications from "@/pages/profile/Notifications";
+import ProfileSettings from "@/pages/profile/Settings";
 import AdminLoginPage from "@/pages/admin/Login";
 import AdminDashboard from "@/pages/admin/Dashboard";
 import AdminProductsPage from "@/pages/admin/ProductsPage";
@@ -31,6 +35,10 @@ function Router() {
       <Route path="/contact" component={Contact} />
       <Route path="/login" component={LoginPage} />
       <Route path="/favorites" component={Favorites} />
+      <Route path="/profile/addresses" component={ProfileAddresses} />
+      <Route path="/profile/orders" component={ProfileOrders} />
+      <Route path="/profile/notifications" component={ProfileNotifications} />
+      <Route path="/profile/settings" component={ProfileSettings} />
       <Route path="/profile" component={Profile} />
       
       <Route path="/admin/login" component={AdminLoginPage} />
