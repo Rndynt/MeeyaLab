@@ -74,8 +74,7 @@ export default function HeroHeader({
     { 
       loop: true, 
       duration: 20,
-      align: 'start',
-      containScroll: 'trimSnaps',
+      align: 'center',
     },
     [Autoplay({ delay: 5000, stopOnInteraction: false })]
   );
@@ -223,12 +222,12 @@ export default function HeroHeader({
 
       {/* Full-width Hero Section with background */}
       <section className={`relative w-full transition-colors duration-700 ${currentSlide.bgColor}`} data-testid="section-hero">
-        <div className="relative pt-20 md:pt-24 pb-8 md:pb-12 lg:pb-16">
+        <div className="relative pt-20 md:pt-24 pb-8 md:pb-12 lg:pb-16 overflow-hidden">
           <div className="w-full">
-            <div className="overflow-visible md:overflow-hidden" ref={emblaRef}>
+            <div className="overflow-hidden" ref={emblaRef}>
               <div className="flex touch-pan-y">
                 {slides.map((slide) => (
-                  <div key={slide.id} className="flex-[0_0_90%] sm:flex-[0_0_95%] md:flex-[0_0_100%] min-w-0 px-2 sm:px-3 md:px-0">
+                  <div key={slide.id} className="flex-[0_0_100%] min-w-0">
                     <div className="max-w-7xl mx-auto px-4 md:px-6">
                       <div className="grid md:grid-cols-2 gap-6 md:gap-12 lg:gap-20 items-center min-h-[520px] md:min-h-[600px]">
                         <div className="space-y-5 md:space-y-8 py-6 md:py-12">
