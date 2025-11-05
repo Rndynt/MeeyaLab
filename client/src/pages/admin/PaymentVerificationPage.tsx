@@ -377,7 +377,7 @@ export default function PaymentVerificationPage() {
     <AdminLayout onLogout={() => setLocation("/admin/login")}>
       <div className="space-y-6" data-testid="page-payment-verification">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">
+          <h1 className="text-3xl font-bold tracking-tight">
             Payment Verification
           </h1>
           <p className="text-slate-600 mt-2">
@@ -386,54 +386,54 @@ export default function PaymentVerificationPage() {
         </div>
 
         <div className="grid md:grid-cols-3 gap-6">
-          <Card className="bg-gradient-to-br from-yellow-50 to-orange-50 border-yellow-200 shadow-lg hover:shadow-xl transition-all" data-testid="card-stats-pending">
+          <Card className="transition-all hover:shadow-md" data-testid="card-stats-pending">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-yellow-800">
+              <CardTitle className="text-sm font-medium text-slate-600">
                 Pending Verifications
               </CardTitle>
-              <div className="h-10 w-10 bg-yellow-200 rounded-lg flex items-center justify-center">
-                <Clock className="h-5 w-5 text-yellow-700" />
+              <div className="h-10 w-10 bg-yellow-100 rounded-lg flex items-center justify-center">
+                <Clock className="h-5 w-5 text-yellow-600" />
               </div>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-yellow-900" data-testid="text-pending-count">
+              <div className="text-3xl font-bold" data-testid="text-pending-count">
                 {stats.pending}
               </div>
-              <p className="text-xs text-yellow-700 mt-1">Awaiting review</p>
+              <p className="text-xs text-slate-500 mt-1">Awaiting review</p>
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-green-50 to-emerald-50 border-green-200 shadow-lg hover:shadow-xl transition-all" data-testid="card-stats-verified">
+          <Card className="transition-all hover:shadow-md" data-testid="card-stats-verified">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-green-800">
+              <CardTitle className="text-sm font-medium text-slate-600">
                 Verified Today
               </CardTitle>
-              <div className="h-10 w-10 bg-green-200 rounded-lg flex items-center justify-center">
-                <CheckCircle className="h-5 w-5 text-green-700" />
+              <div className="h-10 w-10 bg-green-100 rounded-lg flex items-center justify-center">
+                <CheckCircle className="h-5 w-5 text-green-600" />
               </div>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-green-900" data-testid="text-verified-count">
+              <div className="text-3xl font-bold" data-testid="text-verified-count">
                 {stats.verifiedToday}
               </div>
-              <p className="text-xs text-green-700 mt-1">Successfully verified</p>
+              <p className="text-xs text-slate-500 mt-1">Successfully verified</p>
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-red-50 to-pink-50 border-red-200 shadow-lg hover:shadow-xl transition-all" data-testid="card-stats-rejected">
+          <Card className="transition-all hover:shadow-md" data-testid="card-stats-rejected">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium text-red-800">
+              <CardTitle className="text-sm font-medium text-slate-600">
                 Rejected Today
               </CardTitle>
-              <div className="h-10 w-10 bg-red-200 rounded-lg flex items-center justify-center">
-                <XCircle className="h-5 w-5 text-red-700" />
+              <div className="h-10 w-10 bg-red-100 rounded-lg flex items-center justify-center">
+                <XCircle className="h-5 w-5 text-red-600" />
               </div>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-red-900" data-testid="text-rejected-count">
+              <div className="text-3xl font-bold" data-testid="text-rejected-count">
                 {stats.rejectedToday}
               </div>
-              <p className="text-xs text-red-700 mt-1">Payment issues found</p>
+              <p className="text-xs text-slate-500 mt-1">Payment issues found</p>
             </CardContent>
           </Card>
         </div>
@@ -443,7 +443,6 @@ export default function PaymentVerificationPage() {
             <Button
               variant={filter === "all" ? "default" : "outline"}
               onClick={() => handleFilterChange("all")}
-              className={filter === "all" ? "bg-cyan-600 hover:bg-cyan-700" : ""}
               data-testid="button-filter-all"
             >
               All Payments
@@ -451,7 +450,6 @@ export default function PaymentVerificationPage() {
             <Button
               variant={filter === "pending" ? "default" : "outline"}
               onClick={() => handleFilterChange("pending")}
-              className={filter === "pending" ? "bg-yellow-600 hover:bg-yellow-700" : ""}
               data-testid="button-filter-pending"
             >
               <Clock className="w-4 h-4 mr-2" />
@@ -460,7 +458,6 @@ export default function PaymentVerificationPage() {
             <Button
               variant={filter === "verified" ? "default" : "outline"}
               onClick={() => handleFilterChange("verified")}
-              className={filter === "verified" ? "bg-green-600 hover:bg-green-700" : ""}
               data-testid="button-filter-verified"
             >
               <CheckCircle className="w-4 h-4 mr-2" />
@@ -469,7 +466,6 @@ export default function PaymentVerificationPage() {
             <Button
               variant={filter === "rejected" ? "default" : "outline"}
               onClick={() => handleFilterChange("rejected")}
-              className={filter === "rejected" ? "bg-red-600 hover:bg-red-700" : ""}
               data-testid="button-filter-rejected"
             >
               <XCircle className="w-4 h-4 mr-2" />
@@ -510,13 +506,13 @@ export default function PaymentVerificationPage() {
             {filteredPayments.map((payment) => (
               <Card
                 key={payment.id}
-                className="hover:shadow-lg transition-all border-slate-200"
+                className="hover:shadow-md transition-all"
                 data-testid={`card-payment-${payment.id}`}
               >
                 <CardHeader>
                   <div className="flex items-start justify-between">
                     <div className="space-y-1">
-                      <CardTitle className="text-lg font-bold text-cyan-700" data-testid={`text-order-code-${payment.id}`}>
+                      <CardTitle className="text-lg font-semibold" data-testid={`text-order-code-${payment.id}`}>
                         {payment.orderCode}
                       </CardTitle>
                       <div className="flex items-center gap-2 text-sm text-slate-600">
@@ -531,7 +527,7 @@ export default function PaymentVerificationPage() {
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <p className="text-xs text-slate-500 mb-1">Amount</p>
-                      <p className="text-xl font-bold text-slate-900" data-testid={`text-amount-${payment.id}`}>
+                      <p className="text-xl font-bold" data-testid={`text-amount-${payment.id}`}>
                         {formatCurrency(payment.amount)}
                       </p>
                     </div>
@@ -544,7 +540,7 @@ export default function PaymentVerificationPage() {
                   <div className="grid grid-cols-2 gap-4 text-sm">
                     <div>
                       <p className="text-slate-500 mb-1">Bank/Provider</p>
-                      <p className="font-medium text-slate-900" data-testid={`text-bank-${payment.id}`}>
+                      <p className="font-medium" data-testid={`text-bank-${payment.id}`}>
                         {payment.bankName || "-"}
                       </p>
                     </div>
@@ -650,9 +646,9 @@ export default function PaymentVerificationPage() {
                   </div>
 
                   <div className="grid md:grid-cols-2 gap-4">
-                    <Card className="bg-cyan-50 border-cyan-200">
+                    <Card>
                       <CardHeader>
-                        <CardTitle className="text-sm font-semibold text-cyan-900">
+                        <CardTitle className="text-sm font-semibold">
                           Payment Details
                         </CardTitle>
                       </CardHeader>
@@ -671,7 +667,7 @@ export default function PaymentVerificationPage() {
                         </div>
                         <div className="flex justify-between">
                           <span className="text-slate-600">Amount:</span>
-                          <span className="font-bold text-lg text-cyan-700" data-testid="text-proof-amount">
+                          <span className="font-bold text-lg" data-testid="text-proof-amount">
                             {formatCurrency(selectedPayment.amount)}
                           </span>
                         </div>
@@ -690,16 +686,16 @@ export default function PaymentVerificationPage() {
                       </CardContent>
                     </Card>
 
-                    <Card className="bg-blue-50 border-blue-200">
+                    <Card>
                       <CardHeader>
-                        <CardTitle className="text-sm font-semibold text-blue-900">
+                        <CardTitle className="text-sm font-semibold">
                           Order Summary
                         </CardTitle>
                       </CardHeader>
                       <CardContent className="space-y-2 text-sm">
                         <div className="flex justify-between">
                           <span className="text-slate-600">Order Code:</span>
-                          <span className="font-bold text-cyan-700" data-testid="text-proof-order-code">
+                          <span className="font-bold" data-testid="text-proof-order-code">
                             {selectedPayment.orderCode}
                           </span>
                         </div>
@@ -715,9 +711,9 @@ export default function PaymentVerificationPage() {
                             {selectedPayment.customerEmail}
                           </span>
                         </div>
-                        <div className="flex justify-between pt-2 border-t border-blue-300">
+                        <div className="flex justify-between pt-2 border-t">
                           <span className="text-slate-600 font-semibold">Total:</span>
-                          <span className="font-bold text-lg text-blue-700" data-testid="text-proof-total">
+                          <span className="font-bold text-lg" data-testid="text-proof-total">
                             {formatCurrency(selectedPayment.amount)}
                           </span>
                         </div>
@@ -770,16 +766,16 @@ export default function PaymentVerificationPage() {
         <Dialog open={rejectionDialogOpen} onOpenChange={setRejectionDialogOpen}>
           <DialogContent data-testid="dialog-payment-rejection">
             <DialogHeader>
-              <DialogTitle className="text-red-700">Reject Payment</DialogTitle>
+              <DialogTitle>Reject Payment</DialogTitle>
             </DialogHeader>
             <DialogBody className="space-y-4">
               {selectedPayment && (
                 <>
-                  <Card className="bg-red-50 border-red-200">
+                  <Card className="bg-slate-50">
                     <CardContent className="pt-4 space-y-2 text-sm">
                       <div className="flex justify-between">
                         <span className="text-slate-600">Order Code:</span>
-                        <span className="font-bold text-red-700" data-testid="text-reject-order-code">
+                        <span className="font-bold" data-testid="text-reject-order-code">
                           {selectedPayment.orderCode}
                         </span>
                       </div>
@@ -791,7 +787,7 @@ export default function PaymentVerificationPage() {
                       </div>
                       <div className="flex justify-between">
                         <span className="text-slate-600">Amount:</span>
-                        <span className="font-bold text-lg text-red-700" data-testid="text-reject-amount">
+                        <span className="font-bold text-lg" data-testid="text-reject-amount">
                           {formatCurrency(selectedPayment.amount)}
                         </span>
                       </div>
