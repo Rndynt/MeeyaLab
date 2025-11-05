@@ -375,9 +375,9 @@ export default function PaymentVerificationPage() {
 
   return (
     <AdminLayout onLogout={() => setLocation("/admin/login")}>
-      <div className="space-y-6" data-testid="page-payment-verification">
+      <div className="space-y-6 px-4 md:px-0" data-testid="page-payment-verification">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">
+          <h1 className="text-2xl font-bold">
             Payment Verification
           </h1>
           <p className="text-slate-600 mt-2">
@@ -385,7 +385,7 @@ export default function PaymentVerificationPage() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
           <Card className="transition-all hover:shadow-md" data-testid="card-stats-pending">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium text-slate-600">
@@ -486,14 +486,14 @@ export default function PaymentVerificationPage() {
         </div>
 
         {filteredPayments.length === 0 ? (
-          <Card className="p-12 text-center" data-testid="empty-state">
+          <Card className="p-8 md:p-12 text-center" data-testid="empty-state">
             <div className="flex flex-col items-center gap-4">
-              <div className="h-20 w-20 bg-slate-100 rounded-full flex items-center justify-center">
-                <AlertCircle className="h-10 w-10 text-slate-400" />
+              <div className="h-16 w-16 md:h-20 md:w-20 bg-slate-100 rounded-full flex items-center justify-center">
+                <AlertCircle className="h-8 w-8 md:h-10 md:w-10 text-slate-400" />
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-slate-700">No payments found</h3>
-                <p className="text-slate-500 mt-1">
+                <h3 className="text-base md:text-lg font-semibold text-slate-700">No payments found</h3>
+                <p className="text-sm md:text-base text-slate-500 mt-1">
                   {searchQuery
                     ? "Try adjusting your search criteria"
                     : "No payments match the selected filter"}
@@ -502,7 +502,7 @@ export default function PaymentVerificationPage() {
             </div>
           </Card>
         ) : (
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
             {filteredPayments.map((payment) => (
               <Card
                 key={payment.id}
@@ -510,24 +510,24 @@ export default function PaymentVerificationPage() {
                 data-testid={`card-payment-${payment.id}`}
               >
                 <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <div className="space-y-1">
-                      <CardTitle className="text-lg font-semibold" data-testid={`text-order-code-${payment.id}`}>
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="space-y-1 min-w-0 flex-1">
+                      <CardTitle className="text-base md:text-lg font-semibold truncate" data-testid={`text-order-code-${payment.id}`}>
                         {payment.orderCode}
                       </CardTitle>
-                      <div className="flex items-center gap-2 text-sm text-slate-600">
-                        <User className="w-4 h-4" />
-                        <span data-testid={`text-customer-name-${payment.id}`}>{payment.customerName}</span>
+                      <div className="flex items-center gap-2 text-xs md:text-sm text-slate-600">
+                        <User className="w-3 h-3 md:w-4 md:h-4 flex-shrink-0" />
+                        <span className="truncate" data-testid={`text-customer-name-${payment.id}`}>{payment.customerName}</span>
                       </div>
                     </div>
                     {getStatusBadge(payment.status)}
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-2 gap-3 md:gap-4">
                     <div>
                       <p className="text-xs text-slate-500 mb-1">Amount</p>
-                      <p className="text-xl font-bold" data-testid={`text-amount-${payment.id}`}>
+                      <p className="text-lg md:text-xl font-bold" data-testid={`text-amount-${payment.id}`}>
                         {formatCurrency(payment.amount)}
                       </p>
                     </div>
@@ -537,41 +537,41 @@ export default function PaymentVerificationPage() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4 text-sm">
                     <div>
-                      <p className="text-slate-500 mb-1">Bank/Provider</p>
-                      <p className="font-medium" data-testid={`text-bank-${payment.id}`}>
+                      <p className="text-xs text-slate-500 mb-1">Bank/Provider</p>
+                      <p className="font-medium text-sm" data-testid={`text-bank-${payment.id}`}>
                         {payment.bankName || "-"}
                       </p>
                     </div>
                     <div>
-                      <p className="text-slate-500 mb-1">Transaction ID</p>
+                      <p className="text-xs text-slate-500 mb-1">Transaction ID</p>
                       <p className="font-mono text-xs text-slate-700 truncate" data-testid={`text-transaction-id-${payment.id}`}>
                         {payment.transactionId || "-"}
                       </p>
                     </div>
                   </div>
 
-                  <div className="text-sm">
+                  <div className="text-xs md:text-sm">
                     <div className="flex items-center gap-2 text-slate-600">
-                      <Calendar className="w-4 h-4" />
+                      <Calendar className="w-3 h-3 md:w-4 md:h-4 flex-shrink-0" />
                       <span data-testid={`text-payment-date-${payment.id}`}>{formatDate(payment.paymentDate)}</span>
                     </div>
                   </div>
 
                   {payment.status === "rejected" && payment.rejectionReason && (
-                    <div className="bg-red-50 border border-red-200 rounded-lg p-3">
-                      <p className="text-xs font-semibold text-red-700 mb-1">Rejection Reason:</p>
-                      <p className="text-sm text-red-600" data-testid={`text-rejection-reason-${payment.id}`}>
+                    <div className="bg-slate-50 border border-slate-200 rounded-lg p-3">
+                      <p className="text-xs font-semibold text-slate-700 mb-1">Rejection Reason:</p>
+                      <p className="text-sm text-slate-600" data-testid={`text-rejection-reason-${payment.id}`}>
                         {payment.rejectionReason}
                       </p>
                     </div>
                   )}
 
-                  <div className="flex gap-2 pt-2">
+                  <div className="flex flex-col sm:flex-row gap-2 pt-2">
                     <Button
                       variant="outline"
-                      className="flex-1"
+                      className="w-full sm:flex-1"
                       onClick={() => handleViewProof(payment)}
                       data-testid={`button-view-proof-${payment.id}`}
                     >
@@ -581,7 +581,7 @@ export default function PaymentVerificationPage() {
                     {payment.status === "pending" && (
                       <>
                         <Button
-                          className="bg-green-600 hover:bg-green-700"
+                          className="w-full sm:w-auto bg-green-600 hover:bg-green-700"
                           onClick={() => handleVerify(payment)}
                           data-testid={`button-verify-${payment.id}`}
                         >
@@ -590,6 +590,7 @@ export default function PaymentVerificationPage() {
                         </Button>
                         <Button
                           variant="destructive"
+                          className="w-full sm:w-auto"
                           onClick={() => handleOpenRejectDialog(payment)}
                           data-testid={`button-reject-${payment.id}`}
                         >
