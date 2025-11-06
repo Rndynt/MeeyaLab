@@ -24,6 +24,8 @@ import AdminInventoryPage from "@/pages/admin/InventoryPage";
 import AdminOrdersPage from "@/pages/admin/OrdersPage";
 import AdminOrderDetailPage from "@/pages/admin/OrderDetailPage";
 import AdminPaymentVerificationPage from "@/pages/admin/PaymentVerificationPage";
+import AdminPaymentMethodsSettingsPage from "@/pages/admin/PaymentMethodsSettingsPage";
+import AdminPaymentReconciliationPage from "@/pages/admin/PaymentReconciliationPage";
 import AdminSettingsPage from "@/pages/admin/SettingsPage";
 
 function Router() {
@@ -49,6 +51,8 @@ function Router() {
       <Route path="/admin/orders/:id" component={AdminOrderDetailPage} />
       <Route path="/admin/orders" component={AdminOrdersPage} />
       <Route path="/admin/payments" component={AdminPaymentVerificationPage} />
+      <Route path="/admin/payment-methods" component={AdminPaymentMethodsSettingsPage} />
+      <Route path="/admin/reconciliation" component={AdminPaymentReconciliationPage} />
       <Route path="/admin/products" component={AdminProductsPage} />
       <Route path="/admin/settings" component={AdminSettingsPage} />
       

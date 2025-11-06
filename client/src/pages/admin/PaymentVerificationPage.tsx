@@ -377,7 +377,7 @@ export default function PaymentVerificationPage() {
     <AdminLayout onLogout={() => setLocation("/admin/login")}>
       <div className="space-y-6" data-testid="page-payment-verification">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Payment Verification</h1>
+          <h1 className="text-2xl font-bold tracking-tight">Payment Verification</h1>
           <p className="text-slate-600 mt-2">
             Verify customer payment proofs and manage payment status
           </p>
