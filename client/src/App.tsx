@@ -26,6 +26,7 @@ import AdminOrderDetailPage from "@/pages/admin/OrderDetailPage";
 import AdminPaymentVerificationPage from "@/pages/admin/PaymentVerificationPage";
 import AdminPaymentMethodsSettingsPage from "@/pages/admin/PaymentMethodsSettingsPage";
 import AdminPaymentReconciliationPage from "@/pages/admin/PaymentReconciliationPage";
+import AdminShippingLogisticsPage from "@/pages/admin/ShippingLogisticsPage";
 import AdminSettingsPage from "@/pages/admin/SettingsPage";
 
 function Router() {
@@ -53,6 +54,7 @@ function Router() {
       <Route path="/admin/payments" component={AdminPaymentVerificationPage} />
       <Route path="/admin/payment-methods" component={AdminPaymentMethodsSettingsPage} />
       <Route path="/admin/reconciliation" component={AdminPaymentReconciliationPage} />
+      <Route path="/admin/shipping" component={AdminShippingLogisticsPage} />
       <Route path="/admin/products" component={AdminProductsPage} />
       <Route path="/admin/settings" component={AdminSettingsPage} />
       

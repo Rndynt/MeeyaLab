@@ -17,7 +17,8 @@ import {
   ChevronsRight,
   CheckCircle,
   Receipt,
-  FileBarChart
+  FileBarChart,
+  Truck
 } from "lucide-react";
 import ShoppingBagMinimal from "@/components/icons/ShoppingBagMinimal";
 
@@ -45,6 +46,7 @@ export default function AdminLayout({ children, onLogout }: AdminLayoutProps) {
     { href: "/admin/products", label: "Products", icon: Package, lucideIcon: true },
     { href: "/admin/inventory", label: "Inventory", icon: Boxes, lucideIcon: true },
     { href: "/admin/orders", label: "Orders", icon: ShoppingBagMinimal, lucideIcon: false },
+    { href: "/admin/shipping", label: "Shipping", icon: Truck, lucideIcon: true },
     { 
       label: "Payments", 
       icon: CreditCard, 
