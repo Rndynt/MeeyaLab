@@ -215,8 +215,8 @@ export default function InventoryPage() {
         <div className="flex flex-col gap-6">
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
             <div>
-              <h1 className="text-3xl font-bold tracking-tight">Inventory Management</h1>
-              <p className="text-sm text-slate-500 mt-1">Track and manage your product inventory</p>
+              <h1 className="text-2xl font-bold tracking-tight">Inventory Management</h1>
+              <p className="text-sm text-slate-500 mt-2">Track and manage your product inventory</p>
             </div>
             <Button
               className="bg-cyan-500 hover:bg-cyan-600 transition-all shadow-sm hover:shadow-md sm:w-auto w-full"
