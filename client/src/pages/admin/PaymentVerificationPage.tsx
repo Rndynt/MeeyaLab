@@ -375,11 +375,9 @@ export default function PaymentVerificationPage() {
 
   return (
     <AdminLayout onLogout={() => setLocation("/admin/login")}>
-      <div className="space-y-6 px-4 md:px-0" data-testid="page-payment-verification">
+      <div className="space-y-6" data-testid="page-payment-verification">
         <div>
-          <h1 className="text-2xl font-bold">
-            Payment Verification
-          </h1>
+          <h1 className="text-3xl font-bold tracking-tight">Payment Verification</h1>
           <p className="text-slate-600 mt-2">
             Verify customer payment proofs and manage payment status
           </p>
@@ -502,7 +500,7 @@ export default function PaymentVerificationPage() {
             </div>
           </Card>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
             {filteredPayments.map((payment) => (
               <Card
                 key={payment.id}
