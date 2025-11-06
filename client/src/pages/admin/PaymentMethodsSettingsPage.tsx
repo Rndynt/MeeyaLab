@@ -278,11 +278,11 @@ export default function PaymentMethodsSettingsPage() {
               <CardHeader>
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex items-center gap-3 flex-1">
-                    <div className="h-12 w-12 bg-slate-100 rounded-lg flex items-center justify-center">
+                    <div className="h-8 w-8 bg-slate-100 rounded-lg flex items-center justify-center">
                       {getMethodIcon(method.type)}
                     </div>
                     <div className="space-y-1 min-w-0 flex-1">
-                      <CardTitle className="text-lg font-semibold truncate" data-testid={`text-method-name-${method.id}`}>
+                      <CardTitle className="text-sm font-semibold truncate" data-testid={`text-method-name-${method.id}`}>
                         {method.name}
                       </CardTitle>
                       {getTypeBadge(method.type)}
