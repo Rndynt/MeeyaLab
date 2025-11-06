@@ -19,6 +19,7 @@ Preferred communication style: Simple, everyday language.
     - **Product Detail Page**: Dedicated page with detailed product info (description, ingredients, usage, benefits), responsive layout, and Add to Cart functionality.
     - **Admin Order Management**: Detailed order view with customer info, shipping, order summary, items, notes, and status updates. Orders are grouped by date and include status filtering.
     - **Add to Cart Design**: Icon-only buttons using Plus icon (not ShoppingCart) with square shape and rounded corners (rounded-md), includes full accessibility support (aria-label, title tooltips), shows Check icon when item added successfully.
+    - **Admin Sidebar**: Collapsible/expandable sidebar (w-64 expanded, w-20 collapsed) with smooth transitions, submenu support for nested navigation, active state highlighting (cyan), and mobile responsive design using Sheet component. When collapsed, clicking a menu with submenus expands the sidebar first (requires two clicks for submenu access).
 
 ### Backend
 - **Server Framework**: Express.js with TypeScript for API endpoints.
